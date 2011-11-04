@@ -39,4 +39,39 @@ private object AmfInt
 
         result
     }
+
+    def write(buf : IoBuffer,  value : Int) =
+    {
+        buf.put(0x4 toByte)
+
+        if(value < 0)
+        {
+            buf.put((0x80 | ((value >> 22) & 0xff)) toByte)
+            buf.put((0x80 | ((value >> 15) & 0x7f)) toByte)
+            buf.put((0x80 | ((value >> 8) & 0x7f)) toByte)
+            buf.put((value & 0xff) toByte)
+        }
+        else if(value <= 0x7f)
+        {
+            buf.put(value toByte)
+        }
+        else if(value <= 0x3fff)
+        {
+            buf.put((0x80 | ((value >> 7) & 0x7f)) toByte)
+            buf.put((value & 0x7f) toByte)
+        }
+        else if(value <= 0x1fffff)
+        {
+            buf.put((0x80 | ((value >> 14) & 0x7f)) toByte)
+            buf.put((0x80 | ((value >> 7) & 0x7f)) toByte)
+            buf.put((value & 0x7f) toByte)
+        }
+        else
+        {
+            buf.put((0x80 | ((value >> 22) & 0xff)) toByte)
+            buf.put((0x80 | ((value >> 15) & 0x7f)) toByte)
+            buf.put((0x80 | ((value >> 8) & 0x7f)) toByte)
+            buf.put((value & 0xff) toByte)
+        }
+    }
 }

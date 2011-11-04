@@ -39,7 +39,8 @@ object Amf
         {
             case AmfType.NULL => buf.put(0x1 toByte)
             case AmfType.BOOL => buf.put((if(value._2.asInstanceOf[Boolean]) 0x3 else 0x2) toByte)
-            case AmfType.INT => buf.put(0x4 toByte); buf.put(0 toByte)
+            case AmfType.INT => AmfInt.write(buf, value._2.asInstanceOf[Int])
+            case AmfType.DOUBLE => buf.put(0x5 toByte); buf.putDouble(value._2.asInstanceOf[Double])
             case _ => throw new Exception("invalid amf type " + value._1)
         }
 
