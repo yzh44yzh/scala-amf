@@ -14,10 +14,10 @@ object Amf
         val tp = buf.get
         tp match
         {
-            case 0x0 => (AmfType.INT, 0) // TODO UNDEFINED
-            case 0x1 => (AmfType.INT, 0) // TODO NULL
-            case 0x2 => (AmfType.INT, 0) // TODO FALSE
-            case 0x3 => (AmfType.INT, 0) // TODO TRUE
+            case 0x0 => (AmfType.NULL, null) // UNDEFINED
+            case 0x1 => (AmfType.NULL, null) // NULL
+            case 0x2 => (AmfType.BOOL, false)
+            case 0x3 => (AmfType.BOOL, true)
             case 0x4 => (AmfType.INT, AmfInt.readInt(buf))
             case 0x5 => (AmfType.INT, 0) // TODO DOUBLE
             case 0x6 => (AmfType.INT, 0) // TODO STRING
