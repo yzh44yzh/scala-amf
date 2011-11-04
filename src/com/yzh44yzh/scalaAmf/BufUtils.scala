@@ -10,8 +10,9 @@ object BufUtils
 {
     def mkb(bytes: List[Byte]): IoBuffer =
     {
-        val buf = IoBuffer.allocate(64, true)
+        val buf = IoBuffer.allocate(64).setAutoExpand(true)
         for(byte <- bytes) buf.put(byte)
+        buf.flip
         buf.position(0)
         buf
     }

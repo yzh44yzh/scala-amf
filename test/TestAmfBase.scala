@@ -14,4 +14,11 @@ class TestAmfBase extends FunSuite
         assert(Amf.decode(BufUtils.mkb(List(0x2))) === (AmfType.BOOL, false))
         assert(Amf.decode(BufUtils.mkb(List(0x3))) === (AmfType.BOOL, true))
     }
+
+    test("encode base types")
+    {
+        assert(BufUtils.eq(Amf.encode((AmfType.NULL, null)), BufUtils.mkb(List(0x1))))
+        assert(BufUtils.eq(Amf.encode((AmfType.BOOL, false)), BufUtils.mkb(List(0x2))))
+        assert(BufUtils.eq(Amf.encode((AmfType.BOOL, true)), BufUtils.mkb(List(0x3))))
+    }
 }

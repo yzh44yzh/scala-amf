@@ -8,7 +8,7 @@ import org.apache.mina.core.buffer.IoBuffer
 
 private object AmfInt
 {
-    def readInt(buf : IoBuffer) : Int =
+    def read(buf : IoBuffer) : Int =
     {
         var n: Int = 0
         var b: Int = buf.get
