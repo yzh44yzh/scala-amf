@@ -42,8 +42,6 @@ private object AmfInt
 
     def write(buf : IoBuffer,  value : Int) =
     {
-        buf.put(0x4 toByte)
-
         if(value < 0)
         {
             buf.put((0x80 | ((value >> 22) & 0xff)) toByte)

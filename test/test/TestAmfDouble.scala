@@ -2,6 +2,8 @@
  * @author Yura Zhloba <yzh44yzh@gmail.com>
  */
 
+package test
+
 import com.yzh44yzh.scalaAmf._
 import org.apache.mina.core.buffer.IoBuffer
 import org.scalatest.FunSuite
