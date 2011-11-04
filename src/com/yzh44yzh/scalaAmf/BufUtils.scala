@@ -8,7 +8,7 @@ import org.apache.mina.core.buffer.IoBuffer
 
 object BufUtils
 {
-    def mkb(bytes: List[Byte]): IoBuffer =
+    def mkb(bytes : List[Byte]) : IoBuffer =
     {
         val buf = IoBuffer.allocate(64).setAutoExpand(true)
         for(byte <- bytes) buf.put(byte)
@@ -17,7 +17,16 @@ object BufUtils
         buf
     }
 
-    def eq(buf1: IoBuffer, buf2: IoBuffer): Boolean =
+    def mkBufFromArray(bytes : Array[Byte]) : IoBuffer =
+    {
+        val buf = IoBuffer.allocate(64).setAutoExpand(true)
+        for(byte <- bytes) buf.put(byte)
+        buf.flip
+        buf.position(0)
+        buf
+    }
+
+    def eq(buf1 : IoBuffer, buf2 : IoBuffer) : Boolean =
     {
         buf1.position(0)
         buf2.position(0)

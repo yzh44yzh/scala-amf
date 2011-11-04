@@ -21,7 +21,7 @@ object Amf
             case 0x3 => (AmfType.BOOL, true)
             case 0x4 => (AmfType.INT, AmfInt.read(buf))
             case 0x5 => (AmfType.DOUBLE, buf.getDouble)
-            case 0x6 => (AmfType.STRING, "") // TODO STRING
+            case 0x6 => (AmfType.STRING, AmfString.read(buf))
             case 0x7 => (AmfType.STRING, "") // TODO XMLDOC
             case 0x8 => (AmfType.DATE, AmfDate.read(buf))
             case 0x9 => (AmfType.ARRAY, 0) // TODO ARRAY
@@ -47,6 +47,9 @@ object Amf
             case AmfType.DOUBLE =>
                 buf.put(0x5 toByte);
                 buf.putDouble(value._2.asInstanceOf[Double])
+            case AmfType.STRING =>
+                buf.put(0x6 toByte)
+                AmfString.write(buf,  value._2.asInstanceOf[String])
             case AmfType.DATE =>
                 buf.put(0x8 toByte)
                 AmfDate.write(buf,  value._2.asInstanceOf[Date])
