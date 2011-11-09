@@ -24,7 +24,7 @@ object Amf
             case 0x6 => (AmfType.STRING, AmfString.read(buf))
             case 0x7 => (AmfType.STRING, "") // TODO XMLDOC
             case 0x8 => (AmfType.DATE, AmfDate.read(buf))
-            case 0x9 => (AmfType.ARRAY, 0) // TODO ARRAY
+            case 0x9 => (AmfType.ARRAY, AmfArray.read(buf))
             case 0xa => (AmfType.OBJECT, 0) // TODO OBJECT
             case 0xb => (AmfType.STRING, 0) // TODO XML
             case 0xc => (AmfType.BYTEARRAY, 0) // TODO BYTEARRAY
@@ -34,8 +34,17 @@ object Amf
 
     def encode(value : (AmfType, Any)) : IoBuffer =
     {
-        var buf = IoBuffer.allocate(64).setAutoExpand(true)
+        val buf = IoBuffer.allocate(64).setAutoExpand(true)
 
+        encode(buf, value)
+
+        buf.flip
+        buf.position(0)
+        buf
+    }
+
+    def encode(buf : IoBuffer, value : (AmfType, Any)) =
+    {
         value._1 match
         {
             case AmfType.NULL => buf.put(0x1 toByte)
@@ -53,11 +62,25 @@ object Amf
             case AmfType.DATE =>
                 buf.put(0x8 toByte)
                 AmfDate.write(buf,  value._2.asInstanceOf[Date])
+            case AmfType.ARRAY =>
+                buf.put(0x9 toByte)
+                AmfArray.write(buf,  value._2.asInstanceOf[List[Any]])
             case _ => throw new Exception("invalid amf type " + value._1)
         }
+    }
 
-        buf.flip
-        buf.position(0)
-        buf
+    def encodeAny(buf : IoBuffer,  item : Any) =
+    {
+        item match
+        {
+            case null => encode(buf, (AmfType.NULL, null))
+            case false => encode(buf, (AmfType.BOOL, false))
+            case true => encode(buf, (AmfType.BOOL, true))
+            case int : Int => encode(buf, (AmfType.INT, int))
+            case double : Double => encode(buf, (AmfType.DOUBLE, double))
+            case str : String => encode(buf, (AmfType.STRING, str))
+            case date : Date => encode(buf, (AmfType.DATE, date))
+            case list : List[Any] => encode(buf, (AmfType.ARRAY, list))
+        }
     }
 }
