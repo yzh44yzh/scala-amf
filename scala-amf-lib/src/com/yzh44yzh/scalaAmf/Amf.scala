@@ -6,7 +6,7 @@ package com.yzh44yzh.scalaAmf
 
 import org.apache.mina.core.buffer.IoBuffer
 import com.yzh44yzh.scalaAmf.AmfType._
-import java.util.{ArrayList, Date}
+import java.util.{LinkedHashMap, ArrayList, Date}
 
 object Amf
 {
@@ -25,7 +25,7 @@ object Amf
             case 0x7 => (AmfType.STRING, "") // TODO XMLDOC
             case 0x8 => (AmfType.DATE, AmfDate.read(buf))
             case 0x9 => (AmfType.ARRAY, AmfArray.read(buf))
-            case 0xa => (AmfType.OBJECT, 0) // TODO OBJECT
+            case 0xa => (AmfType.OBJECT, AmfObject.read(buf))
             case 0xb => (AmfType.STRING, 0) // TODO XML
             case 0xc => (AmfType.BYTEARRAY, 0) // TODO BYTEARRAY
             case _ => throw new Exception("invalid amf type " + tp)
@@ -65,13 +65,16 @@ object Amf
             case AmfType.ARRAY =>
                 buf.put(0x9 toByte)
                 AmfArray.write(buf,  value._2.asInstanceOf[ArrayList[Any]])
+            case AmfType.OBJECT =>
+                buf.put(0xa toByte)
+                AmfObject.write(buf,  value._2.asInstanceOf[LinkedHashMap[String, Any]])
             case _ => throw new Exception("invalid amf type " + value._1)
         }
 
         buf
     }
 
-    def encodeAny(buf : IoBuffer,  item : Any) =
+    def encodeAny(buf : IoBuffer,  item : Any) : IoBuffer =
     {
         item match
         {
@@ -83,6 +86,9 @@ object Amf
             case str : String => encode(buf, (AmfType.STRING, str))
             case date : Date => encode(buf, (AmfType.DATE, date))
             case list : ArrayList[Any] => encode(buf, (AmfType.ARRAY, list))
+            case obj : LinkedHashMap[String, Any] => encode(buf, (AmfType.OBJECT, obj))
         }
+
+        buf
     }
 }

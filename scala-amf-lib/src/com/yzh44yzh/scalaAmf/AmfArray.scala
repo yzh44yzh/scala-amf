@@ -40,7 +40,7 @@ private object AmfArray
         result
     }
 
-    def write(buf: IoBuffer, list: ArrayList[Any]) =
+    def write(buf: IoBuffer, list: ArrayList[Any]) : IoBuffer =
     {
         /*
 		if(hasReference(array))
@@ -58,5 +58,7 @@ private object AmfArray
 
         val it = list.iterator()
         while(it.hasNext) Amf.encodeAny(buf, it.next())
+
+        buf
     }
 }
