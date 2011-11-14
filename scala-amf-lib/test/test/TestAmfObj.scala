@@ -6,11 +6,10 @@ package test
 
 import com.yzh44yzh.scalaAmf._
 import org.scalatest.FunSuite
-import java.util.LinkedHashMap
+import java.util.{Date, LinkedHashMap}
 
 class TestAmfObj extends FunSuite
 {
-
     def createObj1() : LinkedHashMap[String, Any] = {
         val obj = new LinkedHashMap[String, Any]
         obj.put("name", "Bob")
@@ -18,16 +17,18 @@ class TestAmfObj extends FunSuite
         obj.put("age", 25)
         obj
     }
-    val obj1 = createObj1()
+    val obj1 = createObj1
     val buf1 = BufUtils.mkb(List(0x0a, 0x0b, // Object
 			0x01,
 			0x09, 0x6e, 0x61, 0x6d, 0x65, // name
-			0x06, 0x07, 0x42, 0x6f, 0x62, // bob
+			0x06, 0x07, 0x42, 0x6f, 0x62, // Bob
 			0x0d, 0x67, 0x65, 0x6e, 0x64, 0x65, 0x72, // gender
 			0x04, 0x01, // 1
 			0x07, 0x61, 0x67, 0x65, // age
 			0x04, 0x19, // 25
 			0x01))
+
+
 
     def createObj2() : LinkedHashMap[String, Any] = {
         val location = new LinkedHashMap[String, Any]
@@ -39,7 +40,7 @@ class TestAmfObj extends FunSuite
         obj.put("name", "Yura")
         obj
     }
-    val obj2 = createObj2()
+    val obj2 = createObj2
     val buf2 = BufUtils.mkb(List(0x0a, 0x0b, // Object
 			0x01,
 			0x11, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, // location
@@ -54,6 +55,29 @@ class TestAmfObj extends FunSuite
 			0x06, 0x09, 0x59, 0x75, 0x72, 0x61, // Yura
 			0x01))
 
+
+
+    def createObj3() : LinkedHashMap[String, Any] = {
+        val obj = new LinkedHashMap[String, Any]
+        obj.put("id", 25)
+        obj.put("date", new Date(1289767440000L))
+        obj.put("sender", "Bob")
+        obj.put("content", "Hello")
+        obj
+    }
+    val obj3 = createObj3
+    val buf3 = BufUtils.mkb(List(0xa, 0x43,
+            0x1, // empty class name
+            0x5, 0x69, 0x64, // id
+            0x9, 0x64, 0x61, 0x74, 0x65, // date
+            0xd, 0x73, 0x65, 0x6e, 0x64, 0x65, 0x72, // sender
+            0xf, 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, // content
+            0x4, 0x19, // 25
+            0x08, 0x01, 0x42, 0x72, -0x3c, -0x3e, 0x14, -0x18, 0x00, 0x0, // Sun Nov 14 22:44:00 GMT+0200 2010
+            0x6, 0x7, 0x42, 0x6f, 0x62, // Bob
+            0x6, 0xb, 0x48, 0x65, 0x6c, 0x6c, 0x6f // Hello
+     ))
+
     test("decode objects")
     {
         val (AmfType.OBJECT, res1) = Amf.decode(buf1)
@@ -61,6 +85,9 @@ class TestAmfObj extends FunSuite
 
         val (AmfType.OBJECT, res2) = Amf.decode(buf2)
         assert(obj2.equals(res2))
+
+        val (AmfType.OBJECT, res3) = Amf.decode(buf3)
+        assert(obj3.equals(res3))
     }
     
     test("encode objects")

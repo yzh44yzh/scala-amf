@@ -7,6 +7,8 @@ package
 import flash.display.Sprite;
 import flash.utils.ByteArray;
 
+import some.pack.Message;
+
 public class FlashLab extends Sprite
 {
     public function FlashLab()
@@ -14,10 +16,16 @@ public class FlashLab extends Sprite
         trace("FlashLab");
 
         // var arr : Array = [1, "Hello", 35.25, true];
-        var arr : Array = [[1,2,3], ["a", "b", "c"], ["Hello"]];
+        //var arr : Array = [[1,2,3], ["a", "b", "c"], ["Hello"]];
+
+        var msg : Message = new Message();
+        msg.id = 25;
+        msg.date = new Date();
+        msg.sender = "Bob";
+        msg.content = "Hello";
 
         var buf : ByteArray = new ByteArray();
-        buf.writeObject(arr);
+        buf.writeObject(msg);
 
         showBuf(buf);
     }
