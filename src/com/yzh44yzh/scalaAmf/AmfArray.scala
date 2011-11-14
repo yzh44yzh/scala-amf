@@ -5,10 +5,11 @@ package com.yzh44yzh.scalaAmf
  */
 
 import org.apache.mina.core.buffer.IoBuffer
+import java.util.ArrayList
 
 private object AmfArray
 {
-    def read(buf: IoBuffer): List[Any] =
+    def read(buf: IoBuffer): ArrayList[Any] =
     {
         val code = AmfInt.read(buf)
         /*
@@ -27,18 +28,19 @@ private object AmfArray
         val key = AmfString.read(buf)
         if(!key.equals("")) throw new Exception("associative arrays are not supported")
 
-        var result : List[Any] = List()
+        var result = new ArrayList[Any]
         var i = 0;
         while(i < len)
         {
             val (anyType, res) = Amf.decode(buf)
-            result = res :: result
+            result.add(res)
             i += 1
         }
-        result.reverse
+
+        result
     }
 
-    def write(buf: IoBuffer, list: List[Any]) =
+    def write(buf: IoBuffer, list: ArrayList[Any]) =
     {
         /*
 		if(hasReference(array))
@@ -54,6 +56,7 @@ private object AmfArray
         AmfInt.write(buf, len << 1 | 1)
         AmfString.write(buf, "")
 
-        list.foreach(item => Amf.encodeAny(buf, item))
+        val it = list.iterator()
+        while(it.hasNext) Amf.encodeAny(buf, it.next())
     }
 }

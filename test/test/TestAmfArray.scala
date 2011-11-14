@@ -6,26 +6,27 @@ package test
 
 import com.yzh44yzh.scalaAmf._
 import org.scalatest.FunSuite
+import java.util.{ArrayList, Arrays}
 
 class TestAmfArray extends FunSuite
 {
-    val boolsList = List(true, true, false)
+    val boolsList = new ArrayList(Arrays.asList(true, true, false))
     val boolsBuf = BufUtils.mkb(List(0x09, 0x07, 0x01, 0x03, 0x03, 0x02))
 
-    val intsList = List(1, 2, 3, -4)
+    val intsList = new ArrayList(Arrays.asList(1, 2, 3, -4))
     val intsBuf = BufUtils.mkb(List(0x09, 0x09, 0x01,
 			0x04, 0x01,
 			0x04, 0x02,
 			0x04, 0x03,
 			0x04, -0x1, -0x1, -0x1, -0x4))
 
-    val doublesList = List(0.5, 1.5, 100.15)
+    val doublesList = new ArrayList(Arrays.asList(0.5, 1.5, 100.15))
     val doublesBuf = BufUtils.mkb(List(0x09, 0x07, 0x01,
 			0x05, 0x3f, -0x20, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 			0x05, 0x3f, -0x8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 			0x05, 0x40, 0x59, 0x09, -0x67, -0x67, -0x67, -0x67, -0x66))
 
-    val stringsList = List("a", "b", "c", "Hello")
+    val stringsList = new ArrayList(Arrays.asList("a", "b", "c", "Hello"))
     val stringsBuf = BufUtils.mkb(List(0x09, 0x09, 0x01,
 			0x06, 0x03, 0x61,
 			0x06, 0x03, 0x62,

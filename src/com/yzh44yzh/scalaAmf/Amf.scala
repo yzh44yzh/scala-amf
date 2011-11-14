@@ -6,7 +6,7 @@ package com.yzh44yzh.scalaAmf
 
 import org.apache.mina.core.buffer.IoBuffer
 import AmfType._
-import java.util.Date
+import java.util.{ArrayList, Date}
 
 object Amf
 {
@@ -43,7 +43,7 @@ object Amf
         buf
     }
 
-    def encode(buf : IoBuffer, value : (AmfType, Any)) =
+    def encode(buf : IoBuffer, value : (AmfType, Any)) : IoBuffer =
     {
         value._1 match
         {
@@ -64,9 +64,11 @@ object Amf
                 AmfDate.write(buf,  value._2.asInstanceOf[Date])
             case AmfType.ARRAY =>
                 buf.put(0x9 toByte)
-                AmfArray.write(buf,  value._2.asInstanceOf[List[Any]])
+                AmfArray.write(buf,  value._2.asInstanceOf[ArrayList[Any]])
             case _ => throw new Exception("invalid amf type " + value._1)
         }
+
+        buf
     }
 
     def encodeAny(buf : IoBuffer,  item : Any) =
@@ -80,7 +82,7 @@ object Amf
             case double : Double => encode(buf, (AmfType.DOUBLE, double))
             case str : String => encode(buf, (AmfType.STRING, str))
             case date : Date => encode(buf, (AmfType.DATE, date))
-            case list : List[Any] => encode(buf, (AmfType.ARRAY, list))
+            case list : ArrayList[Any] => encode(buf, (AmfType.ARRAY, list))
         }
     }
 }
