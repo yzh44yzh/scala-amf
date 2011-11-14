@@ -33,6 +33,25 @@ class TestAmfArray extends FunSuite
 			0x06, 0x03, 0x63,
 			0x06, 0x0b, 0x48, 0x65, 0x6c, 0x6c, 0x6f))
 
+    val anyList = new ArrayList(Arrays.asList(1, "Hello", 35.25, true))
+    val anyBuf = BufUtils.mkb(List(0x9, 0x9, 0x1,
+            0x4, 0x1,
+            0x6, 0xb, 0x48, 0x65, 0x6c, 0x6c, 0x6f,
+            0x5, 0x40, 0x41, -0x60, 0x0, 0x0, 0x0, 0x0, 0x0,
+            0x3))
+
+    val arrList = new ArrayList(Arrays.asList(
+                    new ArrayList(Arrays.asList(1, 2, 3)),
+                    new ArrayList(Arrays.asList("a", "b", "c")),
+                    new ArrayList(Arrays.asList("Hello"))
+                 ))
+    val arrBuf = BufUtils.mkb(List(0x9, 0x7, 0x1,
+            0x9, 0x7, 0x1,
+                0x4, 0x1, 0x4, 0x2, 0x4, 0x3,
+            0x9, 0x7, 0x1,
+                0x6, 0x3, 0x61, 0x6, 0x3, 0x62, 0x6, 0x3, 0x63,
+            0x9, 0x3, 0x1,
+                0x6, 0xb, 0x48, 0x65, 0x6c, 0x6c, 0x6f))
 
     test("decode arrays")
     {
@@ -47,6 +66,12 @@ class TestAmfArray extends FunSuite
 
         val (AmfType.ARRAY, res4) = Amf.decode(stringsBuf)
         assert(stringsList.equals(res4))
+
+        val (AmfType.ARRAY, res5) = Amf.decode(anyBuf)
+        assert(anyList.equals(res5))
+
+        val (AmfType.ARRAY, res6) = Amf.decode(arrBuf)
+        assert(arrList.equals(res6))
     }
 
     test("encode arrays")
@@ -55,5 +80,7 @@ class TestAmfArray extends FunSuite
         assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, intsList)), intsBuf))
         assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, doublesList)), doublesBuf))
         assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, stringsList)), stringsBuf))
+        assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, anyList)), anyBuf))
+        assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, arrList)), arrBuf))
     }
 }
