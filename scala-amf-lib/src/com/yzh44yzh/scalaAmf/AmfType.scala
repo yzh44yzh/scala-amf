@@ -1,8 +1,8 @@
+package com.yzh44yzh.scalaAmf
+
 /**
  * @author Yura Zhloba <yzh44yzh@gmail.com>
  */
-
-package com.yzh44yzh.scalaAmf
 
 object AmfType extends Enumeration
 {

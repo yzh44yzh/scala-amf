@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/scala-amf.iml" filepath="$PROJECT_DIR$/scala-amf.iml" />
+      <module fileurl="file://$PROJECT_DIR$/scala-amf-lib/scala-amf-lib.iml" filepath="$PROJECT_DIR$/scala-amf-lib/scala-amf-lib.iml" />
     </modules>
   </component>
 </project>

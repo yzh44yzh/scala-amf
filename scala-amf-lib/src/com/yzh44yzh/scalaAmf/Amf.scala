@@ -1,11 +1,11 @@
+package com.yzh44yzh.scalaAmf
+
 /**
  * @author Yura Zhloba <yzh44yzh@gmail.com>
  */
 
-package com.yzh44yzh.scalaAmf
-
 import org.apache.mina.core.buffer.IoBuffer
-import AmfType._
+import com.yzh44yzh.scalaAmf.AmfType._
 import java.util.{ArrayList, Date}
 
 object Amf
