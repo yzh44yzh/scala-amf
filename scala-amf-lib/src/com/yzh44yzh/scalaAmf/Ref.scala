@@ -7,29 +7,27 @@ import java.util.{Date, HashMap}
 
 class Ref
 {
-    var dates = new TRef[Date]
-    var strings = new TRef[String]
+    val dates = new TRef[Date]
+    val strings = new TRef[String]
 }
 
 class TRef[T]
 {
     private var nextId = 0;
-    private var cache1 = new HashMap[Int, T]
-    private var cache2 = new HashMap[T, Int]
+    private val cache1 = new HashMap[Int, T]
+    private val cache2 = new HashMap[T, Int]
 
     def store(value : T) : Int = {
-        nextId += 1
         val id = nextId
+        nextId += 1
         cache1.put(id, value)
         cache2.put(value, id)
         id
     }
 
-    def get(id : Int) : T = {
-        cache1.get(id)
-    }
+    def get(id : Int) : T = cache1.get(id)
 
-    def getKey(value : T) : Int = {
-        cache2.get(value)
-    }
+    def hasValue(value : T) : Boolean = cache2.containsKey(value)
+
+    def getKey(value : T) : Int = cache2.get(value)
 }

@@ -40,9 +40,9 @@ public class FlashLab extends Sprite
         msg.content = "How are you? :)";
         */
 
-        var dt1 : Date = new Date();
-        var dt2 : Date = new Date();
-        var obj = {"date1":dt1, "date2":dt2, "date3":dt1, "date4":dt2};
+        //var dt1 : Date = new Date(1);
+        var dt2 : Date = new Date(2);
+        var obj : Object = [dt2, dt2, dt2, dt2, "aa", "aa", "aa"];
 
         var buf : ByteArray = new ByteArray();
         buf.writeObject(obj);
@@ -60,8 +60,8 @@ public class FlashLab extends Sprite
 
             while(buf.bytesAvailable)
             {
-                var byte : Number = buf.readByte();
-                res += ", 0x" + byte.toString(16);
+                var b : Number = buf.readByte();
+                res += ", 0x" + b.toString(16);
             }
         }
         catch(e : Error)

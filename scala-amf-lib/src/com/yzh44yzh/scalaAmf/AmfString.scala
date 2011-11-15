@@ -38,20 +38,28 @@ private object AmfString
 
     def write(buf: IoBuffer, str: String, ref : Ref) =
     {
-        // TODO refs
-
-        if(str.equals(""))
+        if(ref.strings.hasValue(str))
         {
-            AmfInt.write(buf, 1)
+            val id = ref.strings.getKey(str)
+            buf.put((id << 1).toByte)
         }
         else
         {
-            val byBuf : ByteBuffer = charset.encode(str)
-            val bytes = new Array[Byte](byBuf.limit)
-            byBuf.get(bytes)
+            if(str.equals(""))
+            {
+                AmfInt.write(buf, 1)
+            }
+            else
+            {
+                ref.strings.store(str)
 
-            AmfInt.write(buf, bytes.length << 1 | 1);
-            buf.put(bytes);
+                val byBuf : ByteBuffer = charset.encode(str)
+                val bytes = new Array[Byte](byBuf.limit)
+                byBuf.get(bytes)
+
+                AmfInt.write(buf, bytes.length << 1 | 1);
+                buf.put(bytes);
+            }
         }
     }
 }

@@ -15,7 +15,10 @@ private object AmfDate
 
         if((code & 1) == 0)
         {
-            ref.dates.get(code >> 1).asInstanceOf[Date]
+            // NOTE: for some unknown reason flash client uses wrong refs for Date
+            // I have to fix it by subtracting 1
+            // ref.dates.get(code >> 1).asInstanceOf[Date]
+            ref.dates.get((code >> 1) - 1).asInstanceOf[Date]
         }
         else
         {
@@ -27,10 +30,13 @@ private object AmfDate
 
     def write(buf : IoBuffer, date : Date, ref : Ref) : IoBuffer =
     {
-        val id = ref.dates.getKey(date)
-        if(id != 0)
+        if(ref.dates.hasValue(date))
         {
-            buf.put((id << 1).toByte)
+            val id = ref.dates.getKey(date)
+            // NOTE: for some unknown reason flash client uses wrong refs for Date
+            // I have to fix it by adding 1
+            // buf.put(id << 1).toByte)
+            buf.put(((id + 1) << 1).toByte)
         }
         else
         {

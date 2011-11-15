@@ -18,7 +18,7 @@ class TestAmfObj extends FunSuite
         obj.put("age", 25)
         obj
     }
-    val obj1 = createObj1
+    val obj1 = createObj1()
     val buf1 = BufUtils.mkb(List(0x0a, 0x0b, // Object
 			0x01,
 			0x09, 0x6e, 0x61, 0x6d, 0x65, // name
@@ -41,7 +41,7 @@ class TestAmfObj extends FunSuite
         obj.put("name", "Yura")
         obj
     }
-    val obj2 = createObj2
+    val obj2 = createObj2()
     val buf2 = BufUtils.mkb(List(0x0a, 0x0b, // Object
 			0x01,
 			0x11, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, // location
@@ -66,7 +66,7 @@ class TestAmfObj extends FunSuite
         obj.put("content", "Hello")
         obj
     }
-    val obj3 = createObj3
+    val obj3 = createObj3()
     val buf3 = BufUtils.mkb(List(0xa, 0x43,
             0x1, // empty class name
             0x5, 0x69, 0x64, // id
@@ -102,7 +102,7 @@ class TestAmfObj extends FunSuite
         obj.put("sender", "Bob")
         obj
     }
-    val obj4 = createObj4
+    val obj4 = createObj4()
     val buf4 = BufUtils.mkb(List(0xa, 0x43,
             0x23, // className string length
             0x73, 0x6f, 0x6d, 0x65, 0x2e, // some.
@@ -133,7 +133,7 @@ class TestAmfObj extends FunSuite
         obj2.put("action", "sendMessage")
         obj2
     }
-    val obj5 = createObj5
+    val obj5 = createObj5()
     val buf5 = BufUtils.mkb(List(0xa, 0xb,
             0x1,
             0xf, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, // message
@@ -169,7 +169,7 @@ class TestAmfObj extends FunSuite
         obj.put("id", 234)
         obj
     }
-    val obj6 = createObj6
+    val obj6 = createObj6()
     val buf6 = BufUtils.mkb(List(0xa, 0x33,
             0x1d,
             0x73, 0x6f, 0x6d, 0x65, 0x2e, // some.
@@ -205,7 +205,7 @@ class TestAmfObj extends FunSuite
         obj2.put("sender", obj)
         obj2
     }
-    val obj7 = createObj7
+    val obj7 = createObj7()
     val buf7 = BufUtils.mkb(List(0xa, 0x23,
             0x23,
             0x73, 0x6f, 0x6d, 0x65, 0x2e, // some.
