@@ -8,6 +8,7 @@ import flash.display.Sprite;
 import flash.utils.ByteArray;
 
 import some.pack.Message;
+import some.pack.User;
 
 public class FlashLab extends Sprite
 {
@@ -18,22 +19,29 @@ public class FlashLab extends Sprite
         // var arr : Array = [1, "Hello", 35.25, true];
         //var arr : Array = [[1,2,3], ["a", "b", "c"], ["Hello"]];
 
+        /*
         var msg : Message = new Message();
         msg.id = 25;
         msg.sender = "Bob";
         msg.content = "Hello";
-        msg.isPrivate = true;
-        msg.some = 5;
+
+        var obj = {action:"sendMessage", message:msg, request:24};
+        */
+
+        var user : User = new User();
+        user.id = 2;
+        user.name = "John";
+        user.age = 44;
+        user.admin = true;
+
+        var msg : Message = new Message();
+        msg.sender = user;
+        msg.content = "How are you? :)";
 
         var buf : ByteArray = new ByteArray();
         buf.writeObject(msg);
 
         showBuf(buf);
-
-        trace(new Number(0x23).toString(2));
-        trace(new Number(0x33).toString(2));
-        trace(new Number(0x43).toString(2));
-        trace(new Number(0x53).toString(2));
     }
 
     private function showBuf(buf : ByteArray) : void

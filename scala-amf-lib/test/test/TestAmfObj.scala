@@ -119,6 +119,119 @@ class TestAmfObj extends FunSuite
     ))
 
 
+    // anonymous object with inner AS class
+    def createObj5() : AmfClass = {
+        val obj = new AmfClass
+        obj.className = "some.pack.Message"
+        obj.put("id", 25)
+        obj.put("content", "Hello")
+        obj.put("sender", "Bob")
+
+        val obj2 = new AmfClass
+        obj2.put("message", obj)
+        obj2.put("request", 24)
+        obj2.put("action", "sendMessage")
+        obj2
+    }
+    val obj5 = createObj5
+    val buf5 = BufUtils.mkb(List(0xa, 0xb,
+            0x1,
+            0xf, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, // message
+            0xa, 0x33,
+                 0x23,
+                 0x73, 0x6f, 0x6d, 0x65, 0x2e, // some.
+                 0x70, 0x61, 0x63, 0x6b, 0x2e, // pack.
+                 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, // Message
+                 0x5, 0x69, 0x64, // id
+                 0xf, 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, // content
+                 0xd, 0x73, 0x65, 0x6e, 0x64, 0x65, 0x72, // sender
+                 0x4, 0x19, // 25
+                 0x6, 0xb, 0x48, 0x65, 0x6c, 0x6c, 0x6f, // Hello
+                 0x6, 0x7, 0x42, 0x6f, 0x62, // Bob
+            0xf, 0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, // request
+            0x4, 0x18, // 24
+            0xd, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, // action
+            0x6, 0x17, 0x73, 0x65, 0x6e, 0x64, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, // sendMessage
+            0x1
+    ))
+
+
+    // AS class with inner anonymous object
+    def createObj6() : AmfClass = {
+        val obj2 = new AmfClass
+        obj2.put("gender", "male")
+        obj2.put("age", 32)
+
+        val obj = new AmfClass
+        obj.className = "some.pack.User"
+        obj.put("attributes", obj2)
+        obj.put("name", "Bill")
+        obj.put("id", 234)
+        obj
+    }
+    val obj6 = createObj6
+    val buf6 = BufUtils.mkb(List(0xa, 0x33,
+            0x1d,
+            0x73, 0x6f, 0x6d, 0x65, 0x2e, // some.
+            0x70, 0x61, 0x63, 0x6b, 0x2e, // pack.
+            0x55, 0x73, 0x65, 0x72, // User
+            0x15, 0x61, 0x74, 0x74, 0x72, 0x69, 0x62, 0x75, 0x74, 0x65, 0x73, // attributes
+            0x9, 0x6e, 0x61, 0x6d, 0x65, // name
+            0x5, 0x69, 0x64, // id
+                0xa, 0xb,
+                0x1,
+                0xd, 0x67, 0x65, 0x6e, 0x64, 0x65, 0x72, // gender
+                0x6, 0x9, 0x6d, 0x61, 0x6c, 0x65, // male
+                0x7, 0x61, 0x67, 0x65, // age
+                0x4, 0x20, // 32
+                0x1,
+            0x6, 0x9, 0x42, 0x69, 0x6c, 0x6c, // Bill
+            0x4, -0x7f, 0x6a // 234
+    ))
+
+
+    // AS class with inner AS class
+    def createObj7() : AmfClass = {
+        val obj = new AmfClass
+        obj.className = "some.pack.User"
+        obj.put("age", 44)
+        obj.put("name", "John")
+        obj.put("id", 2)
+        obj.put("admin", true)
+
+        val obj2 = new AmfClass
+        obj2.className = "some.pack.Message"
+        obj2.put("content", "How are you? :)")
+        obj2.put("sender", obj)
+        obj2
+    }
+    val obj7 = createObj7
+    val buf7 = BufUtils.mkb(List(0xa, 0x23,
+            0x23,
+            0x73, 0x6f, 0x6d, 0x65, 0x2e, // some.
+            0x70, 0x61, 0x63, 0x6b, 0x2e, // pack.
+            0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, // Message
+            0xf, 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, // content
+            0xd, 0x73, 0x65, 0x6e, 0x64, 0x65, 0x72, // sender
+            0x6, 0x1f,
+            0x48, 0x6f, 0x77, 0x20, // How
+            0x61, 0x72, 0x65, 0x20, // are
+            0x79, 0x6f, 0x75, 0x3f, 0x20, 0x3a, 0x29, // you? :)
+                0xa, 0x43,
+                0x1d,
+                0x73, 0x6f, 0x6d, 0x65, 0x2e, // some.
+                0x70, 0x61, 0x63, 0x6b, 0x2e, // pack.
+                0x55, 0x73, 0x65, 0x72, // User
+                0x7, 0x61, 0x67, 0x65, // age
+                0x9, 0x6e, 0x61, 0x6d, 0x65, // name
+                0x5, 0x69, 0x64, // id
+                0xb, 0x61, 0x64, 0x6d, 0x69, 0x6e, // admin
+                0x4, 0x2c, // 44
+                0x6, 0x9, 0x4a, 0x6f, 0x68, 0x6e, // John
+                0x4, 0x2, // 2
+                0x3 // true
+    ))
+
     test("decode objects")
     {
         val (AmfType.OBJECT, res1) = Amf.decode(buf1)
@@ -133,6 +246,15 @@ class TestAmfObj extends FunSuite
         val (AmfType.OBJECT, res4) = Amf.decode(buf4)
         assert(obj4.equals(res4))
         assert(res4.asInstanceOf[AmfClass].className.equals("some.pack.Message"))
+
+        val (AmfType.OBJECT, res5) = Amf.decode(buf5)
+        assert(obj5.equals(res5))
+
+        val (AmfType.OBJECT, res6) = Amf.decode(buf6)
+        assert(obj6.equals(res6))
+
+        val (AmfType.OBJECT, res7) = Amf.decode(buf7)
+        assert(obj7.equals(res7))
     }
     
     test("encode objects")
@@ -141,5 +263,8 @@ class TestAmfObj extends FunSuite
         assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj2)), buf2))
         assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj3)), buf3enc))
         assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj4)), buf4))
+        assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj5)), buf5))
+        assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj6)), buf6))
+        assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj7)), buf7))
     }
 }

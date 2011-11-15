@@ -10,14 +10,7 @@ public class Message
 {
     registerClassAlias("some.pack.Message", Message);
     
-    public var id : int;
-    public var sender : String;
+    public var sender : User;
     public var content : String;
-    public var isPrivate : Boolean;
-    public var some : int;
-
-    public function Message()
-    {
-    }
 }
 }
