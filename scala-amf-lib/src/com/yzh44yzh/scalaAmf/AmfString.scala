@@ -12,7 +12,7 @@ private object AmfString
 {
     val charset = Charset.forName("UTF-8")
 
-    def read(buf: IoBuffer): String =
+    def read(buf: IoBuffer, ref : Ref): String =
     {
         val tp = AmfInt.read(buf)
 

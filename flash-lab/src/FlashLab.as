@@ -28,6 +28,7 @@ public class FlashLab extends Sprite
         var obj = {action:"sendMessage", message:msg, request:24};
         */
 
+        /*
         var user : User = new User();
         user.id = 2;
         user.name = "John";
@@ -37,9 +38,14 @@ public class FlashLab extends Sprite
         var msg : Message = new Message();
         msg.sender = user;
         msg.content = "How are you? :)";
+        */
+
+        var dt1 : Date = new Date();
+        var dt2 : Date = new Date();
+        var obj = {"date1":dt1, "date2":dt2, "date3":dt1, "date4":dt2};
 
         var buf : ByteArray = new ByteArray();
-        buf.writeObject(msg);
+        buf.writeObject(obj);
 
         showBuf(buf);
     }

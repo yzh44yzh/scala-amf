@@ -9,7 +9,7 @@ import java.util.ArrayList
 
 private object AmfArray
 {
-    def read(buf: IoBuffer): ArrayList[Any] =
+    def read(buf: IoBuffer, ref : Ref): ArrayList[Any] =
     {
         val code = AmfInt.read(buf)
         /*
@@ -25,14 +25,14 @@ private object AmfArray
          */
         val len = (code >> 1)
 
-        val key = AmfString.read(buf)
+        val key = AmfString.read(buf, ref)
         if(!key.equals("")) throw new Exception("associative arrays are not supported")
 
         var result = new ArrayList[Any]
         var i = 0;
         while(i < len)
         {
-            val (anyType, res) = Amf.decode(buf)
+            val (anyType, res) = Amf.decode(buf, ref)
             result.add(res)
             i += 1
         }
@@ -40,7 +40,7 @@ private object AmfArray
         result
     }
 
-    def write(buf: IoBuffer, list: ArrayList[Any]) : IoBuffer =
+    def write(buf: IoBuffer, list: ArrayList[Any], ref : Ref) : IoBuffer =
     {
         /*
 		if(hasReference(array))
@@ -57,7 +57,7 @@ private object AmfArray
         AmfString.write(buf, "")
 
         val it = list.iterator()
-        while(it.hasNext) Amf.encodeAny(buf, it.next())
+        while(it.hasNext) Amf.encodeAny(buf, it.next(), ref)
 
         buf
     }

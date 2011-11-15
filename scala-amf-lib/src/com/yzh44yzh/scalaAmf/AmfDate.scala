@@ -9,30 +9,36 @@ import java.util.Date
 
 private object AmfDate
 {
-    def read(buf : IoBuffer) : Date =
+    def read(buf : IoBuffer, ref : Ref) : Date =
     {
-        val ref = AmfInt.read(buf)
+        val code = AmfInt.read(buf)
 
-        /*if((ref & 1) == 0)
+        if((code & 1) == 0)
         {
-            // return getReference(ref >> 1).asInstanceOf[Date]
-        }*/
-
-        val date = new Date(buf.getDouble.asInstanceOf[Long])
-        //storeReference(date)
-        date
+            ref.get(code >> 1).asInstanceOf[Date]
+        }
+        else
+        {
+            val date = new Date(buf.getDouble.asInstanceOf[Long])
+            ref.store(date)
+            date
+        }
     }
 
-    def write(buf : IoBuffer, date : Date) =
+    def write(buf : IoBuffer, date : Date, ref : Ref) : IoBuffer =
     {
-        /*if(hasReference(date))
+        val id = ref.getKey(date)
+        if(id != 0)
         {
-            putInteger(getReferenceId(date) << 1)
-            return
-        }*/
-        //storeReference(date)
+            buf.put((id << 1).toByte)
+        }
+        else
+        {
+            buf.put(0x1 toByte)
+            buf.putDouble(date.getTime)
+            ref.store(date)
+        }
 
-        buf.put(0x1 toByte)
-        buf.putDouble(date.getTime)
+        buf
     }
 }

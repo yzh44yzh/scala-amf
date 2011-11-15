@@ -8,7 +8,7 @@ import org.apache.mina.core.buffer.IoBuffer
 
 private object AmfObject
 {
-    def read(buf: IoBuffer): AmfClass =
+    def read(buf: IoBuffer, ref : Ref): AmfClass =
     {
         var code = AmfInt.read(buf)
 
@@ -32,25 +32,25 @@ private object AmfObject
 		}
          */
 
-        val className = AmfString.read(buf)
+        val className = AmfString.read(buf, ref)
 
         val result = if((code & 8) == 0) // check 4th bit
         {
             // not dynamic object
             val numFields = code >> 4
-            readNamesThanValues(numFields, buf)
+            readNamesThanValues(numFields, buf, ref)
         }
         else
         {
             // dynamic object
-            readNameValuePairs(buf)
+            readNameValuePairs(buf, ref)
         }
 
         result.className = className
         result
     }
 
-    def write(buf: IoBuffer, obj: AmfClass) : IoBuffer =
+    def write(buf: IoBuffer, obj: AmfClass, ref : Ref) : IoBuffer =
     {
         /*
 		if(hasReference(array))
@@ -62,31 +62,31 @@ private object AmfObject
 		storeReference(array);
          */
 
-        if(obj.className.equals("")) writeNameValuePairs(buf, obj)
-        else writeNamesThanValues(buf, obj)
+        if(obj.className.equals("")) writeNameValuePairs(buf, obj, ref)
+        else writeNamesThanValues(buf, obj, ref)
 
         buf
     }
 
-    def readNamesThanValues(numFields : Int, buf : IoBuffer) : AmfClass = {
+    def readNamesThanValues(numFields : Int, buf : IoBuffer, ref : Ref) : AmfClass = {
         val result = new AmfClass
 
         val arr = new Array[String](numFields);
         for(i <- 0 until numFields)
         {
-            arr(i) = AmfString.read(buf)
+            arr(i) = AmfString.read(buf, ref)
         }
 
         for(i <- 0 until numFields)
         {
-            val (anyType, value)  = Amf.decode(buf)
+            val (anyType, value)  = Amf.decode(buf, ref)
             result.put(arr(i), value)
         }
 
         result
     }
 
-    def writeNamesThanValues(buf : IoBuffer, obj : AmfClass) : IoBuffer = {
+    def writeNamesThanValues(buf : IoBuffer, obj : AmfClass, ref : Ref) : IoBuffer = {
 
         val code = (obj.size() << 4) + 3  // add 0011
         buf.put(code toByte) 
@@ -102,22 +102,22 @@ private object AmfObject
         val it2 = obj.keySet().iterator()
         while(it2.hasNext)
         {
-            Amf.encodeAny(buf, obj.get(it2.next));
+            Amf.encodeAny(buf, obj.get(it2.next), ref);
         }
 
         buf
     }
 
-    def readNameValuePairs(buf : IoBuffer) : AmfClass = {
+    def readNameValuePairs(buf : IoBuffer, ref : Ref) : AmfClass = {
         val result = new AmfClass
 
         var moreProperties = true
         while(moreProperties)
         {
-            var propName = AmfString.read(buf)
+            var propName = AmfString.read(buf, ref)
             if(!propName.equals(""))
             {
-                val (anyType, value)  = Amf.decode(buf)
+                val (anyType, value)  = Amf.decode(buf, ref)
                 result.put(propName, value)
             }
             else moreProperties = false
@@ -126,7 +126,7 @@ private object AmfObject
         result
     }
 
-    def writeNameValuePairs(buf : IoBuffer, obj : AmfClass) : IoBuffer = {
+    def writeNameValuePairs(buf : IoBuffer, obj : AmfClass, ref : Ref) : IoBuffer = {
         buf.put(0xb toByte) // dynamic object
         AmfString.write(buf, "") // empty class name
 
@@ -135,7 +135,7 @@ private object AmfObject
         {
             val key = it.next
             AmfString.write(buf, key)
-            Amf.encodeAny(buf, obj.get(key));
+            Amf.encodeAny(buf, obj.get(key), ref);
         }
 
         AmfString.write(buf, "") // end prop/value pairs
