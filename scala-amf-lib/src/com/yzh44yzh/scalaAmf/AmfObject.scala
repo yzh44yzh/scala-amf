@@ -91,12 +91,12 @@ private object AmfObject
         val code = (obj.size() << 4) + 3  // add 0011
         buf.put(code toByte) 
 
-        AmfString.write(buf, obj.className)
+        AmfString.write(buf, obj.className, ref)
 
         val it = obj.keySet().iterator()
         while(it.hasNext)
         {
-            AmfString.write(buf, it.next)
+            AmfString.write(buf, it.next, ref)
         }
 
         val it2 = obj.keySet().iterator()
@@ -128,17 +128,17 @@ private object AmfObject
 
     def writeNameValuePairs(buf : IoBuffer, obj : AmfClass, ref : Ref) : IoBuffer = {
         buf.put(0xb toByte) // dynamic object
-        AmfString.write(buf, "") // empty class name
+        AmfString.write(buf, "", ref) // empty class name
 
         val it = obj.keySet().iterator()
         while(it.hasNext)
         {
             val key = it.next
-            AmfString.write(buf, key)
+            AmfString.write(buf, key, ref)
             Amf.encodeAny(buf, obj.get(key), ref);
         }
 
-        AmfString.write(buf, "") // end prop/value pairs
+        AmfString.write(buf, "", ref) // end prop/value pairs
         
         buf
     }

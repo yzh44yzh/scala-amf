@@ -64,7 +64,7 @@ object Amf
                 buf.putDouble(value._2.asInstanceOf[Double])
             case AmfType.STRING =>
                 buf.put(0x6 toByte)
-                AmfString.write(buf,  value._2.asInstanceOf[String])
+                AmfString.write(buf,  value._2.asInstanceOf[String], ref)
             case AmfType.DATE =>
                 buf.put(0x8 toByte)
                 AmfDate.write(buf,  value._2.asInstanceOf[Date], ref)

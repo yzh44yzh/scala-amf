@@ -54,7 +54,7 @@ private object AmfArray
 
         val len = list.size
         AmfInt.write(buf, len << 1 | 1)
-        AmfString.write(buf, "")
+        AmfString.write(buf, "", ref)
 
         val it = list.iterator()
         while(it.hasNext) Amf.encodeAny(buf, it.next(), ref)

@@ -15,19 +15,19 @@ private object AmfDate
 
         if((code & 1) == 0)
         {
-            ref.get(code >> 1).asInstanceOf[Date]
+            ref.dates.get(code >> 1).asInstanceOf[Date]
         }
         else
         {
             val date = new Date(buf.getDouble.asInstanceOf[Long])
-            ref.store(date)
+            ref.dates.store(date)
             date
         }
     }
 
     def write(buf : IoBuffer, date : Date, ref : Ref) : IoBuffer =
     {
-        val id = ref.getKey(date)
+        val id = ref.dates.getKey(date)
         if(id != 0)
         {
             buf.put((id << 1).toByte)
@@ -36,7 +36,7 @@ private object AmfDate
         {
             buf.put(0x1 toByte)
             buf.putDouble(date.getTime)
-            ref.store(date)
+            ref.dates.store(date)
         }
 
         buf

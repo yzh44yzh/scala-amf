@@ -34,6 +34,9 @@ class TestRefs extends FunSuite
     ))
 
 
+    // ref for Strings
+
+
     test("decode objects")
     {
         val (AmfType.OBJECT, res1) = Amf.decode(buf1)
