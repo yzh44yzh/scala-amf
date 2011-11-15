@@ -5,11 +5,10 @@ package com.yzh44yzh.scalaAmf
  */
 
 import org.apache.mina.core.buffer.IoBuffer
-import java.util.LinkedHashMap
 
 private object AmfObject
 {
-    def read(buf: IoBuffer): LinkedHashMap[String, Any] =
+    def read(buf: IoBuffer): AmfClass =
     {
         var code = AmfInt.read(buf)
         /*
@@ -28,10 +27,10 @@ private object AmfObject
         }
 
         code >>= 1
+
+        var result : AmfClass = null
+
         val className = AmfString.read(buf)
-
-        var result : LinkedHashMap[String, Any] = null
-
         if(className.equals(""))
         {
             if((code & 0x03) == 0) result = readNamesThanValues(code >> 2, buf)
@@ -42,10 +41,11 @@ private object AmfObject
             // TODO
         }
 
+        result.className = ""
         result
     }
 
-    def write(buf: IoBuffer, obj: LinkedHashMap[String, Any]) : IoBuffer =
+    def write(buf: IoBuffer, obj: AmfClass) : IoBuffer =
     {
         /*
 		if(hasReference(array))
@@ -73,8 +73,8 @@ private object AmfObject
         buf
     }
 
-    def readNamesThanValues(numItems : Int, buf : IoBuffer) : LinkedHashMap[String, Any] = {
-        val result = new LinkedHashMap[String, Any]
+    def readNamesThanValues(numItems : Int, buf : IoBuffer) : AmfClass = {
+        val result = new AmfClass
 
         val arr = new Array[String](numItems);
         for(i <- 0 until numItems)
@@ -91,8 +91,8 @@ private object AmfObject
         result
     }
 
-    def readNameValuePairs(buf : IoBuffer) : LinkedHashMap[String, Any] = {
-        val result = new LinkedHashMap[String, Any]
+    def readNameValuePairs(buf : IoBuffer) : AmfClass = {
+        val result = new AmfClass
 
         var moreProperties = true
         while(moreProperties)

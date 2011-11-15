@@ -6,7 +6,7 @@ package com.yzh44yzh.scalaAmf
 
 import org.apache.mina.core.buffer.IoBuffer
 import com.yzh44yzh.scalaAmf.AmfType._
-import java.util.{LinkedHashMap, ArrayList, Date}
+import java.util.{ArrayList, Date}
 
 object Amf
 {
@@ -67,7 +67,7 @@ object Amf
                 AmfArray.write(buf,  value._2.asInstanceOf[ArrayList[Any]])
             case AmfType.OBJECT =>
                 buf.put(0xa toByte)
-                AmfObject.write(buf,  value._2.asInstanceOf[LinkedHashMap[String, Any]])
+                AmfObject.write(buf,  value._2.asInstanceOf[AmfClass])
             case _ => throw new Exception("invalid amf type " + value._1)
         }
 
@@ -86,7 +86,7 @@ object Amf
             case str : String => encode(buf, (AmfType.STRING, str))
             case date : Date => encode(buf, (AmfType.DATE, date))
             case list : ArrayList[Any] => encode(buf, (AmfType.ARRAY, list))
-            case obj : LinkedHashMap[String, Any] => encode(buf, (AmfType.OBJECT, obj))
+            case obj : AmfClass => encode(buf, (AmfType.OBJECT, obj))
         }
 
         buf
