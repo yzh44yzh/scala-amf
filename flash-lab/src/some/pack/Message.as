@@ -4,12 +4,17 @@
 
 package some.pack
 {
+import flash.net.registerClassAlias;
+
 public class Message
 {
+    registerClassAlias("some.pack.Message", Message);
+    
     public var id : int;
-    public var date : Date;
     public var sender : String;
     public var content : String;
+    public var isPrivate : Boolean;
+    public var some : int;
 
     public function Message()
     {

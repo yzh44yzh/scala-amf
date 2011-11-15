@@ -11,6 +11,20 @@ private object AmfObject
     def read(buf: IoBuffer): AmfClass =
     {
         var code = AmfInt.read(buf)
+
+        /*
+        0xb       1011 -- simple object
+        0x23  (10)0011 -- class with 2 fields
+        0x33  (11)0011 -- class with 3 fields
+        0x43 (100)0011 -- class with 4 fields
+        0x53 (101)0011 -- class with 5 fields
+
+        first bit: 1 if reference, 0 if not reference
+        I don't know what 2nd and 3rd bits means :)
+        4th bit: 1 if dynamic object, 0 if not dynamic
+        than goes number of fields
+         */
+
         /*
 		if((code & 1) == 0)
 		{
@@ -18,30 +32,21 @@ private object AmfObject
 		}
          */
 
-        code >>= 1
-        val inlineClass : Boolean = (code & 1) == 1
-        if(!inlineClass)
-        {
-            // TODO what is this?
-            throw new Exception("inline classes are not supported")
-        }
-
-        code >>= 1
-
-        var result : AmfClass = null
-
         val className = AmfString.read(buf)
-        if(className.equals(""))
+
+        val result = if((code & 8) == 0) // check 4th bit
         {
-            if((code & 0x03) == 0) result = readNamesThanValues(code >> 2, buf)
-            else result = readNameValuePairs(buf)
+            // not dynamic object
+            val numFields = code >> 4
+            readNamesThanValues(numFields, buf)
         }
         else
         {
-            // TODO
+            // dynamic object
+            readNameValuePairs(buf)
         }
 
-        result.className = ""
+        result.className = className
         result
     }
 
@@ -57,38 +62,50 @@ private object AmfObject
 		storeReference(array);
          */
 
-        buf.put(0xb toByte) // empty class name
-        AmfString.write(buf, "") // begin prop/value pairs
-
-        val it = obj.keySet().iterator()
-        while(it.hasNext)
-        {
-            val key = it.next
-            AmfString.write(buf, key)
-            Amf.encodeAny(buf, obj.get(key));
-        }
-
-        AmfString.write(buf, "") // end prop/value pairs
+        if(obj.className.equals("")) writeNameValuePairs(buf, obj)
+        else writeNamesThanValues(buf, obj)
 
         buf
     }
 
-    def readNamesThanValues(numItems : Int, buf : IoBuffer) : AmfClass = {
+    def readNamesThanValues(numFields : Int, buf : IoBuffer) : AmfClass = {
         val result = new AmfClass
 
-        val arr = new Array[String](numItems);
-        for(i <- 0 until numItems)
+        val arr = new Array[String](numFields);
+        for(i <- 0 until numFields)
         {
             arr(i) = AmfString.read(buf)
         }
 
-        for(i <- 0 until numItems)
+        for(i <- 0 until numFields)
         {
             val (anyType, value)  = Amf.decode(buf)
             result.put(arr(i), value)
         }
 
         result
+    }
+
+    def writeNamesThanValues(buf : IoBuffer, obj : AmfClass) : IoBuffer = {
+
+        val code = (obj.size() << 4) + 3  // add 0011
+        buf.put(code toByte) 
+
+        AmfString.write(buf, obj.className)
+
+        val it = obj.keySet().iterator()
+        while(it.hasNext)
+        {
+            AmfString.write(buf, it.next)
+        }
+
+        val it2 = obj.keySet().iterator()
+        while(it2.hasNext)
+        {
+            Amf.encodeAny(buf, obj.get(it2.next));
+        }
+
+        buf
     }
 
     def readNameValuePairs(buf : IoBuffer) : AmfClass = {
@@ -107,5 +124,22 @@ private object AmfObject
         }
 
         result
+    }
+
+    def writeNameValuePairs(buf : IoBuffer, obj : AmfClass) : IoBuffer = {
+        buf.put(0xb toByte) // dynamic object
+        AmfString.write(buf, "") // empty class name
+
+        val it = obj.keySet().iterator()
+        while(it.hasNext)
+        {
+            val key = it.next
+            AmfString.write(buf, key)
+            Amf.encodeAny(buf, obj.get(key));
+        }
+
+        AmfString.write(buf, "") // end prop/value pairs
+        
+        buf
     }
 }

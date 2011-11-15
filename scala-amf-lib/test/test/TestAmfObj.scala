@@ -10,6 +10,7 @@ import java.util.Date
 
 class TestAmfObj extends FunSuite
 {
+    // anonymous object
     def createObj1() : AmfClass = {
         val obj = new AmfClass
         obj.put("name", "Bob")
@@ -29,7 +30,7 @@ class TestAmfObj extends FunSuite
 			0x01))
 
 
-
+    // anonymous object with inner anonymous object
     def createObj2() : AmfClass = {
         val location = new AmfClass
         location.put("country", "Belarus")
@@ -55,8 +56,8 @@ class TestAmfObj extends FunSuite
 			0x06, 0x09, 0x59, 0x75, 0x72, 0x61, // Yura
 			0x01))
 
-
-
+    
+    // AS3 class (not registered)
     def createObj3() : AmfClass = {
         val obj = new AmfClass
         obj.put("id", 25)
@@ -90,6 +91,34 @@ class TestAmfObj extends FunSuite
             0x1
      ))
 
+
+    // AS3 class (registered)
+    def createObj4() : AmfClass = {
+        val obj = new AmfClass
+        obj.className = "some.pack.Message"
+        obj.put("isPrivate", true)
+        obj.put("id", 25)
+        obj.put("content", "Hello")
+        obj.put("sender", "Bob")
+        obj
+    }
+    val obj4 = createObj4
+    val buf4 = BufUtils.mkb(List(0xa, 0x43,
+            0x23, // className string length
+            0x73, 0x6f, 0x6d, 0x65, 0x2e, // some.
+            0x70, 0x61, 0x63, 0x6b, 0x2e, // pack.
+            0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, // Message
+            0x13, 0x69, 0x73, 0x50, 0x72, 0x69, 0x76, 0x61, 0x74, 0x65, // isPrivate
+            0x5, 0x69, 0x64, // id
+            0xf, 0x63, 0x6f, 0x6e, 0x74, 0x65, 0x6e, 0x74, // content
+            0xd, 0x73, 0x65, 0x6e, 0x64, 0x65, 0x72, // sender
+            0x3, // true
+            0x4, 0x19, // 25
+            0x6, 0xb, 0x48, 0x65, 0x6c, 0x6c, 0x6f, // Hello
+            0x6, 0x7, 0x42, 0x6f, 0x62 // Bob
+    ))
+
+
     test("decode objects")
     {
         val (AmfType.OBJECT, res1) = Amf.decode(buf1)
@@ -100,6 +129,10 @@ class TestAmfObj extends FunSuite
 
         val (AmfType.OBJECT, res3) = Amf.decode(buf3)
         assert(obj3.equals(res3))
+
+        val (AmfType.OBJECT, res4) = Amf.decode(buf4)
+        assert(obj4.equals(res4))
+        assert(res4.asInstanceOf[AmfClass].className.equals("some.pack.Message"))
     }
     
     test("encode objects")
@@ -107,5 +140,6 @@ class TestAmfObj extends FunSuite
         assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj1)), buf1))
         assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj2)), buf2))
         assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj3)), buf3enc))
+        assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj4)), buf4))
     }
 }

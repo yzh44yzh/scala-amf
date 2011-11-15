@@ -20,14 +20,20 @@ public class FlashLab extends Sprite
 
         var msg : Message = new Message();
         msg.id = 25;
-        msg.date = new Date();
         msg.sender = "Bob";
         msg.content = "Hello";
+        msg.isPrivate = true;
+        msg.some = 5;
 
         var buf : ByteArray = new ByteArray();
         buf.writeObject(msg);
 
         showBuf(buf);
+
+        trace(new Number(0x23).toString(2));
+        trace(new Number(0x33).toString(2));
+        trace(new Number(0x43).toString(2));
+        trace(new Number(0x53).toString(2));
     }
 
     private function showBuf(buf : ByteArray) : void
