@@ -71,6 +71,31 @@ class TestAmfArray extends FunSuite
                  0x3, 0x66, 0x4, 0x6, // f:6
                  0x1))
 
+    val obj4 = new AmfClass(); obj4.put("name", "Bob"); obj4.put("id", 1);
+    val obj5 = new AmfClass(); obj5.put("name", "Bill"); obj5.put("id", 2);
+    val obj6 = new AmfClass(); obj6.put("name", "John"); obj6.put("id", 3);
+    val arrObjList2 = new ArrayList(Arrays.asList(obj4, obj5, obj6))
+    val arrObjBuf2 = BufUtils.mkb(List(0x9, 0x7, 0x1,
+              0xa, 0xb, 0x1,
+                  0x9, 0x6e, 0x61, 0x6d, 0x65, // name
+                  0x6, 0x7, 0x42, 0x6f, 0x62, // Bob
+                  0x5, 0x69, 0x64, // id
+                  0x4, 0x1, // 1
+                  0x1,
+              0xa, 0x1,
+                  0x0, // ref to name
+                  0x6, 0x9, 0x42, 0x69, 0x6c, 0x6c, // Bill
+                  0x4, // ref to id
+                  0x4, 0x2, // 2
+                  0x1,
+              0xa, 0x1,
+                  0x0, // ref to name
+                  0x6, 0x9, 0x4a, 0x6f, 0x68, 0x6e, // John
+                  0x4, // ref to id
+                  0x4, 0x3, // 3
+                  0x1))
+
+
     // TODO array of registered classes in not supported yet
     val user1 = new AmfClass(); user1.className = "some.pack.User";
     user1.put("id", 1); user1.put("name", "Bill")
@@ -136,6 +161,9 @@ class TestAmfArray extends FunSuite
 
         val (AmfType.ARRAY, res7) = Amf.decode(arrObjBuf)
         assert(arrObjList.equals(res7))
+
+        val (AmfType.ARRAY, res8) = Amf.decode(arrObjBuf2)
+        assert(arrObjList2.equals(res8))
     }
 
     test("encode arrays")
@@ -147,5 +175,6 @@ class TestAmfArray extends FunSuite
         assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, anyList)), anyBuf))
         assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, arrList)), arrBuf))
         assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, arrObjList)), arrObjBuf))
+        assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, arrObjList2)), arrObjBuf2))
     }
 }
