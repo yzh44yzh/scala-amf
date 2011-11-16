@@ -6,7 +6,7 @@ package test
 
 import com.yzh44yzh.scalaAmf._
 import org.scalatest.FunSuite
-import java.util.Date
+import java.util.{Arrays, ArrayList, Date}
 
 class TestRefs extends FunSuite
 {
@@ -57,6 +57,62 @@ class TestRefs extends FunSuite
             0x1
     ))
 
+    
+    // ref for Arrays
+    def createObj3() : AmfClass = {
+        val arr1 = new ArrayList(Arrays.asList(1, 2, 3))
+        val arr2 = new ArrayList(Arrays.asList(4, 5, 6))
+        val obj = new AmfClass
+        obj.put("arr2", arr1)
+        obj.put("arr1", arr1)
+        obj.put("arr3", arr1)
+        obj.put("arr4", arr2)
+        obj.put("arr5", arr2)
+        obj
+    }
+    val obj3 = createObj3()
+    val buf3 = BufUtils.mkb(List(0xa, 0xb,
+        0x1,
+        0x9, 0x61, 0x72, 0x72, 0x32, // arr2
+        0x9, 0x7, 0x1, 0x4, 0x1, 0x4, 0x2, 0x4, 0x3, // [1,2,3]
+        0x9, 0x61, 0x72, 0x72, 0x31, // arr1
+        0x9, 0x2,
+        0x9, 0x61, 0x72, 0x72, 0x33, // arr3
+        0x9, 0x2,
+        0x9, 0x61, 0x72, 0x72, 0x34, // arr4
+        0x9, 0x7, 0x1, 0x4, 0x4, 0x4, 0x5, 0x4, 0x6, // [4,5,6]
+        0x9, 0x61, 0x72, 0x72, 0x35, // arr5
+        0x9, 0x4,
+        0x1
+    ))
+
+
+    // ref for Objects
+    def createObj4() : ArrayList = {
+        val obj1 = new AmfClass()
+        obj1.put("a", 1)
+        obj1.put("b", 2)
+        val obj2 = new AmfClass()
+        obj2.put("c", 3)
+        obj2.put("d", 4)
+        new ArrayList(Arrays.asList(obj1, obj2, obj2, obj1))
+    }
+    val obj4 = createObj4()
+    val buf4 = BufUtils.mkb(List(0x9, 0x9, 0x1,
+        0xa, 0xb, // obj1
+            0x1,
+            0x3, 0x61, 0x4, 0x1, // a:1
+            0x3, 0x62, 0x4, 0x2, // b:2
+            0x1, 
+        0xa, // obj2 TODO there is no 0xb byte
+            0x1,
+            0x3, 0x64, 0x4, 0x4, // d:3
+            0x3, 0x63, 0x4, 0x3, // c:4
+            0x1,
+        0xa, 0x4, // ref to obj2
+        0xa, 0x2 // ref to obj1
+    ))
+
     test("decode objects")
     {
         val (AmfType.OBJECT, res1) = Amf.decode(buf1)
@@ -64,11 +120,15 @@ class TestRefs extends FunSuite
 
         val (AmfType.OBJECT, res2) = Amf.decode(buf2)
         assert(obj2.equals(res2))
+
+        val (AmfType.OBJECT, res3) = Amf.decode(buf3)
+        assert(obj3.equals(res3))
     }
 
     test("encode objects")
     {
         assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj1)), buf1))
         assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj2)), buf2))
+        assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj3)), buf3))
     }
 }

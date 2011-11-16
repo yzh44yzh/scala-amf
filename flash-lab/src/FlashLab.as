@@ -40,12 +40,13 @@ public class FlashLab extends Sprite
         msg.content = "How are you? :)";
         */
 
-        //var dt1 : Date = new Date(1);
-        var dt2 : Date = new Date(2);
-        var obj : Object = [dt2, dt2, dt2, dt2, "aa", "aa", "aa"];
+        var obj1 : Object = {a:1, b:2};
+        var obj2 : Object = {c:3, d:4};
+
+        var arr : Array = [obj1, obj2, obj2, obj1];
 
         var buf : ByteArray = new ByteArray();
-        buf.writeObject(obj);
+        buf.writeObject(arr);
 
         showBuf(buf);
     }
