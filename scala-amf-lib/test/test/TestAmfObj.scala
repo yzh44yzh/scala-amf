@@ -45,7 +45,7 @@ class TestAmfObj extends FunSuite
     val buf2 = BufUtils.mkb(List(0x0a, 0x0b, // Object
 			0x01,
 			0x11, 0x6c, 0x6f, 0x63, 0x61, 0x74, 0x69, 0x6f, 0x6e, // location
-			0x0a, 0x0b, // inner Object
+			0x0a, // inner Object
                 0x01,
                 0x0f, 0x63, 0x6f, 0x75, 0x6e, 0x74, 0x72, 0x79, // country
                 0x06, 0x0f, 0x42, 0x65, 0x6c, 0x61, 0x72, 0x75, 0x73, // Belarus
@@ -56,7 +56,7 @@ class TestAmfObj extends FunSuite
 			0x06, 0x09, 0x59, 0x75, 0x72, 0x61, // Yura
 			0x01))
 
-    
+
     // AS3 class (not registered)
     def createObj3() : AmfClass = {
         val obj = new AmfClass
@@ -178,7 +178,7 @@ class TestAmfObj extends FunSuite
             0x15, 0x61, 0x74, 0x74, 0x72, 0x69, 0x62, 0x75, 0x74, 0x65, 0x73, // attributes
             0x9, 0x6e, 0x61, 0x6d, 0x65, // name
             0x5, 0x69, 0x64, // id
-                0xa, 0xb,
+                0xa,
                 0x1,
                 0xd, 0x67, 0x65, 0x6e, 0x64, 0x65, 0x72, // gender
                 0x6, 0x9, 0x6d, 0x61, 0x6c, 0x65, // male
@@ -232,6 +232,43 @@ class TestAmfObj extends FunSuite
                 0x3 // true
     ))
 
+    // 2 inner objects
+    def createObj8() : AmfClass = {
+        val obj1 = new AmfClass();
+        obj1.put("name", "Bob");
+        obj1.put("id", 1);
+
+        val obj2 = new AmfClass();
+        obj2.put("name", "Bill");
+        obj2.put("id", 2);
+        obj2.put("age", 25);
+
+        val obj = new AmfClass()
+        obj.put("user2", obj2);
+        obj.put("user1", obj1);
+        obj
+    }
+    val obj8 = createObj8()
+    val buf8 = BufUtils.mkb(List(0xa, 0xb, 0x1,
+            0xb, 0x75, 0x73, 0x65, 0x72, 0x32, // user2
+            0xa, 0x1,
+                0x9, 0x6e, 0x61, 0x6d, 0x65, // name
+                0x6, 0x9, 0x42, 0x69, 0x6c, 0x6c, // Bill
+                0x5, 0x69, 0x64, // id
+                0x4, 0x2, // id:2
+                0x7, 0x61, 0x67, 0x65, // age
+                0x4, 0x19, // 25
+                0x1,
+            0xb, 0x75, 0x73, 0x65, 0x72, 0x31, // user1
+            0xa, 0x1,
+                0x2, // ref to name
+                0x6, 0x7, 0x42, 0x6f, 0x62, // Bob
+                0x6, // ref to id
+                0x4, 0x1, // id:1
+                0x1,
+            0x1
+    ))
+
     test("decode objects")
     {
         val (AmfType.OBJECT, res1) = Amf.decode(buf1)
@@ -255,6 +292,9 @@ class TestAmfObj extends FunSuite
 
         val (AmfType.OBJECT, res7) = Amf.decode(buf7)
         assert(obj7.equals(res7))
+
+        val (AmfType.OBJECT, res8) = Amf.decode(buf8)
+        assert(obj8.equals(res8))
     }
     
     test("encode objects")
@@ -266,5 +306,6 @@ class TestAmfObj extends FunSuite
         assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj5)), buf5))
         assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj6)), buf6))
         assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj7)), buf7))
+        assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj8)), buf8))
     }
 }

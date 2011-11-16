@@ -34,6 +34,4 @@ class TRef[T]
     def hasValue(value : T) : Boolean = cache2.containsKey(value)
 
     def getKey(value : T) : Int = cache2.get(value)
-
-    def empty() : Boolean = cache1.size == 0
 }

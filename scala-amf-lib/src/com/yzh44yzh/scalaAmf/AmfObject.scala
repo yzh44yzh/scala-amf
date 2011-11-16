@@ -64,10 +64,11 @@ private object AmfObject
 		}
          */
 
+        ref.objects.store(obj)
+
         if(obj.className.equals("")) writeNameValuePairs(buf, obj, ref)
         else writeNamesThanValues(buf, obj, ref)
 
-        ref.objects.store(obj)
         buf
     }
 
@@ -131,7 +132,7 @@ private object AmfObject
 
     def writeNameValuePairs(buf : IoBuffer, obj : AmfClass, ref : Ref) : IoBuffer = {
 
-        if(ref.objects.empty()) buf.put(0xb toByte) // dynamic object
+        if(ref.objects.get(0) == obj) buf.put(0xb toByte) // add dynamic object market to first object only
         
         AmfString.write(buf, "", ref) // empty class name
 
