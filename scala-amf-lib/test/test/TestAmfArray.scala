@@ -53,10 +53,13 @@ class TestAmfArray extends FunSuite
             0x9, 0x3, 0x1,
                 0x6, 0xb, 0x48, 0x65, 0x6c, 0x6c, 0x6f))
 
-    val obj1 = new AmfClass(); obj1.put("a", 1); obj1.put("b", 2)
-    val obj2 = new AmfClass(); obj2.put("d", 4); obj2.put("c", 3)
-    val obj3 = new AmfClass(); obj3.put("e", 5); obj3.put("f", 6)
-    val arrObjList = new ArrayList(Arrays.asList(obj1, obj2, obj3))
+    def createArr1() : ArrayList[AmfClass] = {
+        val obj1 = new AmfClass(); obj1.put("a", 1); obj1.put("b", 2)
+        val obj2 = new AmfClass(); obj2.put("d", 4); obj2.put("c", 3)
+        val obj3 = new AmfClass(); obj3.put("e", 5); obj3.put("f", 6)
+        new ArrayList(Arrays.asList(obj1, obj2, obj3))
+    }
+    val arrObjList = createArr1()
     val arrObjBuf = BufUtils.mkb(List(0x9, 0x7, 0x1,
              0xa, 0xb, 0x1, // obj1
                  0x3, 0x61, 0x4, 0x1, // a:1
@@ -71,10 +74,13 @@ class TestAmfArray extends FunSuite
                  0x3, 0x66, 0x4, 0x6, // f:6
                  0x1))
 
-    val obj4 = new AmfClass(); obj4.put("name", "Bob"); obj4.put("id", 1);
-    val obj5 = new AmfClass(); obj5.put("name", "Bill"); obj5.put("id", 2);
-    val obj6 = new AmfClass(); obj6.put("name", "John"); obj6.put("id", 3);
-    val arrObjList2 = new ArrayList(Arrays.asList(obj4, obj5, obj6))
+    def createArr2() : ArrayList[AmfClass] = {
+        val obj1 = new AmfClass(); obj1.put("name", "Bob"); obj1.put("id", 1);
+        val obj2 = new AmfClass(); obj2.put("name", "Bill"); obj2.put("id", 2);
+        val obj3 = new AmfClass(); obj3.put("name", "John"); obj3.put("id", 3);
+        new ArrayList(Arrays.asList(obj1, obj2, obj3))
+    }
+    val arrObjList2 = createArr2()
     val arrObjBuf2 = BufUtils.mkb(List(0x9, 0x7, 0x1,
               0xa, 0xb, 0x1,
                   0x9, 0x6e, 0x61, 0x6d, 0x65, // name
@@ -95,18 +101,96 @@ class TestAmfArray extends FunSuite
                   0x4, 0x3, // 3
                   0x1))
 
+    // TODO array of not registered classes in not supported yet
+    def createArr3() : ArrayList[AmfClass] = {
+        val user1 = new AmfClass();
+        user1.put("age", 0);
+        user1.put("name", "Bill")
+        user1.put("id", 1);
+        user1.put("admin", false)
+
+        val user2 = new AmfClass();
+        user2.put("age", 0);
+        user2.put("name", "Bob")
+        user2.put("id", 2);
+        user2.put("admin", false)
+
+        val user3 = new AmfClass();
+        user3.put("age", 25);
+        user3.put("name", "John");
+        user3.put("id", 3);
+        user3.put("admin", false)
+
+        val user4 = new AmfClass();
+        user4.put("age", 0);
+        user4.put("name", "Helen");
+        user4.put("id", 4);
+        user4.put("admin", true)
+
+        new ArrayList(Arrays.asList(user1, user2, user3, user4))
+    }
+    val arrClassList = createArr3()
+    val arrClassBuf = BufUtils.mkb(List(0x9, 0x9, 0x1,
+               0xa, 0x43, 0x1,
+                   0x7, 0x61, 0x67, 0x65, // age
+                   0x9, 0x6e, 0x61, 0x6d, 0x65, // name
+                   0x5, 0x69, 0x64, // id
+                   0xb, 0x61, 0x64, 0x6d, 0x69, 0x6e, // admin
+                   0x4, 0x0, // 0
+                   0x6, 0x9, 0x42, 0x69, 0x6c, 0x6c, // Bill
+                   0x4, 0x1, // 1
+                   0x2, // false
+               0xa, 0x1,
+                   0x4, 0x0, // 0
+                   0x6, 0x7, 0x42, 0x6f, 0x62, // Bill
+                   0x4, 0x2, // 2
+                   0x2, // false
+               0xa, 0x1,
+                   0x4, 0x19, // 25
+                   0x6, 0x9, 0x4a, 0x6f, 0x68, 0x6e, // John
+                   0x4, 0x3, // 3
+                   0x2, // false
+               0xa, 0x1,
+                   0x4, 0x0, // 0
+                   0x6, 0xb, 0x48, 0x65, 0x6c, 0x65, 0x6e, // Helen
+                   0x4, 0x4, // 4
+                   0x3 // true
+   ))
 
     // TODO array of registered classes in not supported yet
-    val user1 = new AmfClass(); user1.className = "some.pack.User";
-    user1.put("id", 1); user1.put("name", "Bill")
-    val user2 = new AmfClass(); user2.className = "some.pack.User";
-    user2.put("id", 2); user2.put("name", "Bob")
-    val user3 = new AmfClass(); user3.className = "some.pack.User";
-    user3.put("id", 3); user3.put("name", "John"); user3.put("age", 25)
-    val user4 = new AmfClass(); user4.className = "some.pack.User";
-    user4.put("id", 4); user4.put("name", "Helen"); user4.put("admin", true)
-    val arrClassList = new ArrayList(Arrays.asList(user1, user2, user3, user4))
-    val arrClassBuf = BufUtils.mkb(List(0x9, 0x9, 0x1,
+    def createArr4() : ArrayList[AmfClass] = {
+        val user1 = new AmfClass();
+        user1.className = "some.pack.User";
+        user1.put("age", 0);
+        user1.put("name", "Bill")
+        user1.put("id", 1);
+        user1.put("admin", false)
+
+        val user2 = new AmfClass();
+        user2.className = "some.pack.User";
+        user2.put("age", 0);
+        user2.put("name", "Bob")
+        user2.put("id", 2);
+        user2.put("admin", false)
+
+        val user3 = new AmfClass();
+        user3.className = "some.pack.User";
+        user3.put("age", 25);
+        user3.put("name", "John");
+        user3.put("id", 3);
+        user3.put("admin", false)
+
+        val user4 = new AmfClass();
+        user4.className = "some.pack.User";
+        user4.put("age", 0);
+        user4.put("name", "Helen");
+        user4.put("id", 4);
+        user4.put("admin", true)
+        
+        new ArrayList(Arrays.asList(user1, user2, user3, user4))
+    }
+    val arrRClassList = createArr4()
+    val arrRClassBuf = BufUtils.mkb(List(0x9, 0x9, 0x1,
                0xa, 0x43, 0x1d, // user1
                    0x73, 0x6f, 0x6d, 0x65, 0x2e, // some.
                    0x70, 0x61, 0x63, 0x6b, 0x2e, // pack.

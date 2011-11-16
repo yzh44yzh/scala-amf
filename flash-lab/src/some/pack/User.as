@@ -8,7 +8,7 @@ import flash.net.registerClassAlias;
 
 public class User
 {
-    registerClassAlias("some.pack.User", User);
+    // registerClassAlias("some.pack.User", User);
 
     public var id : uint;
     public var name : String;
