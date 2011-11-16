@@ -10,7 +10,7 @@ public class Message
 {
     registerClassAlias("some.pack.Message", Message);
     
-    public var sender : User;
+    public var sender : String;
     public var content : String;
 }
 }

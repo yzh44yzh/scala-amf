@@ -8,6 +8,7 @@ import flash.display.Sprite;
 import flash.utils.ByteArray;
 
 import some.pack.Message;
+import some.pack.RUser;
 import some.pack.User;
 
 public class FlashLab extends Sprite
@@ -40,16 +41,10 @@ public class FlashLab extends Sprite
         msg.content = "How are you? :)";
         */
 
-        var obj1 : Object = {id:1, name:"Bob"};
-        var obj2 : Object = {id:2, name:"Bill"};
-        var obj3 : Object = {id:3, name:"John"};
-        var arr : Array = [obj1, obj2, obj3];
-
-        var user1 : User = new User(); user1.id = 1; user1.name = "Bill";
-        var user2 : User = new User(); user2.id = 2; user2.name = "Bob";
-        var user3 : User = new User(); user3.id = 3; user3.name = "John"; user3.age = 25;
-        var user4 : User = new User(); user4.id = 4; user4.name = "Helen"; user4.admin = true;
-        arr = [user1, user2, user3, user4];
+        var user1 : Object = {id:1, name:"Bob"};
+        var user2 : Object = {id:2, name:"Bill", age:25};
+        var user3 : RUser = new RUser(); user3.id = 3; user3.name = "Helen"; user3.gender = 1;
+        var arr = [true, user1, user2, user3, null, "Hello", 128];
 
         var buf : ByteArray = new ByteArray();
         buf.writeObject(arr);

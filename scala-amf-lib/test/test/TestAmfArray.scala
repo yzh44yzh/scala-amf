@@ -223,6 +223,57 @@ class TestAmfArray extends FunSuite
                    0x3 // admin:true
            ))
 
+    def createArr5() : ArrayList[Any] = {
+        val user1 = new AmfClass();
+        user1.put("name", "Bob")
+        user1.put("id", 1);
+
+        val user2 = new AmfClass();
+        user2.put("name", "Bill")
+        user2.put("id", 2);
+        user2.put("age", 25);
+
+        val user3 = new AmfClass();
+        user3.className = "some.pack.RUser";
+        user3.put("id", 3);
+        user3.put("gender", 1)
+        user3.put("name", "Helen");
+
+        new ArrayList(Arrays.asList(true, user1, user2, user3, null, "Hello", 128))
+    }
+    val mixedList = createArr5()
+    val mixedBuf = BufUtils.mkb(List(0x9, 0xf, 0x1,
+            0x3, // true
+            0xa, 0xb, 0x1,
+                0x9, 0x6e, 0x61, 0x6d, 0x65, // name
+                0x6, 0x7, 0x42, 0x6f, 0x62, // Bob
+                0x5, 0x69, 0x64, // id
+                0x4, 0x1, // 1
+                0x1,
+            0xa, 0x1,
+                0x0, // ref to name
+                0x6, 0x9, 0x42, 0x69, 0x6c, 0x6c, // Bill
+                0x4, // ref to id
+                0x4, 0x2, // id:2
+                0x7, 0x61, 0x67, 0x65, // age
+                0x4, 0x19, // age:25
+                0x1,
+            0xa, 0x33, 0x1f,
+                0x73, 0x6f, 0x6d, 0x65, 0x2e, // some.
+                0x70, 0x61, 0x63, 0x6b, 0x2e, // pack.
+                0x52, 0x55, 0x73, 0x65, 0x72, // RUser
+                0x4, // ref to id
+                0xd, 0x67, 0x65, 0x6e, 0x64, 0x65, 0x72, // gender
+                0x0, // ref to name
+                0x4, 0x3, // id:3
+                0x4, 0x1, // gender:1
+                0x6, 0xb, 0x48, 0x65, 0x6c, 0x65, 0x6e, // Helen
+            0x1, // null
+            0x6, 0xb, 0x48, 0x65, 0x6c, 0x6c, 0x6f, // Hello
+            0x4, -0x7f, 0x0 // 128
+           ))
+
+
     test("decode arrays")
     {
         val (AmfType.ARRAY, res1) = Amf.decode(boolsBuf)
@@ -248,6 +299,9 @@ class TestAmfArray extends FunSuite
 
         val (AmfType.ARRAY, res8) = Amf.decode(arrObjBuf2)
         assert(arrObjList2.equals(res8))
+
+        val (AmfType.ARRAY, res9) = Amf.decode(mixedBuf)
+        assert(mixedList.equals(res9))
     }
 
     test("encode arrays")
@@ -260,5 +314,6 @@ class TestAmfArray extends FunSuite
         assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, arrList)), arrBuf))
         assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, arrObjList)), arrObjBuf))
         assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, arrObjList2)), arrObjBuf2))
+        assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, mixedList)), mixedBuf))
     }
 }

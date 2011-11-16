@@ -6,12 +6,12 @@ package some.pack
 {
 import flash.net.registerClassAlias;
 
-public class User
+public class RUser
 {
-    // registerClassAlias("some.pack.User", User);
+    registerClassAlias("some.pack.RUser", RUser);
 
     public var id : uint;
     public var name : String;
-    public var age : int;
+    public var gender : uint;
 }
 }
