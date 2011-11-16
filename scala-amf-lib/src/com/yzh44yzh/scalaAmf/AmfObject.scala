@@ -26,12 +26,13 @@ private object AmfObject
         than goes number of fields
          */
 
-        /*
-		if((code & 1) == 0)
-		{
-			//TODO get from ref
-		}
-         */
+        if((code & 1) == 0)
+        {
+            // NOTE: for some unknown reason flash client uses wrong refs for Objects
+            // I have to fix it by subtracting 1
+            // ref.dates.get(code >> 1).asInstanceOf[AmfClass]
+            return ref.objects.get((code >> 1) - 1).asInstanceOf[AmfClass]
+        }
 
         var className = ""
         if(code != 1) className = AmfString.read(buf, ref)
@@ -55,19 +56,21 @@ private object AmfObject
 
     def write(buf: IoBuffer, obj: AmfClass, ref : Ref) : IoBuffer =
     {
-        /*
-		if(hasReference(array))
-		{
-		    // TODO get index
-			putInteger(getReferenceId(array) << 1);
-			return;
-		}
-         */
+        if(ref.objects.hasValue(obj))
+        {
+            val id = ref.objects.getKey(obj)
+            // NOTE: for some unknown reason flash client uses wrong refs for Objects
+            // I have to fix it by adding 1
+            // buf.put(id << 1).toByte)
+            buf.put(((id + 1) << 1).toByte)
+        }
+        else
+        {
+            ref.objects.store(obj)
 
-        ref.objects.store(obj)
-
-        if(obj.className.equals("")) writeNameValuePairs(buf, obj, ref)
-        else writeNamesThanValues(buf, obj, ref)
+            if(obj.className.equals("")) writeNameValuePairs(buf, obj, ref)
+            else writeNamesThanValues(buf, obj, ref)
+        }
 
         buf
     }
