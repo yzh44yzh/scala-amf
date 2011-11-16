@@ -45,6 +45,12 @@ public class FlashLab extends Sprite
         var obj3 : Object = {e:5, f:6};
         var arr : Array = [obj1, obj2, obj3];
 
+        var user1 : User = new User(); user1.id = 1; user1.name = "Bill";
+        var user2 : User = new User(); user2.id = 2; user2.name = "Bob";
+        var user3 : User = new User(); user3.id = 3; user3.name = "John"; user3.age = 25;
+        var user4 : User = new User(); user4.id = 4; user4.name = "Helen"; user4.admin = true;
+        arr = [user1, user2, user3, user4];
+
         var buf : ByteArray = new ByteArray();
         buf.writeObject(arr);
 
