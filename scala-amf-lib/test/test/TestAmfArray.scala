@@ -53,6 +53,24 @@ class TestAmfArray extends FunSuite
             0x9, 0x3, 0x1,
                 0x6, 0xb, 0x48, 0x65, 0x6c, 0x6c, 0x6f))
 
+    val obj1 = new AmfClass(); obj1.put("a", 1); obj1.put("b", 2)
+    val obj2 = new AmfClass(); obj2.put("d", 4); obj2.put("c", 3)
+    val obj3 = new AmfClass(); obj3.put("e", 5); obj3.put("f", 6)
+    val arrObjList = new ArrayList(Arrays.asList(obj1, obj2, obj3))
+    val arrObjBuf = BufUtils.mkb(List(0x9, 0x7, 0x1,
+             0xa, 0xb, 0x1, // obj1
+                 0x3, 0x61, 0x4, 0x1, // a:1
+                 0x3, 0x62, 0x4, 0x2, // b:2
+                 0x1,
+             0xa, 0x1, // obj2
+                 0x3, 0x64, 0x4, 0x4, // d:4
+                 0x3, 0x63, 0x4, 0x3, // c:3
+                 0x1,
+             0xa, 0x1, // obj3
+                 0x3, 0x65, 0x4, 0x5, // e:5
+                 0x3, 0x66, 0x4, 0x6, // f:6
+                 0x1))
+
     test("decode arrays")
     {
         val (AmfType.ARRAY, res1) = Amf.decode(boolsBuf)
@@ -72,6 +90,9 @@ class TestAmfArray extends FunSuite
 
         val (AmfType.ARRAY, res6) = Amf.decode(arrBuf)
         assert(arrList.equals(res6))
+
+        val (AmfType.ARRAY, res7) = Amf.decode(arrObjBuf)
+        assert(arrObjList.equals(res7))
     }
 
     test("encode arrays")
@@ -82,5 +103,6 @@ class TestAmfArray extends FunSuite
         assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, stringsList)), stringsBuf))
         assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, anyList)), anyBuf))
         assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, arrList)), arrBuf))
+        assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, arrObjList)), arrObjBuf))
     }
 }

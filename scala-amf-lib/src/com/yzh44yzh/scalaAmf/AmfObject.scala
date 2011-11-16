@@ -13,6 +13,7 @@ private object AmfObject
         var code = AmfInt.read(buf)
 
         /*
+        0x1       0001 -- trait
         0xb       1011 -- simple object
         0x23  (10)0011 -- class with 2 fields
         0x33  (11)0011 -- class with 3 fields
@@ -28,13 +29,14 @@ private object AmfObject
         /*
 		if((code & 1) == 0)
 		{
-			//Reference
+			//TODO get from ref
 		}
          */
 
-        val className = AmfString.read(buf, ref)
+        var className = ""
+        if(code != 1) className = AmfString.read(buf, ref)
 
-        val result = if((code & 8) == 0) // check 4th bit
+        val result = if(code != 1 && (code & 8) == 0) // check 4th bit
         {
             // not dynamic object
             val numFields = code >> 4
@@ -47,6 +49,7 @@ private object AmfObject
         }
 
         result.className = className
+        ref.objects.store(result)
         result
     }
 
@@ -55,16 +58,16 @@ private object AmfObject
         /*
 		if(hasReference(array))
 		{
+		    // TODO get index
 			putInteger(getReferenceId(array) << 1);
 			return;
 		}
-
-		storeReference(array);
          */
 
         if(obj.className.equals("")) writeNameValuePairs(buf, obj, ref)
         else writeNamesThanValues(buf, obj, ref)
 
+        ref.objects.store(obj)
         buf
     }
 
@@ -127,7 +130,9 @@ private object AmfObject
     }
 
     def writeNameValuePairs(buf : IoBuffer, obj : AmfClass, ref : Ref) : IoBuffer = {
-        buf.put(0xb toByte) // dynamic object
+
+        if(ref.objects.empty()) buf.put(0xb toByte) // dynamic object
+        
         AmfString.write(buf, "", ref) // empty class name
 
         val it = obj.keySet().iterator()

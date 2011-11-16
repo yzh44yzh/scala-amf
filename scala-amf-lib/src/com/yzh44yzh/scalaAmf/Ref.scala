@@ -12,6 +12,7 @@ class Ref
     val dates = new TRef[Date]
     val strings = new TRef[String]
     val arrays = new TRef[ArrayList[Any]]
+    val objects = new TRef[AmfClass]
 }
 
 class TRef[T]
@@ -33,4 +34,6 @@ class TRef[T]
     def hasValue(value : T) : Boolean = cache2.containsKey(value)
 
     def getKey(value : T) : Int = cache2.get(value)
+
+    def empty() : Boolean = cache1.size == 0
 }

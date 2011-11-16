@@ -88,7 +88,7 @@ class TestRefs extends FunSuite
 
 
     // ref for Objects
-    def createObj4() : ArrayList = {
+    def createObj4() : ArrayList[Any] = {
         val obj1 = new AmfClass()
         obj1.put("a", 1)
         obj1.put("b", 2)
