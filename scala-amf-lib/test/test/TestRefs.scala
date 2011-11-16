@@ -120,7 +120,12 @@ class TestRefs extends FunSuite
         new ArrayList(Arrays.asList(arr1, arr2, arr1, arr1, arr2))
     }
     val obj5 = createObj5()
-    val buf5 = BufUtils.mkb(List(
+    val buf5 = BufUtils.mkb(List(0x9, 0xb, 0x1,
+        0x9, 0x7, 0x1, 0x4, 0x1, 0x4, 0x2, 0x4, 0x3, // arr1
+        0x9, 0x7, 0x1, 0x4, 0x4, 0x4, 0x5, 0x4, 0x6, // arr2
+        0x9, 0x2, // ref to arr1
+        0x9, 0x2, // ref to arr1
+        0x9, 0x4 // ref to arr2
     ))
 
     test("decode objects")
@@ -136,6 +141,9 @@ class TestRefs extends FunSuite
 
         val (AmfType.ARRAY, res4) = Amf.decode(buf4)
         assert(obj4.equals(res4))
+
+        val (AmfType.ARRAY, res5) = Amf.decode(buf5)
+        assert(obj5.equals(res5))
     }
 
     test("encode objects")
@@ -144,5 +152,6 @@ class TestRefs extends FunSuite
         assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj2)), buf2))
         assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj3)), buf3))
         assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, obj4)), buf4))
+        assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, obj5)), buf5))
     }
 }

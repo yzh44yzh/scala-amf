@@ -42,10 +42,14 @@ public class FlashLab extends Sprite
         */
 
         var location : Object = {country:"Belarus", city:"Minks"};
-        var obj = {name:"Yura", location:location};
+        var obj : Object = {name:"Yura", location:location};
+
+        var arr1 : Array = [1, 2, 3];
+        var arr2 : Array = [4, 5, 6];
+        var arr : Array = [arr1, arr2, arr1, arr1, arr2];
 
         var buf : ByteArray = new ByteArray();
-        buf.writeObject(obj);
+        buf.writeObject(arr);
 
         showBuf(buf);
     }
