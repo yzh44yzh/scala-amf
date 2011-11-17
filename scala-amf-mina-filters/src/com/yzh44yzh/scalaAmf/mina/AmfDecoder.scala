@@ -64,7 +64,7 @@ class AmfDecoder extends ProtocolDecoder
             try
             {
                 val (AmfType.OBJECT, res) = Amf.decode(pkg)
-                data = res
+                data = res.asInstanceOf[AmfClass]
             }
             catch
             {

@@ -16,7 +16,7 @@ class FlashPolicyRequestFilter(val allowedPort: Int) extends IoFilterAdapter
 
     private val LENGTH: Int = "<policy-file-request/>".length + 1
 
-    private val response = new StringBuffer.append("<?xml version=\"1.0\"?>")
+    private val response = new StringBuffer().append("<?xml version=\"1.0\"?>")
             .append("<cross-domain-policy>")
             .append("<site-control permitted-cross-domain-policies=\"all\"/>")
             .append("<allow-access-from domain=\"*\" to-ports=\"")
@@ -26,7 +26,7 @@ class FlashPolicyRequestFilter(val allowedPort: Int) extends IoFilterAdapter
 
     override def messageReceived(nextFilter: IoFilter.NextFilter, session: IoSession, message: AnyRef)
     {
-        val buf = message.isInstanceOf[IoBuffer]
+        val buf = message.asInstanceOf[IoBuffer]
         if(checkBuffer(buf))
         {
             log.debug("send cross domain policy")
