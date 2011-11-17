@@ -169,6 +169,56 @@ class TestRefs extends FunSuite
     ))
 
 
+    def createObj7() : AmfClass = {
+        val obj1 = new AmfClass()
+        obj1.put("bbb", 2)
+        obj1.put("aaa", 1)
+
+        val arr = new ArrayList(Arrays.asList(1, 2, 3))
+
+        var obj = new AmfClass()
+        obj.put("aa4", "Hello")
+        obj.put("aa5", 123)
+        obj.put("aa6", arr)
+        obj.put("aa7", obj1)
+        obj.put("aa1", true)
+        obj.put("aa8", arr)
+        obj.put("aa2", "Hello")
+        obj.put("aa3", obj1)
+        obj
+    }
+    val obj7 = createObj7()
+    val buf7 = BufUtils.mkb(List(0xa, 0xb, 0x1,
+        0x7, 0x61, 0x61, 0x34, // aa4
+        0x6, 0xb, 0x48, 0x65, 0x6c, 0x6c, 0x6f, // Hello
+        0x7, 0x61, 0x61, 0x35, // aa5
+        0x4, 0x7b, // 123
+        0x7, 0x61, 0x61, 0x36, // aa6
+        0x9, 0x7, 0x1, 0x4, 0x1, 0x4, 0x2, 0x4, 0x3, // [1,2,3]
+        0x7, 0x61, 0x61, 0x37, // aa7
+        0xa, 0x1, // obj1
+            0x7, 0x62, 0x62, 0x62, // bbb
+            0x4, 0x2, // 2
+            0x7, 0x61, 0x61, 0x61, // aaa
+            0x4, 0x1, // 1
+            0x1,
+        0x7, 0x61, 0x61, 0x31, // aa1
+        0x3, // true
+        0x7, 0x61, 0x61, 0x38, // aa8
+        0x9, 0x2, // ref to [1,2,3]
+        0x7, 0x61, 0x61, 0x32, // aa2
+        0x6, 0x2, // ref to Hello
+        0x7, 0x61, 0x61, 0x33, // aa3
+        0xa, 0x2, // ref to obj1
+        0x1
+    ))
+    /*
+    TODO: flash client gives here ref 0x4
+    Я пока не разобрался, в какой последовательности должны ложиться в кэш объекты
+    при сериализации и десериализации. 
+     */
+
+
     test("decode objects")
     {
         val (AmfType.OBJECT, res1) = Amf.decode(buf1)
@@ -188,6 +238,9 @@ class TestRefs extends FunSuite
 
         val (AmfType.OBJECT, res6) = Amf.decode(buf6)
         assert(obj6.equals(res6))
+
+        val (AmfType.OBJECT, res7) = Amf.decode(buf7)
+        assert(obj7.equals(res7))
     }
 
     test("encode objects")
@@ -198,5 +251,6 @@ class TestRefs extends FunSuite
         assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, obj4)), buf4))
         assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, obj5)), buf5))
         assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj6)), buf6))
+        assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj7)), buf7))
     }
 }
