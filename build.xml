@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Build chat71 package" default="build" basedir=".">
+
+    <property name="version" value="1.0"/>
+
+    <target name="build" depends="clear">
+
+        <mkdir dir="release"/>
+
+        <taskdef resource="scala/tools/ant/antlib.xml">
+            <classpath>
+                <pathelement location="lib/scala-compiler.jar"/>
+                <pathelement location="lib/scala-library.jar"/>
+            </classpath>
+        </taskdef>
+
+        <antcall target="build_module">
+            <param name="module" value="scala-amf-lib"/>
+        </antcall>
+
+        <antcall target="build_module">
+            <param name="module" value="scala-amf-mina-filters"/>
+        </antcall>
+
+    </target>
+
+    <target name="clear">
+        <delete dir="release"/>
+        <delete dir="scala-amf-lib/classes"/>
+        <delete dir="scala-amf-mina-filters/classes"/>
+    </target>
+
+    <target name="build_module">
+
+        <path id="classpath.scala-amf-lib">
+            <pathelement location="lib/scala-library.jar"/>
+            <pathelement location="lib/mina-core-2.0.0-RC1.jar"/>
+        </path>
+
+        <path id="classpath.scala-amf-mina-filters">
+            <pathelement location="lib/scala-library.jar"/>
+            <pathelement location="lib/mina-core-2.0.0-RC1.jar"/>
+            <pathelement location="lib/log4j-1.2.14.jar"/>
+            <pathelement location="lib/slf4j-api-1.5.11.jar"/>
+            <pathelement location="lib/slf4j-log4j12-1.5.11.jar"/>
+            <pathelement location="release/scala-amf-lib-${version}.jar"/>
+        </path>
+
+        <mkdir dir="${module}/classes"/>
+
+        <scalac srcdir="${module}/src"
+                destdir="${module}/classes"
+                classpathref="classpath.${module}"/>
+
+        <jar destfile="release/${module}-${version}.jar"
+             basedir="${module}/classes"/>
+
+    </target>
+
+</project>
