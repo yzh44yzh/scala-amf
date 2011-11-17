@@ -1,11 +1,10 @@
 package com.yzh44yzh.scalaAmf
 
-import java.util.{ArrayList, Date, HashMap}
-
 /**
  * @author Yura Zhloba <yzh44yzh@gmail.com>
  */
 
+import java.util.{ArrayList, Date, HashMap}
 
 class Ref
 {
@@ -13,6 +12,8 @@ class Ref
     val strings = new TRef[String]
     val arrays = new TRef[ArrayList[Any]]
     val objects = new TRef[AmfClass]
+
+    var firstObj = true
 }
 
 class TRef[T]

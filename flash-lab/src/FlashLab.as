@@ -41,15 +41,21 @@ public class FlashLab extends Sprite
         msg.content = "How are you? :)";
         */
 
+        /*
         var location : Object = {country:"Belarus", city:"Minks"};
         var obj : Object = {name:"Yura", location:location};
 
         var arr1 : Array = [1, 2, 3];
         var arr2 : Array = [4, 5, 6];
         var arr : Array = [arr1, arr2, arr1, arr1, arr2];
+        */
+
+        var obj1 : Object = {aaa:1, bbb:2};
+        var obj2 : Object = {aaa:3, bbb:4};
+        var obj : Object = {aa1:obj1, aa2:obj1, bb1:obj2, bb2:obj2};
 
         var buf : ByteArray = new ByteArray();
-        buf.writeObject(arr);
+        buf.writeObject(obj);
 
         showBuf(buf);
     }
