@@ -56,4 +56,50 @@ object BufUtils
 
         res
     }
+
+    def copy(src: IoBuffer, dst: IoBuffer)
+    {
+        src.position(0)
+        dst.position(0)
+        while(src.hasRemaining) dst.put(src.get)
+        src.position(0)
+        dst.flip
+    }
+
+    def merge(b1: IoBuffer, b2: IoBuffer): IoBuffer =
+    {
+        val result = IoBuffer.allocate(b1.limit + b2.limit)
+        b1.position(0)
+        while(b1.hasRemaining) result.put(b1.get)
+        b1.position(0)
+        b2.position(0)
+        while(b2.hasRemaining) result.put(b2.get)
+        b2.position(0)
+        result.flip
+        result
+    }
+
+    def toString(buf: IoBuffer, showLetters: Boolean): String =
+    {
+        var res: StringBuffer = new StringBuffer
+        while(buf.hasRemaining)
+        {
+            var b: Int = buf.get
+            var ch: String = ""
+            if(showLetters && ((b >= 48 && b <= 57) || (b >= 65 && b <= 90) || (b >= 97 && b <= 122)))
+            {
+                ch = Character.toString(b.asInstanceOf[Char])
+            }
+            else
+            {
+                ch = Integer.toHexString(b)
+                if(ch.length == 1) ch = "0x0" + ch
+                else ch = "0x" + ch
+                ch = ch + ", "
+            }
+            res.append(" ").append(ch)
+        }
+        buf.position(0)
+        res.toString
+    }
 }
