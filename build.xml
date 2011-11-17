@@ -57,4 +57,30 @@
 
     </target>
 
+    <target name="install_maven_artifacts">
+
+        <property name="mvn" value="C:/Program Files/apache-maven-2.2.1/bin/mvn.bat"/>
+
+        <exec executable="${mvn}" dir="release">
+            <arg value="install:install-file"/>
+            <arg value="-Dfile=scala-amf-lib-${version}.jar"/>
+            <arg value="-DgroupId=com.yzh44yzh.scalaAmf"/>
+            <arg value="-DartifactId=scala-amf-lib"/>
+            <arg value="-Dversion=${version}"/>
+            <arg value="-Dpackaging=jar"/>
+            <arg value="-DgeneratePom=true"/>
+        </exec>
+
+        <exec executable="${mvn}" dir="release">
+            <arg value="install:install-file"/>
+            <arg value="-Dfile=scala-amf-mina-filters-${version}.jar"/>
+            <arg value="-DgroupId=com.yzh44yzh.scalaAmf"/>
+            <arg value="-DartifactId=scala-amf-mina-filters"/>
+            <arg value="-Dversion=${version}"/>
+            <arg value="-Dpackaging=jar"/>
+            <arg value="-DgeneratePom=true"/>
+        </exec>
+
+    </target>
+
 </project>
