@@ -4,14 +4,13 @@ package com.yzh44yzh.scalaAmf
  * @author Yura Zhloba <yzh44yzh@gmail.com>
  */
 
-import java.util.{ArrayList, Date, HashMap}
+import java.util.{Date, HashMap}
 
 class Ref
 {
     val dates = new TRef[Date]
     val strings = new TRef[String]
-    val arrays = new TRef[ArrayList[Any]]
-    val objects = new TRef[AmfClass]
+    val objects = new TRef[Any]
 
     var firstObj = true
 }

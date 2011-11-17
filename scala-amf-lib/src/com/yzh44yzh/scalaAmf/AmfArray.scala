@@ -17,7 +17,7 @@ private object AmfArray
             // NOTE: for some unknown reason flash client uses wrong refs for Array
             // I have to fix it by subtracting 1
             // ref.dates.get(code >> 1).asInstanceOf[ArrayList[Any]]
-            return ref.arrays.get((code >> 1) - 1).asInstanceOf[ArrayList[Any]]
+            return ref.objects.get((code >> 1) - 1).asInstanceOf[ArrayList[Any]]
         }
 
         val len = (code >> 1)
@@ -34,15 +34,15 @@ private object AmfArray
             i += 1
         }
 
-        ref.arrays.store(result)
+        ref.objects.store(result)
         result
     }
 
     def write(buf: IoBuffer, list: ArrayList[Any], ref : Ref) : IoBuffer =
     {
-        if(ref.arrays.hasValue(list))
+        if(ref.objects.hasValue(list))
         {
-            val id = ref.arrays.getKey(list)
+            val id = ref.objects.getKey(list)
             // NOTE: for some unknown reason flash client uses wrong refs for Array
             // I have to fix it by adding 1
             // buf.put(id << 1).toByte)
@@ -57,7 +57,7 @@ private object AmfArray
             val it = list.iterator()
             while(it.hasNext) Amf.encodeAny(buf, it.next(), ref)
 
-            ref.arrays.store(list)
+            ref.objects.store(list)
         }
 
         buf

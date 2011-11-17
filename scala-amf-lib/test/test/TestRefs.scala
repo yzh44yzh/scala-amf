@@ -209,14 +209,9 @@ class TestRefs extends FunSuite
         0x7, 0x61, 0x61, 0x32, // aa2
         0x6, 0x2, // ref to Hello
         0x7, 0x61, 0x61, 0x33, // aa3
-        0xa, 0x2, // ref to obj1
+        0xa, 0x4, // ref to obj1
         0x1
     ))
-    /*
-    TODO: flash client gives here ref 0x4
-    Я пока не разобрался, в какой последовательности должны ложиться в кэш объекты
-    при сериализации и десериализации. 
-     */
 
 
     test("decode objects")
