@@ -28,7 +28,10 @@ class AmfDecoder extends ProtocolDecoder
 
         val cache: IoBuffer = session.getAttribute("ioCache").asInstanceOf[IoBuffer]
 
-        val (data: AmfClass, newCache: IoBuffer) = getData(in, cache)
+        val res = getData(in, cache)
+        val data : AmfClass = res._1
+        val newCache : IoBuffer = res._2
+
         session.setAttribute("ioCache", newCache)
         if(data != null) out.write(data)
     }

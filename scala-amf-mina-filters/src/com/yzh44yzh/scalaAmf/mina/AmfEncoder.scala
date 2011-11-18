@@ -12,8 +12,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.nio.charset.Charset
 import java.nio.charset.CharsetEncoder
-import java.util.HashMap
-import com.yzh44yzh.scalaAmf.{AmfType, Amf}
+import com.yzh44yzh.scalaAmf.{AmfClass, AmfType, Amf}
 
 class AmfEncoder extends ProtocolEncoder
 {
@@ -23,6 +22,11 @@ class AmfEncoder extends ProtocolEncoder
 
     def encode(ioSession: IoSession, msg: AnyRef, out: ProtocolEncoderOutput)
     {
+        if(log.isDebugEnabled)
+        {
+            log.debug(" %%% encode {}", msg)
+        }
+
         if(msg.isInstanceOf[String])
         {
             val buf = IoBuffer.allocate(128).setAutoExpand(true)
@@ -31,13 +35,19 @@ class AmfEncoder extends ProtocolEncoder
             buf.flip
             out.write(buf)
         }
-        else if(msg.isInstanceOf[HashMap[String, Any]])
+        else if(msg.isInstanceOf[AmfClass])
         {
-            out.write(Amf.encode((AmfType.OBJECT, msg)))
+            val buf = Amf.encode((AmfType.OBJECT, msg))
+            if(log.isDebugEnabled)
+            {
+                log.debug("{}", buf)
+            }
+            out.write(buf)
         }
         else
         {
-            log.error("msg must be String or HashMap")
+            log.error("msg must be String or AmfClass")
+            log.error("{}", msg)
         }
     }
 
