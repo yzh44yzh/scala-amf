@@ -62,7 +62,11 @@ public class FlashLab extends Sprite
         var obj : Object = {aa1:true, aa2:"Hello", aa3:obj1, aa4:"Hello", aa5:123, aa6:arr, aa7:obj1, aa8:arr};
         */
 
-        var arr : Array = [ {room:"R1"}, {}, {room:"R2"}, {}, {}, [1,2,3], [], [] ];
+        // var arr : Array = [ {room:"R1"}, {}, {room:"R2"}, {}, {}, [1,2,3], [], [] ];
+
+        var d1 : Date = new Date();
+        var d2 : Date = new Date();
+        var arr : Array = [d1, d2];
 
         var buf : ByteArray = new ByteArray();
         buf.writeObject(arr);

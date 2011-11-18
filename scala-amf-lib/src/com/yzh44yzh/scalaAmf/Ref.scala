@@ -19,29 +19,36 @@ class Ref
 class TRef[T]
 {
     private var nextId = 0;
-    private val cache1 = new HashMap[Int, T]
-    private val cache2 = new HashMap[T, Int]
-
-    private val emptyObj = new AmfClass
-    private val emptyArr = new ArrayList
+    private val cache1 = new HashMap[Int, IdentityWrapper]
+    private val cache2 = new HashMap[IdentityWrapper, Int]
 
     def store(value : T) : Int = {
         val id = nextId
         nextId += 1
-        cache1.put(id, value)
-        cache2.put(value, id)
+
+        val wrapper = new IdentityWrapper(value)
+        cache1.put(id, wrapper)
+        cache2.put(wrapper, id)
         id
     }
 
-    def get(id : Int) : T = cache1.get(id)
+    def get(id : Int) : T = cache1.get(id).asInstanceOf[IdentityWrapper].obj.asInstanceOf[T]
 
-    def hasValue(value : T) : Boolean =
+    def hasValue(value : T) : Boolean = cache2.containsKey(new IdentityWrapper(value))
+
+    def getKey(value : T) : Int = cache2.get(new IdentityWrapper(value))
+}
+
+class IdentityWrapper(val obj : Any)
+{
+    override def hashCode: Int = System.identityHashCode(obj)
+
+    override def equals(other : Any): Boolean =
     {
-        if(emptyObj.equals(value)) return false
-        if(emptyArr.equals(value)) return false
-        
-        cache2.containsKey(value)
+        if(other.isInstanceOf[IdentityWrapper])
+        {
+            return other.asInstanceOf[IdentityWrapper].hashCode == hashCode
+        }
+        false
     }
-
-    def getKey(value : T) : Int = cache2.get(value)
 }

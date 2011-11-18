@@ -5,9 +5,9 @@
 package test
 
 import com.yzh44yzh.scalaAmf._
-import java.util.Date
 import org.apache.mina.core.buffer.IoBuffer
 import org.scalatest.FunSuite
+import java.util.{Arrays, ArrayList, Date}
 
 class TestAmfDate extends FunSuite
 {
@@ -35,5 +35,34 @@ class TestAmfDate extends FunSuite
         assert(BufUtils.eq(Amf.encode((AmfType.DATE, dt1)), buf1))
         assert(BufUtils.eq(Amf.encode((AmfType.DATE, dt2)), buf2))
         assert(BufUtils.eq(Amf.encode((AmfType.DATE, dt3)), buf3))
+    }
+
+    test("equal dates")
+    {
+        val dt1 = new Date(1289767440000L)
+        val dt2 = new Date(1289767440000L)
+        val dt3 = dt1
+
+        val w1 = new IdentityWrapper(dt1)
+        val w2 = new IdentityWrapper(dt2)
+        val w3 = new IdentityWrapper(dt3)
+
+        assert(w1.hashCode != w2.hashCode)
+        assert(w1.hashCode == w3.hashCode)
+        assert(!w1.equals(w2))
+        assert(w1.equals(w3))
+
+        val arr = new ArrayList(Arrays.asList(dt1, dt2))
+
+        val buf: IoBuffer = BufUtils.mkb(List(0x9, 0x5, 0x1,
+            0x08, 0x01, 0x42, 0x72, -0x3c, -0x3e, 0x14, -0x18, 0x00, 0x00,
+            0x08, 0x01, 0x42, 0x72, -0x3c, -0x3e, 0x14, -0x18, 0x00, 0x00
+        ))
+
+        val (AmfType.ARRAY, res) = Amf.decode(buf)
+        assert(arr.equals(res))
+
+        val str = BufUtils.diff(Amf.encode((AmfType.ARRAY, arr)), buf)
+        assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, arr)), buf))
     }
 }

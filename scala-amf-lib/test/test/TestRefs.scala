@@ -12,11 +12,13 @@ class TestRefs extends FunSuite
 {
     // ref for Dates
     def createObj1() : AmfClass = {
+        val dt1 = new Date(791687040000L) // Sun Nov 14 22:44:00 GMT+0200 2010
+        val dt2 = new Date(1289767440000L) // Thu Feb  2 03:04:00 GMT+0200 1995
         val obj = new AmfClass
-        obj.put("date4", new Date(791687040000L))  // Sun Nov 14 22:44:00 GMT+0200 2010
-        obj.put("date2", new Date(791687040000L))  // Thu Feb  2 03:04:00 GMT+0200 1995
-        obj.put("date1", new Date(1289767440000L))
-        obj.put("date3", new Date(1289767440000L))
+        obj.put("date4", dt1)
+        obj.put("date2", dt1)
+        obj.put("date1", dt2)
+        obj.put("date3", dt2)
         obj
     }
     val obj1 = createObj1()
