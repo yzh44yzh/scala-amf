@@ -62,29 +62,18 @@ public class FlashLab extends Sprite
         var obj : Object = {aa1:true, aa2:"Hello", aa3:obj1, aa4:"Hello", aa5:123, aa6:arr, aa7:obj1, aa8:arr};
         */
 
-        var show = function(num : Number) : void
-        {
-            trace(num.toString(16));
-            trace(new Number(num).toString(2));
-        };
-        //show(0x73);
-        //show(0x1C);
-        show(0xC3);
-        show(0xE8);
-        //show(0x4E);
-        show(0xD0);
-
-        show(parseInt("1000011", 2));
-        show(parseInt("1101000", 2));
-        show(parseInt("1100000", 2));
-
-        var d1 : Date = new Date();
-        var obj : Object = {p1:d1,  p2:"aa", p3:"aa", p4:"bb", p5:d1,  p6:"aa", p7:"aa", p8:"bb"};
+        var arr : Array = [ {room:"R1"}, {}, {room:"R2"}, {}, {}, [1,2,3], [], [] ];
 
         var buf : ByteArray = new ByteArray();
-        buf.writeObject(obj);
+        buf.writeObject(arr);
 
         showBuf(buf);
+    }
+
+    private function showNum(num : Number) : void
+    {
+        trace(num.toString(16));
+        trace(new Number(num).toString(2));
     }
 
     private function showBuf(buf : ByteArray) : void

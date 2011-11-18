@@ -138,7 +138,7 @@ class TestRefs extends FunSuite
         obj2.put("bbb", 4)
         obj2.put("aaa", 3)
 
-        var obj = new AmfClass()
+        val obj = new AmfClass()
         obj.put("aa2", obj1)
         obj.put("bb1", obj2)
         obj.put("bb2", obj2)
@@ -176,7 +176,7 @@ class TestRefs extends FunSuite
 
         val arr = new ArrayList(Arrays.asList(1, 2, 3))
 
-        var obj = new AmfClass()
+        val obj = new AmfClass()
         obj.put("aa4", "Hello")
         obj.put("aa5", 123)
         obj.put("aa6", arr)
@@ -247,5 +247,41 @@ class TestRefs extends FunSuite
         assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, obj5)), buf5))
         assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj6)), buf6))
         assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj7)), buf7))
+    }
+
+    test("test emtpy objects and arrays")
+    {
+        val obj1 = new AmfClass(); obj1.put("room", "R1")
+        val obj2 = new AmfClass()
+        val obj3 = new AmfClass(); obj3.put("room", "R2")
+        val obj4 = new AmfClass()
+        val obj5 = new AmfClass()
+        val arr6 = new ArrayList(Arrays.asList(1, 2, 3))
+        val arr7 = new ArrayList(Arrays.asList())
+        val arr8 = new ArrayList(Arrays.asList())
+
+        val arr = new ArrayList(Arrays.asList(obj1, obj2, obj3, obj4, obj5, arr6, arr7, arr8))
+
+        val buf = BufUtils.mkb(List(0x9, 0x11, 0x1,
+            0xa, 0xb, 0x1, // obj1
+            0x9, 0x72, 0x6f, 0x6f, 0x6d, // room
+            0x6, 0x5, 0x52, 0x31, // R1
+            0x1,
+            0xa, 0x1, 0x1, // obj2, empty
+            0xa, 0x1, // obj3
+            0x0, // ref to room
+            0x6, 0x5, 0x52, 0x32, // R2
+            0x1,
+            0xa, 0x1, 0x1, // obj4 empty
+            0xa, 0x1, 0x1, // obj5 empty
+            0x9, 0x7, 0x1, 0x4, 0x1, 0x4, 0x2, 0x4, 0x3, // [1,2,3]
+            0x9, 0x1, 0x1, // empty array
+            0x9, 0x1, 0x1  // empty array
+        ))
+
+        val (AmfType.ARRAY, res) = Amf.decode(buf)
+        assert(arr.equals(res))
+
+        assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, arr)), buf))
     }
 }

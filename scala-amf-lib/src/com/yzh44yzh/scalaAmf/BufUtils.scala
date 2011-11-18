@@ -51,7 +51,7 @@ object BufUtils
             val s1 = if(buf1.hasRemaining) buf1.get.toHexString else "-"
             val s2 = if(buf2.hasRemaining) buf2.get.toHexString else "-"
             if(s1.equals(s2)) res += "=" else res += "#"
-            res += s1 + " : " + s2 + "\n"
+            res += s1 + " : " + s2 + " "
         }
 
         res

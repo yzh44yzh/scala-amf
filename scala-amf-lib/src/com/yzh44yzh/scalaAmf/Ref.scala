@@ -1,10 +1,11 @@
 package com.yzh44yzh.scalaAmf
 
+import java.util.{ArrayList, Date, HashMap}
+
 /**
  * @author Yura Zhloba <yzh44yzh@gmail.com>
  */
 
-import java.util.{Date, HashMap}
 
 class Ref
 {
@@ -21,6 +22,9 @@ class TRef[T]
     private val cache1 = new HashMap[Int, T]
     private val cache2 = new HashMap[T, Int]
 
+    private val emptyObj = new AmfClass
+    private val emptyArr = new ArrayList
+
     def store(value : T) : Int = {
         val id = nextId
         nextId += 1
@@ -31,7 +35,13 @@ class TRef[T]
 
     def get(id : Int) : T = cache1.get(id)
 
-    def hasValue(value : T) : Boolean = cache2.containsKey(value)
+    def hasValue(value : T) : Boolean =
+    {
+        if(emptyObj.equals(value)) return false
+        if(emptyArr.equals(value)) return false
+        
+        cache2.containsKey(value)
+    }
 
     def getKey(value : T) : Int = cache2.get(value)
 }
