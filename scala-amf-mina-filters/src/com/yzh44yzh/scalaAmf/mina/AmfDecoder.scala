@@ -23,7 +23,6 @@ class AmfDecoder extends ProtocolDecoder
         {
             log.debug(" %%% decode {}", in.limit)
             log.debug(BufUtils.toString(in, true))
-            log.debug(BufUtils.toString(in, false))
         }
 
         val cache: IoBuffer = session.getAttribute("ioCache").asInstanceOf[IoBuffer]
