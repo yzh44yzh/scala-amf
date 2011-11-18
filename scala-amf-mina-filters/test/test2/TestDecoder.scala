@@ -1,4 +1,4 @@
-package test
+package test2
 
 /**
  * @author Yura Zhloba <yzh44yzh@gmail.com>
@@ -29,15 +29,47 @@ class TestDecoder extends FunSuite
 
         assert(buf.limit == 73)
 
-        val decoder = new AmfDecoder()
-        val (data : AmfClass, null) = decoder.getData(buf, null)
+        val res = new AmfDecoder().getData(buf, null)
+        val data : AmfClass = res._1
+        val newCache : IoBuffer = res._2
 
+        assert(newCache == null)
         assert(data.get("q").equals(9))
         assert(data.get("a").equals("autoLogin"))
 
         val d = data.get("d").asInstanceOf[LinkedHashMap[String, Any]]
         assert(d.get("uid").equals("d5b0ef4c8c51f303ecbaed81a6e078c5"))
         assert(d.get("hasCam").equals(true))
+    }
+
+    test("test short message again")
+    {
+        // {a=connect, d={appType=chat, sid=0, fromDomain=http://chat71/}, q=1}
+        val buf = BufUtils.mkb(List(
+                0x0A, 0x0B, 0x01, 0x03, 0x61, 0x06, 0x0F, 0x63,
+                0x6F, 0x6E, 0x6E, 0x65, 0x63, 0x74, 0x03, 0x64,
+                0x0A, 0x01, 0x0F, 0x61, 0x70, 0x70, 0x54, 0x79,
+                0x70, 0x65, 0x06, 0x09, 0x63, 0x68, 0x61, 0x74,
+                0x07, 0x73, 0x69, 0x64, 0x04, 0x00, 0x15, 0x66,
+                0x72, 0x6F, 0x6D, 0x44, 0x6F, 0x6D, 0x61, 0x69,
+                0x6E, 0x06, 0x1D, 0x68, 0x74, 0x74, 0x70, 0x3A,
+                0x2F, 0x2F, 0x63, 0x68, 0x61, 0x74, 0x37, 0x31,
+                0x2F, 0x01, 0x03, 0x71, 0x04, 0x01, 0x01, 0x00))
+
+        assert(buf.limit == 72)
+
+        val res = new AmfDecoder().getData(buf, null)
+        val data : AmfClass = res._1
+        val newCache : IoBuffer = res._2
+
+        assert(newCache == null)
+        assert(data.get("a").equals("connect"))
+        assert(data.get("q").equals(1))
+
+        val d = data.get("d").asInstanceOf[LinkedHashMap[String, Any]]
+        assert(d.get("appType").equals("chat"))
+        assert(d.get("sid").equals(0))
+        assert(d.get("fromDomain").equals("http://chat71/"))
     }
 
     test("test long message")
@@ -61,10 +93,12 @@ class TestDecoder extends FunSuite
 
 		assert(in1.limit == 64)
 
-		val decoder = new AmfDecoder()
-        val (null, cache : IoBuffer) = decoder.getData(in1, null)
+        var res = new AmfDecoder().getData(in1, null)
+        var data : AmfClass = res._1
+        var newCache : IoBuffer = res._2
 
-		assert(BufUtils.eq(in1, cache))
+        assert(data == null)
+		assert(BufUtils.eq(in1, newCache))
 
 		/*
 		m a g e E x t e n t i o n 0x11,
@@ -97,7 +131,9 @@ class TestDecoder extends FunSuite
 
 		assert(in2.limit == 103)
 
-        val (data : AmfClass, null) = decoder.getData(in2, cache)
+        res = new AmfDecoder().getData(in2, newCache)
+        data = res._1
+        newCache = res._2
 
 		/*
 		{d={message={content= hello world , whisper=false, imageID=, receiverID=null, senderID=1, youTubeLink=,
@@ -107,6 +143,7 @@ class TestDecoder extends FunSuite
 		 a=sendMessage}
 		 */
 
+        assert(newCache == null)
 		assert(data.get("q").equals(22))
 		assert(data.get("a").equals("sendMessage"))
 
@@ -153,10 +190,12 @@ class TestDecoder extends FunSuite
 
 		assert(in1.limit == 128)
 
-		val decoder = new AmfDecoder()
-        val (null, cache : IoBuffer) = decoder.getData(in1, null)
+        var res = new AmfDecoder().getData(in1, null)
+        var data : AmfClass = res._1
+        var newCache : IoBuffer = res._2
 
-		assert(BufUtils.eq(in1, cache))
+        assert(data == null)
+		assert(BufUtils.eq(in1, newCache))
 
 		/*
 		 6 d 20 a s d f 20 6 3 1 d
@@ -170,7 +209,9 @@ class TestDecoder extends FunSuite
 
 		assert(in2.limit == 32)
 
-        val (data : AmfClass, null) = decoder.getData(in2, cache)
+        res = new AmfDecoder().getData(in2, newCache)
+        data = res._1
+        newCache = res._2
 
 		/*
 		{d={message={content= asdf , whisper=false, imageID=, receiverID=null, senderID=1, youTubeLink=,
@@ -180,6 +221,7 @@ class TestDecoder extends FunSuite
 		 a=sendMessage}
 		 */
 
+        assert(newCache == null)
 		assert(data.get("q").equals(22))
 		assert(data.get("a").equals("sendMessage"))
 

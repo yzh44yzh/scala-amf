@@ -30,8 +30,8 @@ private object AmfObject
         {
             // NOTE: for some unknown reason flash client uses wrong refs for Objects
             // I have to fix it by subtracting 1
-            // ref.dates.get(code >> 1).asInstanceOf[AmfClass]
-            return ref.objects.get((code >> 1) - 1).asInstanceOf[AmfClass]
+            val id = (code >> 1) - 1
+            return ref.objects.get(id).asInstanceOf[AmfClass]
         }
 
         var className = ""
@@ -61,8 +61,7 @@ private object AmfObject
             val id = ref.objects.getKey(obj)
             // NOTE: for some unknown reason flash client uses wrong refs for Objects
             // I have to fix it by adding 1
-            // buf.put(id << 1).toByte)
-            buf.put(((id + 1) << 1).toByte)
+            AmfInt.write(buf, (id + 1) << 1)
         }
         else
         {

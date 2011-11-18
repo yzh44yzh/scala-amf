@@ -16,8 +16,8 @@ private object AmfArray
         {
             // NOTE: for some unknown reason flash client uses wrong refs for Array
             // I have to fix it by subtracting 1
-            // ref.dates.get(code >> 1).asInstanceOf[ArrayList[Any]]
-            return ref.objects.get((code >> 1) - 1).asInstanceOf[ArrayList[Any]]
+            val id = (code >> 1) - 1
+            return ref.objects.get(id).asInstanceOf[ArrayList[Any]]
         }
 
         val len = (code >> 1)
@@ -45,8 +45,7 @@ private object AmfArray
             val id = ref.objects.getKey(list)
             // NOTE: for some unknown reason flash client uses wrong refs for Array
             // I have to fix it by adding 1
-            // buf.put(id << 1).toByte)
-            buf.put(((id + 1) << 1).toByte)
+            AmfInt.write(buf, (id + 1) << 1)
         }
         else
         {

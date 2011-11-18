@@ -39,7 +39,7 @@ object Amf
 
     def encode(value : (AmfType, Any)) : IoBuffer =
     {
-        val buf = IoBuffer.allocate(64).setAutoExpand(true)
+        val buf = IoBuffer.allocate(128).setAutoExpand(true)
         val ref = new Ref
 
         encode(buf, value, ref)

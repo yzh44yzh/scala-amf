@@ -18,7 +18,8 @@ private object AmfString
 
         if((code & 1) == 0)
         {
-            ref.strings.get(code >> 1).asInstanceOf[String]
+            val id = code >> 1
+            ref.strings.get(id).asInstanceOf[String]
         }
         else
         {
@@ -41,7 +42,7 @@ private object AmfString
         if(ref.strings.hasValue(str))
         {
             val id = ref.strings.getKey(str)
-            buf.put((id << 1).toByte)
+            AmfInt.write(buf, id << 1)
         }
         else
         {
