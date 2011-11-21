@@ -65,4 +65,25 @@ class TestAmfDate extends FunSuite
         val str = BufUtils.diff(Amf.encode((AmfType.ARRAY, arr)), buf)
         assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, arr)), buf))
     }
+
+    test("null dates")
+    {
+        val dt1 = null
+        val dt2 = null
+
+        val w1 = new IdentityWrapper(dt1)
+        val w2 = new IdentityWrapper(dt2)
+
+        assert(!w1.equals(w2))
+
+        val arr = new ArrayList(Arrays.asList(dt1, dt2))
+
+        val buf: IoBuffer = BufUtils.mkb(List(0x9, 0x5, 0x1, 0x1, 0x1))
+
+        val (AmfType.ARRAY, res) = Amf.decode(buf)
+        assert(arr.equals(res))
+
+        val str = BufUtils.diff(Amf.encode((AmfType.ARRAY, arr)), buf)
+        assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, arr)), buf))
+    }
 }

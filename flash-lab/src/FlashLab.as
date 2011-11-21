@@ -64,8 +64,8 @@ public class FlashLab extends Sprite
 
         // var arr : Array = [ {room:"R1"}, {}, {room:"R2"}, {}, {}, [1,2,3], [], [] ];
 
-        var d1 : Date = new Date();
-        var d2 : Date = new Date();
+        var d1 : Date = null;
+        var d2 : Date = null;
         var arr : Array = [d1, d2];
 
         var buf : ByteArray = new ByteArray();

@@ -45,8 +45,12 @@ class IdentityWrapper(val obj : Any)
 
     override def equals(other : Any): Boolean =
     {
+        if(obj == null) return false
+        if(other == null) return false
+
         if(other.isInstanceOf[IdentityWrapper])
         {
+            if(other.asInstanceOf[IdentityWrapper].obj == null) return false
             return other.asInstanceOf[IdentityWrapper].hashCode == hashCode
         }
         false
