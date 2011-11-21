@@ -34,7 +34,11 @@ class TRef[T]
 
     def get(id : Int) : T = cache1.get(id).asInstanceOf[IdentityWrapper].obj.asInstanceOf[T]
 
-    def hasValue(value : T) : Boolean = cache2.containsKey(new IdentityWrapper(value))
+    def hasValue(value : T) : Boolean =
+    {
+        if(value == null) return false
+        cache2.containsKey(new IdentityWrapper(value))
+    }
 
     def getKey(value : T) : Int = cache2.get(new IdentityWrapper(value))
 }
