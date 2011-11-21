@@ -40,9 +40,11 @@ class AmfDecoder extends ProtocolDecoder
         // do nothing
     }
 
-    def dispose(ioSession: IoSession)
+    def dispose(session: IoSession)
     {
-        // do nothing
+        val cache = session.getAttribute("ioCache")
+        if(cache != null) cache.asInstanceOf[IoBuffer].clear()
+        session.removeAttribute("ioCache")
     }
 
     def getData(in: IoBuffer, cache: IoBuffer): (AmfClass, IoBuffer) =

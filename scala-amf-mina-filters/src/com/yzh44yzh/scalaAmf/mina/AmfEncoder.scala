@@ -51,8 +51,10 @@ class AmfEncoder extends ProtocolEncoder
         }
     }
 
-    def dispose(ioSession: IoSession)
+    def dispose(session: IoSession)
     {
-        // do nothing
+        val cache = session.getAttribute("ioCache")
+        if(cache != null) cache.asInstanceOf[IoBuffer].clear()
+        session.removeAttribute("ioCache")
     }
 }
