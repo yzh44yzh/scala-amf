@@ -69,10 +69,45 @@ public class FlashLab extends Sprite
         var arr : Array = [d1, d2];
 
         var buf : ByteArray = new ByteArray();
-        buf.writeObject(arr);
+        buf.writeObject(getHistory());
 
         showBuf(buf);
     }
+
+	private function getHistory() : Object
+	{
+		var sender : Object = {};
+		sender.id = "1";
+		sender.name = "Bob";
+		sender.gender = "male";
+		sender._subscribePermissions = {};
+
+		var msg1 : Object = {};
+		msg1.senderID = "1";
+		msg1.receiverID = "";
+		msg1.content = "Hello";
+		msg1.date = new Date();
+
+		var history1 : Object = {};
+		history1.message = msg1;
+		history1.sender = sender;
+
+		var msg2 : Object = {};
+		msg2.senderID = "1";
+		msg2.receiverID = "";
+		msg2.content = "Hi";
+		msg2.date = new Date();
+
+		var history2 : Object = {};
+		history2.message = msg2;
+		history2.sender = sender;
+
+		var res : Object = {};
+		res.history = [history1, history2];
+		res.roomID = "room1";
+
+		return res;
+	}
 
     private function showNum(num : Number) : void
     {

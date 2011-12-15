@@ -59,16 +59,14 @@ private object AmfObject
         if(ref.objects.hasValue(obj))
         {
             val id = ref.objects.getKey(obj)
-            // NOTE: for some unknown reason flash client uses wrong refs for Objects
-            // I have to fix it by adding 1
-            AmfInt.write(buf, (id + 1) << 1)
+            AmfInt.write(buf, id << 1)
         }
         else
         {
+			ref.objects.store(obj)
+
             if(obj.className.equals("")) writeNameValuePairs(buf, obj, ref)
             else writeNamesThanValues(buf, obj, ref)
-
-            ref.objects.store(obj)
         }
 
         buf

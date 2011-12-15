@@ -43,20 +43,18 @@ private object AmfArray
         if(ref.objects.hasValue(list))
         {
             val id = ref.objects.getKey(list)
-            // NOTE: for some unknown reason flash client uses wrong refs for Array
-            // I have to fix it by adding 1
-            AmfInt.write(buf, (id + 1) << 1)
+            AmfInt.write(buf, id << 1)
         }
         else
         {
+			ref.objects.store(list)
+
             val len = list.size
             AmfInt.write(buf, len << 1 | 1)
             AmfString.write(buf, "", ref)
 
             val it = list.iterator()
             while(it.hasNext) Amf.encodeAny(buf, it.next(), ref)
-
-            ref.objects.store(list)
         }
 
         buf
