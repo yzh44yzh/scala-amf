@@ -8,11 +8,11 @@ import java.util.LinkedHashMap
 
 object AmfType extends Enumeration
 {
-    type AmfType = Value
-    val NULL, BOOL, INT, DOUBLE, STRING, DATE, ARRAY, OBJECT, BYTEARRAY = Value
+	type AmfType = Value
+	val NULL, BOOL, INT, DOUBLE, STRING, DATE, ARRAY, OBJECT, BYTEARRAY = Value
 }
 
 class AmfClass extends LinkedHashMap[String, Any]
 {
-    var className : String = "";
+	var className : String = "";
 }

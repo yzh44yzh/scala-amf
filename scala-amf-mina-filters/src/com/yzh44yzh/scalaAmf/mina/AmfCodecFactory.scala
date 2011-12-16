@@ -11,16 +11,16 @@ import org.apache.mina.filter.codec.ProtocolEncoder
 
 class AmfCodecFactory extends ProtocolCodecFactory
 {
-    private val encoder = new AmfEncoder
-    private val decoder = new AmfDecoder
+	private val encoder = new AmfEncoder
+	private val decoder = new AmfDecoder
 
-    def getEncoder(ioSession: IoSession): ProtocolEncoder =
-    {
-        encoder
-    }
+	def getEncoder(ioSession : IoSession) : ProtocolEncoder =
+	{
+		encoder
+	}
 
-    def getDecoder(ioSession: IoSession): ProtocolDecoder =
-    {
-        decoder
-    }
+	def getDecoder(ioSession : IoSession) : ProtocolDecoder =
+	{
+		decoder
+	}
 }
