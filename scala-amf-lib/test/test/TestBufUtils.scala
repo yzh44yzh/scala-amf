@@ -10,9 +10,9 @@ import org.apache.mina.core.buffer.IoBuffer
 
 class TestBufUtils extends FunSuite
 {
-    test("make buffer from List")
+    test("make buffer")
     {
-        val buf = BufUtils.mkb(List(1, 2, 3))
+        val buf = BufUtils.mkb(1, 2, 3)
         assert(buf.capacity() == 64)
         assert(buf.get === 1)
         assert(buf.get === 2)
@@ -37,10 +37,10 @@ class TestBufUtils extends FunSuite
 
     test("equals")
     {
-        val buf1 = BufUtils.mkb(List(1, 2, 3, 4))
-        val buf2 = BufUtils.mkb(List(1, 2, 3, 4))
-        val buf3 = BufUtils.mkb(List(1, 2, 3, 4, 5))
-        val buf4 = BufUtils.mkb(List(1, 2, 5))
+        val buf1 = BufUtils.mkb(1, 2, 3, 4)
+        val buf2 = BufUtils.mkb(1, 2, 3, 4)
+        val buf3 = BufUtils.mkb(1, 2, 3, 4, 5)
+        val buf4 = BufUtils.mkb(1, 2, 5)
         assert(BufUtils.eq(buf1, buf2))
         assert(!BufUtils.eq(buf1, buf3))
         assert(!BufUtils.eq(buf1, buf4))

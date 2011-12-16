@@ -22,7 +22,7 @@ class TestRefs extends FunSuite
         obj
     }
     val obj1 = createObj1()
-    val buf1 = BufUtils.mkb(List(0xa, 0xb,
+    val buf1 = BufUtils.mkb(0xa, 0xb,
             0x1,
             0xb, 0x64, 0x61, 0x74, 0x65, 0x34, // date4
             0x08, 0x01, 0x42, 0x67, 0x0a, -0x79, 0x31, -0x80, 0x00, 0x0,
@@ -33,7 +33,7 @@ class TestRefs extends FunSuite
             0xb, 0x64, 0x61, 0x74, 0x65, 0x33, // date3
             0x8, 0x4, // ref to Thu Feb
             0x1
-    ))
+    )
 
 
     // ref for Strings
@@ -46,7 +46,7 @@ class TestRefs extends FunSuite
         obj
     }
     val obj2 = createObj2()
-    val buf2 = BufUtils.mkb(List(0xa, 0xb,
+    val buf2 = BufUtils.mkb(0xa, 0xb,
             0x1,
             0x9, 0x73, 0x74, 0x72, 0x32, // str2
             0x6, 0xb, 0x57, 0x6f, 0x72, 0x6c, 0x64, // World
@@ -57,7 +57,7 @@ class TestRefs extends FunSuite
             0x9, 0x73, 0x74, 0x72, 0x33, // str3
             0x6, 0x6, // ref to Hello
             0x1
-    ))
+    )
 
     
     // ref for Arrays
@@ -73,7 +73,7 @@ class TestRefs extends FunSuite
         obj
     }
     val obj3 = createObj3()
-    val buf3 = BufUtils.mkb(List(0xa, 0xb,
+    val buf3 = BufUtils.mkb(0xa, 0xb,
         0x1,
         0x9, 0x61, 0x72, 0x72, 0x32, // arr2
         0x9, 0x7, 0x1, 0x4, 0x1, 0x4, 0x2, 0x4, 0x3, // [1,2,3]
@@ -86,7 +86,7 @@ class TestRefs extends FunSuite
         0x9, 0x61, 0x72, 0x72, 0x35, // arr5
         0x9, 0x4, // ref to arr2
         0x1
-    ))
+    )
 
 
     // ref for Objects
@@ -100,7 +100,7 @@ class TestRefs extends FunSuite
         new ArrayList(Arrays.asList(obj1, obj2, obj2, obj1))
     }
     val obj4 = createObj4()
-    val buf4 = BufUtils.mkb(List(0x9, 0x9, 0x1,
+    val buf4 = BufUtils.mkb(0x9, 0x9, 0x1,
         0xa, 0xb, // obj1
             0x1,
             0x3, 0x61, 0x4, 0x1, // a:1
@@ -113,7 +113,7 @@ class TestRefs extends FunSuite
             0x1,
         0xa, 0x4, // ref to obj2
         0xa, 0x2 // ref to obj1
-    ))
+    )
 
     // ref for Arrays
     def createObj5() : ArrayList[Any] = {
@@ -122,13 +122,13 @@ class TestRefs extends FunSuite
         new ArrayList(Arrays.asList(arr1, arr2, arr1, arr1, arr2))
     }
     val obj5 = createObj5()
-    val buf5 = BufUtils.mkb(List(0x9, 0xb, 0x1,
+    val buf5 = BufUtils.mkb(0x9, 0xb, 0x1,
         0x9, 0x7, 0x1, 0x4, 0x1, 0x4, 0x2, 0x4, 0x3, // arr1
         0x9, 0x7, 0x1, 0x4, 0x4, 0x4, 0x5, 0x4, 0x6, // arr2
         0x9, 0x2, // ref to arr1
         0x9, 0x2, // ref to arr1
         0x9, 0x4 // ref to arr2
-    ))
+    )
 
 
     def createObj6() : AmfClass = {
@@ -148,7 +148,7 @@ class TestRefs extends FunSuite
         obj
     }
     val obj6 = createObj6()
-    val buf6 = BufUtils.mkb(List(0xa, 0xb, 0x1,
+    val buf6 = BufUtils.mkb(0xa, 0xb, 0x1,
         0x7, 0x61, 0x61, 0x32, // aa2
         0xa, 0x1,
             0x7, 0x62, 0x62, 0x62, // bbb
@@ -168,7 +168,7 @@ class TestRefs extends FunSuite
         0x7, 0x61, 0x61, 0x31, // aa1
         0xa, 0x2, // ref to obj1
         0x1
-    ))
+    )
 
 
     def createObj7() : AmfClass = {
@@ -190,7 +190,7 @@ class TestRefs extends FunSuite
         obj
     }
     val obj7 = createObj7()
-    val buf7 = BufUtils.mkb(List(0xa, 0xb, 0x1,
+    val buf7 = BufUtils.mkb(0xa, 0xb, 0x1,
         0x7, 0x61, 0x61, 0x34, // aa4
         0x6, 0xb, 0x48, 0x65, 0x6c, 0x6c, 0x6f, // Hello
         0x7, 0x61, 0x61, 0x35, // aa5
@@ -213,7 +213,7 @@ class TestRefs extends FunSuite
         0x7, 0x61, 0x61, 0x33, // aa3
         0xa, 0x4, // ref to obj1
         0x1
-    ))
+    )
 
 
     test("decode objects")
@@ -264,7 +264,7 @@ class TestRefs extends FunSuite
 
         val arr = new ArrayList(Arrays.asList(obj1, obj2, obj3, obj4, obj5, arr6, arr7, arr8))
 
-        val buf = BufUtils.mkb(List(0x9, 0x11, 0x1,
+        val buf = BufUtils.mkb(0x9, 0x11, 0x1,
             0xa, 0xb, 0x1, // obj1
             0x9, 0x72, 0x6f, 0x6f, 0x6d, // room
             0x6, 0x5, 0x52, 0x31, // R1
@@ -279,7 +279,7 @@ class TestRefs extends FunSuite
             0x9, 0x7, 0x1, 0x4, 0x1, 0x4, 0x2, 0x4, 0x3, // [1,2,3]
             0x9, 0x1, 0x1, // empty array
             0x9, 0x1, 0x1  // empty array
-        ))
+        )
 
         val (AmfType.ARRAY, res) = Amf.decode(buf)
         assert(arr.equals(res))

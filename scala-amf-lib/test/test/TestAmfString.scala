@@ -12,10 +12,10 @@ import java.io.{FileInputStream, File}
 class TestAmfString extends FunSuite
 {
     val str1 = "Hello :)"
-    val buf1 = BufUtils.mkb(List(0x06, 0x11, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x20, 0x3a, 0x29))
+    val buf1 = BufUtils.mkb(0x06, 0x11, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x20, 0x3a, 0x29)
 
     val str2 = ""
-    val buf2 = BufUtils.mkb(List(0x06, 0x1))
+    val buf2 = BufUtils.mkb(0x06, 0x1)
 
     val str3: String = "Ever look at a testing problem and wonder how to solve it? " +
             "If so you know what it feels like to lack domain expertise. Sometimes this is user-oriented knowledge. " +

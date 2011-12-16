@@ -8,7 +8,7 @@ import org.apache.mina.core.buffer.IoBuffer
 
 object BufUtils
 {
-    def mkb(bytes : List[Byte]) : IoBuffer =
+    def mkb(bytes : Byte*) : IoBuffer =
     {
         val buf = IoBuffer.allocate(64).setAutoExpand(true)
         for(byte <- bytes) buf.put(byte)
