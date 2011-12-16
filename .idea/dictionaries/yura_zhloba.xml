@@ -1,7 +1,16 @@
 <component name="ProjectDictionaryState">
   <dictionary name="yura.zhloba">
     <words>
+      <w>antlib</w>
       <w>bytearray</w>
+      <w>codec</w>
+      <w>dartifact</w>
+      <w>dfile</w>
+      <w>dgenerate</w>
+      <w>dgroup</w>
+      <w>dpackaging</w>
+      <w>dversion</w>
+      <w>scala</w>
       <w>xmldoc</w>
     </words>
   </dictionary>
