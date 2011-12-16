@@ -71,24 +71,28 @@ public class FlashLab extends Sprite
         var obj : Object = {arr:arr, d:d, o1:o1, dref:d, o1ref:o1, o2:o2, o2ref:o2, arrref:arr};
 
         var buf : ByteArray = new ByteArray();
-        buf.writeObject(obj);
+        buf.writeObject(getHistory());
 
         showBuf(buf);
     }
 
 	private function getHistory() : Object
 	{
+		var d1 : Date = new Date();
+		var d2 : Date = new Date();
+		var sp : Object = {};
+
 		var sender : Object = {};
 		sender.id = "1";
 		sender.name = "Bob";
 		sender.gender = "male";
-		sender._subscribePermissions = {};
+		sender._subscribePermissions = sp;
 
 		var msg1 : Object = {};
 		msg1.senderID = "1";
 		msg1.receiverID = "";
 		msg1.content = "Hello";
-		msg1.date = new Date();
+		msg1.date = d1;
 
 		var history1 : Object = {};
 		history1.message = msg1;
@@ -98,15 +102,20 @@ public class FlashLab extends Sprite
 		msg2.senderID = "1";
 		msg2.receiverID = "";
 		msg2.content = "Hi";
-		msg2.date = new Date();
+		msg2.date = d2;
 
 		var history2 : Object = {};
 		history2.message = msg2;
 		history2.sender = sender;
 
+		var arr : Array = [history1, history2];
+
 		var res : Object = {};
-		res.history = [history1, history2];
+		res.history = arr;
 		res.roomID = "room1";
+
+		// to check refs
+		res.refs = [d1, d2, sp, sender, msg1, msg2, history1, history2, arr];
 
 		return res;
 	}

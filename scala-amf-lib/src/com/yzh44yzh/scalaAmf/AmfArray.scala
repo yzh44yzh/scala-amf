@@ -14,18 +14,18 @@ private object AmfArray
         val code = AmfInt.read(buf)
         if((code & 1) == 0)
         {
-            // NOTE: for some unknown reason flash client uses wrong refs for Array
-            // I have to fix it by subtracting 1
-            val id = (code >> 1) - 1
+            val id = code >> 1
             return ref.objects.get(id).asInstanceOf[ArrayList[Any]]
         }
 
-        val len = (code >> 1)
+        val len = code >> 1
 
         val key = AmfString.read(buf, ref)
         if(!key.equals("")) throw new Exception("associative arrays are not supported")
 
         var result = new ArrayList[Any]
+		ref.objects.store(result)
+
         var i = 0;
         while(i < len)
         {
@@ -34,7 +34,6 @@ private object AmfArray
             i += 1
         }
 
-        ref.objects.store(result)
         result
     }
 

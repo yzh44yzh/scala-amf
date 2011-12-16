@@ -15,9 +15,7 @@ private object AmfDate
 
         if((code & 1) == 0)
         {
-            // NOTE: for some unknown reason flash client uses wrong refs for Date
-            // I have to fix it by subtracting 1
-            val id = (code >> 1) - 1
+            val id = code >> 1
             ref.objects.get(id).asInstanceOf[Date]
         }
         else

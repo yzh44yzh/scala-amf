@@ -28,9 +28,7 @@ private object AmfObject
 
         if((code & 1) == 0)
         {
-            // NOTE: for some unknown reason flash client uses wrong refs for Objects
-            // I have to fix it by subtracting 1
-            val id = (code >> 1) - 1
+            val id = code >> 1
             return ref.objects.get(id).asInstanceOf[AmfClass]
         }
 
@@ -50,7 +48,6 @@ private object AmfObject
         }
 
         result.className = className
-        ref.objects.store(result)
         result
     }
 
@@ -74,6 +71,7 @@ private object AmfObject
 
     def readNamesThanValues(numFields : Int, buf : IoBuffer, ref : Ref) : AmfClass = {
         val result = new AmfClass
+		ref.objects.store(result)
 
         val arr = new Array[String](numFields);
         for(i <- 0 until numFields)
@@ -115,6 +113,7 @@ private object AmfObject
 
     def readNameValuePairs(buf : IoBuffer, ref : Ref) : AmfClass = {
         val result = new AmfClass
+		ref.objects.store(result)
 
         var moreProperties = true
         while(moreProperties)
