@@ -42,7 +42,6 @@ class TestComplexData extends FunSuite
 									   0x1, // end of history object 1
 									   0xa, 0x1, // history object 2
 									   0x2, // ref to string "sender"
-									   // BUG here: flash gives 0xa 0x6 server gives 0xa 0x4
 									   0xa, 0x6, // ref to sender object
 									   0x12, // ref to string "message"
 									   0xa, 0x1, // message object 2
@@ -90,12 +89,12 @@ class TestComplexData extends FunSuite
 		history.add(history1)
 		history.add(history2)
 
-		val res = new AmfClass
-		res.put("history", history)
-		res.put("roomID", "room1")
+		val obj = new AmfClass
+		obj.put("history", history)
+		obj.put("roomID", "room1")
 
-		val resBuf = Amf.encode((AmfType.OBJECT, res))
-		// println(BufUtils.diff(resBuf, buf))
-		assert(BufUtils.eq(resBuf, buf))
+		// val (AmfType.OBJECT, res) = Amf.decode(buf)
+		// assert(obj.equals(res))
+		assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj)), buf))
 	}
 }

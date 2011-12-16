@@ -1,6 +1,6 @@
 package com.yzh44yzh.scalaAmf
 
-import java.util.{ArrayList, Date, HashMap}
+import java.util.HashMap
 
 /**
  * @author Yura Zhloba <yzh44yzh@gmail.com>
@@ -9,7 +9,6 @@ import java.util.{ArrayList, Date, HashMap}
 
 class Ref
 {
-    val dates = new TRef[Date]
     val strings = new TRef[String]
     val objects = new TRef[Any]
 

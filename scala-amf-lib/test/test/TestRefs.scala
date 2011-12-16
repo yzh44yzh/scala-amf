@@ -267,4 +267,63 @@ class TestRefs extends FunSuite
         assert(arr.equals(res))
         assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, arr)), buf))
     }
+
+	test("mixed arrays, objects and dates")
+	{
+		val d = new Date(791687040000L) // Sun Nov 14 22:44:00 GMT+0200 2010
+		
+		val o1 = new AmfClass()
+		o1.put("a", 1)
+		o1.put("b", 2)
+		
+		val o2 = new AmfClass()
+		o2.put("a", 3)
+		o2.put("b", 4)
+
+		val arr = new ArrayList(Arrays.asList(1, 2, 3))
+		
+		val obj = new AmfClass
+		obj.put("dref", d)
+		obj.put("o1", o1)
+		obj.put("o2", o2)
+		obj.put("arr", arr)
+		obj.put("d", d)
+		obj.put("o2ref", o2)
+		obj.put("arrref", arr)
+		obj.put("o1ref", o1)
+
+		val buf = BufUtils.mkb(0xa, 0xb, 0x1,
+								  0x9, 0x64, 0x72, 0x65, 0x66, // "dref"
+								  0x08, 0x01, 0x42, 0x67, 0x0a, -0x79, 0x31, -0x80, 0x00, 0x0, // date value
+								  0x5, 0x6f, 0x31, // "o1"
+								  0xa, 0x1, // obj o1
+									  0x3, 0x61, // "a"
+									  0x4, 0x1, 0x3, // a:1
+									  0x62, // "b"
+									  0x4, 0x2, // b:2
+								  0x1, // end obj o1
+								  0x5, 0x6f, 0x32, // "o2"
+								  0xa, 0x1, // obj o2
+									  0x4, // ref to "a"
+									  0x4, 0x3, // a:3
+									  0x6, // ref to "b"
+									  0x4, 0x4, // b:4
+								  0x1, // end obj o2
+								  0x7, 0x61, 0x72, 0x72, // "arr"
+								  0x9, 0x7, 0x1, 0x4, 0x1, 0x4, 0x2, 0x4, 0x3, // [1,2,3]
+								  0x3, 0x64, // "d"
+								  0x8, 0x2, // ref to dref
+								  0xb, 0x6f, 0x32, 0x72, 0x65, 0x66, // "o2ref"
+								  0xa, 0x6, // ref to obj o2
+								  0xd, 0x61, 0x72, 0x72, 0x72, 0x65, 0x66, // "arrref"
+								  0x9, 0x8, // ref to arr
+								  0xb, 0x6f, 0x31, 0x72, 0x65, 0x66, // "o1ref"
+								  0xa, 0x4, // ref to obj o1
+								  0x1)
+		// refs: 0x2 dref, 0x4 arr, 0x6 o2, 0x8 o1
+
+		val (AmfType.OBJECT, res) = Amf.decode(buf)
+		assert(obj.equals(res))
+		assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj)), buf))
+	}
 }

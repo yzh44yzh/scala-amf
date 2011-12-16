@@ -64,12 +64,14 @@ public class FlashLab extends Sprite
 
         // var arr : Array = [ {room:"R1"}, {}, {room:"R2"}, {}, {}, [1,2,3], [], [] ];
 
-        var d1 : Date = null;
-        var d2 : Date = null;
-        var arr : Array = [d1, d2];
+        var d : Date = new Date();
+		var o1 : Object = {a:1, b:2};
+		var o2 : Object = {a:3, b:4};
+		var arr : Array = [1,2,3];
+        var obj : Object = {arr:arr, d:d, o1:o1, dref:d, o1ref:o1, o2:o2, o2ref:o2, arrref:arr};
 
         var buf : ByteArray = new ByteArray();
-        buf.writeObject(getHistory());
+        buf.writeObject(obj);
 
         showBuf(buf);
     }
