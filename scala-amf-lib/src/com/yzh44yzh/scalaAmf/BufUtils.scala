@@ -17,15 +17,6 @@ object BufUtils
         buf
     }
 
-    def mkBufFromArray(bytes : Array[Byte]) : IoBuffer =
-    {
-        val buf = IoBuffer.allocate(64).setAutoExpand(true)
-        for(byte <- bytes) buf.put(byte)
-        buf.flip
-        buf.position(0)
-        buf
-    }
-
     def eq(buf1 : IoBuffer, buf2 : IoBuffer) : Boolean =
     {
         buf1.position(0)

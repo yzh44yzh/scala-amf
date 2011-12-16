@@ -39,7 +39,7 @@ class TestAmfString extends FunSuite
         val bytes = new Array[Byte](file.length toInt)
         val stream = new FileInputStream(file)
         stream.read(bytes)
-        BufUtils.mkBufFromArray(bytes)
+        BufUtils.mkb(bytes : _*)
     }
 
     test("decode string")

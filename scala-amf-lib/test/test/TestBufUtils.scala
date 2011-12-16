@@ -19,22 +19,6 @@ class TestBufUtils extends FunSuite
         assert(buf.get === 3)
     }
 
-    test("make buffer from Array")
-    {
-        val bytes = new Array[Byte](4)
-        bytes.update(0, 5)
-        bytes.update(1, 55)
-        bytes.update(2, 0xf)
-        bytes.update(3, -1)
-
-        val buf = BufUtils.mkBufFromArray(bytes)
-        assert(buf.capacity() == 64)
-        assert(buf.get === 5)
-        assert(buf.get === 55)
-        assert(buf.get === 0xf)
-        assert(buf.get === -1)
-    }
-
     test("equals")
     {
         val buf1 = BufUtils.mkb(1, 2, 3, 4)
