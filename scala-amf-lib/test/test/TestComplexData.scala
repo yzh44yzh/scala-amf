@@ -111,8 +111,7 @@ class TestComplexData extends FunSuite
 		obj.put("roomID", "room1")
 		obj.put("refs", new ArrayList(Arrays.asList(d1, d2, sp, sender, msg1, msg2, history1, history2, history)))
 
-		val (AmfType.OBJECT, res) = Amf.decode(buf)
-		assert(obj.equals(res))
-		assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj)), buf))
+		assert((AmfType.OBJECT, obj) === Amf.decode(buf))
+		assert(buf === Amf.encode((AmfType.OBJECT, obj)))
 	}
 }

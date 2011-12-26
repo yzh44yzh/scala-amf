@@ -33,9 +33,8 @@ class TestRefs extends FunSuite
 								  0x8, 0x4, // ref to Thu Feb
 								  0x1)
 
-		val (AmfType.OBJECT, res) = Amf.decode(buf)
-		assert(obj.equals(res))
-		assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj)), buf))
+		assert((AmfType.OBJECT, obj) === Amf.decode(buf))
+		assert(buf === Amf.encode((AmfType.OBJECT, obj)))
 	}
 
 	test("ref for Strings")
@@ -58,9 +57,8 @@ class TestRefs extends FunSuite
 								  0x6, 0x6, // ref to Hello
 								  0x1)
 
-		val (AmfType.OBJECT, res) = Amf.decode(buf)
-		assert(obj.equals(res))
-		assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj)), buf))
+		assert((AmfType.OBJECT, obj) === Amf.decode(buf))
+		assert(buf === Amf.encode((AmfType.OBJECT, obj)))
 	}
 
 	test("ref for Arrays in Object")
@@ -89,9 +87,8 @@ class TestRefs extends FunSuite
 								  0x9, 0x4, // ref to arr2
 								  0x1)
 
-		val (AmfType.OBJECT, res) = Amf.decode(buf)
-		assert(obj.equals(res))
-		assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj)), buf))
+		assert((AmfType.OBJECT, obj) === Amf.decode(buf))
+		assert(buf === Amf.encode((AmfType.OBJECT, obj)))
 	}
 
 	test("ref for Objects in Array")
@@ -120,9 +117,8 @@ class TestRefs extends FunSuite
 								  0xa, 0x4, // ref to obj2
 								  0xa, 0x2) // ref to obj1
 
-		val (AmfType.ARRAY, res) = Amf.decode(buf)
-		assert(obj.equals(res))
-		assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, obj)), buf))
+		assert((AmfType.ARRAY, obj) === Amf.decode(buf))
+		assert(buf === Amf.encode((AmfType.ARRAY, obj)))
 	}
 
 	test("ref for Arrays in Array")
@@ -139,9 +135,8 @@ class TestRefs extends FunSuite
 								  0x9, 0x2, // ref to arr1
 								  0x9, 0x4) // ref to arr2
 
-		val (AmfType.ARRAY, res) = Amf.decode(buf)
-		assert(obj.equals(res))
-		assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, obj)), buf))
+		assert((AmfType.ARRAY, obj) === Amf.decode(buf))
+		assert(buf === Amf.encode((AmfType.ARRAY, obj)))
 	}
 
 	test("refs for Objects in Object")
@@ -181,9 +176,8 @@ class TestRefs extends FunSuite
 								  0xa, 0x2, // ref to obj1
 								  0x1)
 
-		val (AmfType.OBJECT, res) = Amf.decode(buf)
-		assert(obj.equals(res))
-		assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj)), buf))
+		assert((AmfType.OBJECT, obj) === Amf.decode(buf))
+		assert(buf === Amf.encode((AmfType.OBJECT, obj)))
 	}
 
 	test("mixed refs")
@@ -228,9 +222,8 @@ class TestRefs extends FunSuite
 								  0xa, 0x4, // ref to obj1
 								  0x1)
 
-		val (AmfType.OBJECT, res) = Amf.decode(buf)
-		assert(obj.equals(res))
-		assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj)), buf))
+		assert((AmfType.OBJECT, obj) === Amf.decode(buf))
+		assert(buf === Amf.encode((AmfType.OBJECT, obj)))
 	}
 
 	test("test emtpy objects and arrays")
@@ -246,7 +239,7 @@ class TestRefs extends FunSuite
 		val arr7 = new ArrayList(Arrays.asList())
 		val arr8 = new ArrayList(Arrays.asList())
 
-		val arr = new ArrayList(Arrays.asList(obj1, obj2, obj3, obj4, obj5, arr6, arr7, arr8))
+		val obj = new ArrayList(Arrays.asList(obj1, obj2, obj3, obj4, obj5, arr6, arr7, arr8))
 
 		val buf = BufUtils.mkb(0x9, 0x11, 0x1,
 								  0xa, 0xb, 0x1, // obj1
@@ -265,9 +258,8 @@ class TestRefs extends FunSuite
 								  0x9, 0x1, 0x1 // empty array
 							  )
 
-		val (AmfType.ARRAY, res) = Amf.decode(buf)
-		assert(arr.equals(res))
-		assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, arr)), buf))
+		assert((AmfType.ARRAY, obj) === Amf.decode(buf))
+		assert(buf === Amf.encode((AmfType.ARRAY, obj)))
 	}
 
 	test("mixed arrays, objects and dates")
@@ -324,8 +316,7 @@ class TestRefs extends FunSuite
 								  0x1)
 		// refs: 0x2 dref, 0x4 arr, 0x6 o2, 0x8 o1
 
-		val (AmfType.OBJECT, res) = Amf.decode(buf)
-		assert(obj.equals(res))
-		assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj)), buf))
+		assert((AmfType.OBJECT, obj) === Amf.decode(buf))
+		assert(buf === Amf.encode((AmfType.OBJECT, obj)))
 	}
 }
