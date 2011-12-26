@@ -12,7 +12,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.nio.charset.Charset
 import java.nio.charset.CharsetEncoder
-import com.yzh44yzh.scalaAmf.{BufUtils, AmfClass, AmfType, Amf}
+import com.yzh44yzh.scalaAmf._
 
 class AmfEncoder extends ProtocolEncoder
 {
@@ -37,7 +37,7 @@ class AmfEncoder extends ProtocolEncoder
 		}
 		else if(msg.isInstanceOf[AmfClass])
 		{
-			val buf = Amf.encode((AmfType.OBJECT, msg))
+			val buf = Amf.encode(msg)
 			if(log.isDebugEnabled)
 			{
 				log.debug(BufUtils.toString(buf, true))

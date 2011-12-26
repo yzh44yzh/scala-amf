@@ -11,7 +11,7 @@ import org.apache.mina.filter.codec.ProtocolDecoderOutput
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.nio.BufferUnderflowException
-import com.yzh44yzh.scalaAmf.{Amf, AmfType, AmfClass, BufUtils}
+import com.yzh44yzh.scalaAmf._
 
 class AmfDecoder extends ProtocolDecoder
 {
@@ -67,8 +67,7 @@ class AmfDecoder extends ProtocolDecoder
 
 			try
 			{
-				val (AmfType.OBJECT, res) = Amf.decode(pkg)
-				data = res.asInstanceOf[AmfClass]
+				data = Amf.decode(pkg).asInstanceOf[AmfClass]
 			}
 			catch
 			{

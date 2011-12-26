@@ -16,8 +16,8 @@ class TestAmfDate extends FunSuite
 		val dt = new Date(1289767440000L)
 		val buf : IoBuffer = BufUtils.mkb(0x08, 0x01, 0x42, 0x72, -0x3c, -0x3e, 0x14, -0x18, 0x0, 0x0)
 
-		assert((AmfType.DATE, dt) === Amf.decode(buf))
-		assert(buf === Amf.encode((AmfType.DATE, dt)))
+		assert(dt === Amf.decode(buf))
+		assert(buf === Amf.encode(dt))
 	}
 
 	test("test Thu Feb 2 03:04:00 GMT+0200 1995")
@@ -25,8 +25,8 @@ class TestAmfDate extends FunSuite
 		val dt = new Date(791687040000L)
 		val buf : IoBuffer = BufUtils.mkb(0x08, 0x01, 0x42, 0x67, 0x0a, -0x79, 0x31, -0x80, 0x0, 0x0)
 
-		assert((AmfType.DATE, dt) === Amf.decode(buf))
-		assert(buf === Amf.encode((AmfType.DATE, dt)))
+		assert(dt === Amf.decode(buf))
+		assert(buf === Amf.encode(dt))
 	}
 
 	test("test Wed Jun 4 03:02:01 GMT+0200 1980")
@@ -34,8 +34,8 @@ class TestAmfDate extends FunSuite
 		val dt = new Date(328928521000L)
 		val buf : IoBuffer = BufUtils.mkb(0x08, 0x01, 0x42, 0x53, 0x25, 0x6a, -0x46, -0x36, 0x0, 0x0)
 
-		assert((AmfType.DATE, dt) === Amf.decode(buf))
-		assert(buf === Amf.encode((AmfType.DATE, dt)))
+		assert(dt === Amf.decode(buf))
+		assert(buf === Amf.encode(dt))
 	}
 
 	test("equal dates")
@@ -55,12 +55,11 @@ class TestAmfDate extends FunSuite
 
 		val arr = new ArrayList(Arrays.asList(dt1, dt2))
 		val buf : IoBuffer = BufUtils.mkb(0x9, 0x5, 0x1,
-											 0x08, 0x01, 0x42, 0x72, -0x3c, -0x3e, 0x14, -0x18, 0x00, 0x00,
-											 0x08, 0x01, 0x42, 0x72, -0x3c, -0x3e, 0x14, -0x18, 0x00, 0x00
-										 )
+			0x08, 0x01, 0x42, 0x72, -0x3c, -0x3e, 0x14, -0x18, 0x00, 0x00,
+			0x08, 0x01, 0x42, 0x72, -0x3c, -0x3e, 0x14, -0x18, 0x00, 0x00)
 
-		assert((AmfType.ARRAY, arr) === Amf.decode(buf))
-		assert(buf === Amf.encode((AmfType.ARRAY, arr)))
+		assert(arr === Amf.decode(buf))
+		assert(buf === Amf.encode(arr))
 	}
 
 	test("null dates")
@@ -76,7 +75,7 @@ class TestAmfDate extends FunSuite
 		val arr = new ArrayList(Arrays.asList(dt1, dt2))
 		val buf : IoBuffer = BufUtils.mkb(0x9, 0x5, 0x1, 0x1, 0x1)
 
-		assert((AmfType.ARRAY, arr) === Amf.decode(buf))
-		assert(buf === Amf.encode((AmfType.ARRAY, arr)))
+		assert(arr === Amf.decode(buf))
+		assert(buf === Amf.encode(arr))
 	}
 }

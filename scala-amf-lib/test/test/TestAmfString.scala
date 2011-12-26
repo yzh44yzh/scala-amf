@@ -25,8 +25,8 @@ class TestAmfString extends FunSuite
 		val str = "Hello :)"
 		val buf = BufUtils.mkb(0x06, 0x11, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x20, 0x3a, 0x29)
 
-		assert((AmfType.STRING, str) === Amf.decode(buf))
-		assert(buf === Amf.encode((AmfType.STRING, str)))
+		assert(str === Amf.decode(buf))
+		assert(buf === Amf.encode(str))
 	}
 	
 	test("test empty string")
@@ -34,8 +34,8 @@ class TestAmfString extends FunSuite
 		val str = ""
 		val buf = BufUtils.mkb(0x06, 0x1)
 
-		assert((AmfType.STRING, str) === Amf.decode(buf))
-		assert(buf === Amf.encode((AmfType.STRING, str)))
+		assert(str === Amf.decode(buf))
+		assert(buf === Amf.encode(str))
 	}
 
 	test("test long string")
@@ -52,8 +52,8 @@ class TestAmfString extends FunSuite
 				"for the duration of the project. There is no technological substitution for expertise."
 		val buf = readBuf("test/strbuf3")
 
-		assert((AmfType.STRING, str) === Amf.decode(buf))
-		assert(buf === Amf.encode((AmfType.STRING, str)))
+		assert(str === Amf.decode(buf))
+		assert(buf === Amf.encode(str))
 	}
 
 	test("test cyrillic string")
@@ -62,7 +62,7 @@ class TestAmfString extends FunSuite
 				"создания нового языка или создания словаря с целью лучшего понимания предметной области."
 		val buf = readBuf("test/strbuf4")
 
-		assert((AmfType.STRING, str) === Amf.decode(buf))
-		assert(buf === Amf.encode((AmfType.STRING, str)))
+		assert(str === Amf.decode(buf))
+		assert(buf === Amf.encode(str))
 	}
 }
