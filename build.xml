@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Make Release" default="build" basedir=".">
 
-    <property name="version" value="1.1"/>
+    <property name="version" value="1.2"/>
 
     <target name="build" depends="clear">
 
