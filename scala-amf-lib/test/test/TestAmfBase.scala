@@ -9,18 +9,34 @@ import org.scalatest.FunSuite
 
 class TestAmfBase extends FunSuite
 {
-	test("decode base types")
+	test("test undefined")
 	{
-		assert(Amf.decode(BufUtils.mkb(0x0)) === (AmfType.NULL, null))
-		assert(Amf.decode(BufUtils.mkb(0x1)) === (AmfType.NULL, null))
-		assert(Amf.decode(BufUtils.mkb(0x2)) === (AmfType.BOOL, false))
-		assert(Amf.decode(BufUtils.mkb(0x3)) === (AmfType.BOOL, true))
+		val buf = BufUtils.mkb(0x0)
+
+		assert((AmfType.NULL, null) === Amf.decode(buf))
 	}
 
-	test("encode base types")
+	test("test null")
 	{
-		assert(BufUtils.eq(Amf.encode((AmfType.NULL, null)), BufUtils.mkb(0x1)))
-		assert(BufUtils.eq(Amf.encode((AmfType.BOOL, false)), BufUtils.mkb(0x2)))
-		assert(BufUtils.eq(Amf.encode((AmfType.BOOL, true)), BufUtils.mkb(0x3)))
+		val buf = BufUtils.mkb(0x1)
+
+		assert((AmfType.NULL, null) === Amf.decode(buf))
+		assert(buf === Amf.encode((AmfType.NULL, null)))
+	}
+
+	test("test false")
+	{
+		val buf = BufUtils.mkb(0x2)
+
+		assert((AmfType.BOOL, false) === Amf.decode(buf))
+		assert(buf === Amf.encode((AmfType.BOOL, false)))
+	}
+
+	test("test true")
+	{
+		val buf = BufUtils.mkb(0x3)
+
+		assert((AmfType.BOOL, true) === Amf.decode(buf))
+		assert(buf === Amf.encode((AmfType.BOOL, true)))
 	}
 }

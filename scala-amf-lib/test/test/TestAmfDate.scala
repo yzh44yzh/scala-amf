@@ -11,30 +11,31 @@ import java.util.{Arrays, ArrayList, Date}
 
 class TestAmfDate extends FunSuite
 {
-	val dt1 = new Date(1289767440000L) // Sun Nov 14 22:44:00 GMT+0200 2010
-	val dt2 = new Date(791687040000L) // Thu Feb  2 03:04:00 GMT+0200 1995
-	val dt3 = new Date(328928521000L) // Wed Jun  4 03:02:01 GMT+0200 1980
-
-	val buf1 : IoBuffer = BufUtils.mkb(0x08, 0x01, 0x42, 0x72, -0x3c, -0x3e, 0x14, -0x18, 0x00, 0x00)
-	val buf2 : IoBuffer = BufUtils.mkb(0x08, 0x01, 0x42, 0x67, 0x0a, -0x79, 0x31, -0x80, 0x00, 0x0)
-	val buf3 : IoBuffer = BufUtils.mkb(0x08, 0x01, 0x42, 0x53, 0x25, 0x6a, -0x46, -0x36, 0x00, 0x00)
-
-	test("decode date")
+	test("test Sun Nov 14 22:44:00 GMT+0200 2010")
 	{
-		val (AmfType.DATE, res1) = Amf.decode(buf1)
-		val (AmfType.DATE, res2) = Amf.decode(buf2)
-		val (AmfType.DATE, res3) = Amf.decode(buf3)
+		val dt = new Date(1289767440000L)
+		val buf : IoBuffer = BufUtils.mkb(0x08, 0x01, 0x42, 0x72, -0x3c, -0x3e, 0x14, -0x18, 0x0, 0x0)
 
-		assert(dt1.equals(res1))
-		assert(dt2.equals(res2))
-		assert(dt3.equals(res3))
+		assert((AmfType.DATE, dt) === Amf.decode(buf))
+		assert(buf === Amf.encode((AmfType.DATE, dt)))
 	}
 
-	test("encode date")
+	test("test Thu Feb 2 03:04:00 GMT+0200 1995")
 	{
-		assert(BufUtils.eq(Amf.encode((AmfType.DATE, dt1)), buf1))
-		assert(BufUtils.eq(Amf.encode((AmfType.DATE, dt2)), buf2))
-		assert(BufUtils.eq(Amf.encode((AmfType.DATE, dt3)), buf3))
+		val dt = new Date(791687040000L)
+		val buf : IoBuffer = BufUtils.mkb(0x08, 0x01, 0x42, 0x67, 0x0a, -0x79, 0x31, -0x80, 0x0, 0x0)
+
+		assert((AmfType.DATE, dt) === Amf.decode(buf))
+		assert(buf === Amf.encode((AmfType.DATE, dt)))
+	}
+
+	test("test Wed Jun 4 03:02:01 GMT+0200 1980")
+	{
+		val dt = new Date(328928521000L)
+		val buf : IoBuffer = BufUtils.mkb(0x08, 0x01, 0x42, 0x53, 0x25, 0x6a, -0x46, -0x36, 0x0, 0x0)
+
+		assert((AmfType.DATE, dt) === Amf.decode(buf))
+		assert(buf === Amf.encode((AmfType.DATE, dt)))
 	}
 
 	test("equal dates")
@@ -53,17 +54,13 @@ class TestAmfDate extends FunSuite
 		assert(w1.equals(w3))
 
 		val arr = new ArrayList(Arrays.asList(dt1, dt2))
-
 		val buf : IoBuffer = BufUtils.mkb(0x9, 0x5, 0x1,
 											 0x08, 0x01, 0x42, 0x72, -0x3c, -0x3e, 0x14, -0x18, 0x00, 0x00,
 											 0x08, 0x01, 0x42, 0x72, -0x3c, -0x3e, 0x14, -0x18, 0x00, 0x00
 										 )
 
-		val (AmfType.ARRAY, res) = Amf.decode(buf)
-		assert(arr.equals(res))
-
-		val str = BufUtils.diff(Amf.encode((AmfType.ARRAY, arr)), buf)
-		assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, arr)), buf))
+		assert((AmfType.ARRAY, arr) === Amf.decode(buf))
+		assert(buf === Amf.encode((AmfType.ARRAY, arr)))
 	}
 
 	test("null dates")
@@ -77,13 +74,9 @@ class TestAmfDate extends FunSuite
 		assert(!w1.equals(w2))
 
 		val arr = new ArrayList(Arrays.asList(dt1, dt2))
-
 		val buf : IoBuffer = BufUtils.mkb(0x9, 0x5, 0x1, 0x1, 0x1)
 
-		val (AmfType.ARRAY, res) = Amf.decode(buf)
-		assert(arr.equals(res))
-
-		val str = BufUtils.diff(Amf.encode((AmfType.ARRAY, arr)), buf)
-		assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, arr)), buf))
+		assert((AmfType.ARRAY, arr) === Amf.decode(buf))
+		assert(buf === Amf.encode((AmfType.ARRAY, arr)))
 	}
 }

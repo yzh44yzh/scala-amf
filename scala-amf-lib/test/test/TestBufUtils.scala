@@ -13,7 +13,7 @@ class TestBufUtils extends FunSuite
 	test("make buffer")
 	{
 		val buf = BufUtils.mkb(1, 2, 3)
-		assert(buf.capacity() == 64)
+		assert(buf.capacity() == 128)
 		assert(buf.get === 1)
 		assert(buf.get === 2)
 		assert(buf.get === 3)

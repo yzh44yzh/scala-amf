@@ -15,9 +15,8 @@ class TestAmfArray extends FunSuite
 		val arr = new ArrayList(Arrays.asList(true, true, false))
 		val buf = BufUtils.mkb(0x09, 0x07, 0x01, 0x03, 0x03, 0x02)
 
-		val (AmfType.ARRAY, res) = Amf.decode(buf)
-		assert(arr.equals(res))
-		assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, arr)), buf))
+		assert((AmfType.ARRAY, arr) === Amf.decode(buf))
+		assert(buf === Amf.encode((AmfType.ARRAY, arr)))
 	}
 
 	test("test array of ints")
@@ -29,9 +28,8 @@ class TestAmfArray extends FunSuite
 								  0x04, 0x03,
 								  0x04, -0x1, -0x1, -0x1, -0x4)
 
-		val (AmfType.ARRAY, res) = Amf.decode(buf)
-		assert(arr.equals(res))
-		assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, arr)), buf))
+		assert((AmfType.ARRAY, arr) === Amf.decode(buf))
+		assert(buf === Amf.encode((AmfType.ARRAY, arr)))
 	}
 
 	test("test array of doubles")
@@ -56,9 +54,8 @@ class TestAmfArray extends FunSuite
 								  0x06, 0x03, 0x63,
 								  0x06, 0x0b, 0x48, 0x65, 0x6c, 0x6c, 0x6f)
 
-		val (AmfType.ARRAY, res) = Amf.decode(buf)
-		assert(arr.equals(res))
-		assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, arr)), buf))
+		assert((AmfType.ARRAY, arr) === Amf.decode(buf))
+		assert(buf === Amf.encode((AmfType.ARRAY, arr)))
 	}
 
 	test("test array of different types")
@@ -70,9 +67,8 @@ class TestAmfArray extends FunSuite
 								  0x5, 0x40, 0x41, -0x60, 0x0, 0x0, 0x0, 0x0, 0x0,
 								  0x3)
 
-		val (AmfType.ARRAY, res) = Amf.decode(buf)
-		assert(arr.equals(res))
-		assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, arr)), buf))
+		assert((AmfType.ARRAY, arr) === Amf.decode(buf))
+		assert(buf === Amf.encode((AmfType.ARRAY, arr)))
 	}
 
 	test("test array of arrays")
@@ -90,9 +86,8 @@ class TestAmfArray extends FunSuite
 								  0x9, 0x3, 0x1,
 								  0x6, 0xb, 0x48, 0x65, 0x6c, 0x6c, 0x6f)
 
-		val (AmfType.ARRAY, res) = Amf.decode(buf)
-		assert(arr.equals(res))
-		assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, arr)), buf))
+		assert((AmfType.ARRAY, arr) === Amf.decode(buf))
+		assert(buf === Amf.encode((AmfType.ARRAY, arr)))
 	}
 
 	test("test array of objects 1")
@@ -121,9 +116,8 @@ class TestAmfArray extends FunSuite
 								  0x3, 0x66, 0x4, 0x6, // f:6
 								  0x1)
 
-		val (AmfType.ARRAY, res) = Amf.decode(buf)
-		assert(arr.equals(res))
-		assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, arr)), buf))
+		assert((AmfType.ARRAY, arr) === Amf.decode(buf))
+		assert(buf === Amf.encode((AmfType.ARRAY, arr)))
 	}
 
 	test("test array of objects 2")
@@ -158,9 +152,8 @@ class TestAmfArray extends FunSuite
 								  0x4, 0x3, // 3
 								  0x1)
 
-		val (AmfType.ARRAY, res) = Amf.decode(buf)
-		assert(arr.equals(res))
-		assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, arr)), buf))
+		assert((AmfType.ARRAY, arr) === Amf.decode(buf))
+		assert(buf === Amf.encode((AmfType.ARRAY, arr)))
 	}
 
 	test("test mixed array")
@@ -212,9 +205,8 @@ class TestAmfArray extends FunSuite
 								  0x6, 0xb, 0x48, 0x65, 0x6c, 0x6c, 0x6f, // Hello
 								  0x4, -0x7f, 0x0) // 128
 
-		val (AmfType.ARRAY, res) = Amf.decode(buf)
-		assert(arr.equals(res))
-		assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, arr)), buf))
+		assert((AmfType.ARRAY, arr) === Amf.decode(buf))
+		assert(buf === Amf.encode((AmfType.ARRAY, arr)))
 	}
 
 	// TODO not supported yet
@@ -272,9 +264,8 @@ class TestAmfArray extends FunSuite
 								  0x4, 0x4, // 4
 								  0x3) // true
 
-		val (AmfType.ARRAY, res) = Amf.decode(buf)
-		assert(arr.equals(res))
-		assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, arr)), buf))
+		assert((AmfType.ARRAY, arr) === Amf.decode(buf))
+		assert(buf === Amf.encode((AmfType.ARRAY, arr)))
 	}
 
 	// TODO not supported yet
@@ -341,8 +332,7 @@ class TestAmfArray extends FunSuite
 								  0x4, 0x4, // id:4
 								  0x3) // admin:true
 
-		val (AmfType.ARRAY, res) = Amf.decode(buf)
-		assert(arr.equals(res))
-		assert(BufUtils.eq(Amf.encode((AmfType.ARRAY, arr)), buf))
+		assert((AmfType.ARRAY, arr) === Amf.decode(buf))
+		assert(buf === Amf.encode((AmfType.ARRAY, arr)))
 	}
 }

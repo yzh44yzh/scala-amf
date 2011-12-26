@@ -13,7 +13,9 @@ object Amf
 	def decode(buf : IoBuffer) : (AmfType, Any) =
 	{
 		val ref = new Ref
-		decode(buf, ref)
+		var res = decode(buf, ref)
+		buf.position(0) // restore side effect
+		res
 	}
 
 	def decode(buf : IoBuffer, ref : Ref) : (AmfType, Any) =
