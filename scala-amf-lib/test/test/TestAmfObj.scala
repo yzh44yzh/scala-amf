@@ -27,9 +27,8 @@ class TestAmfObj extends FunSuite
 								  0x04, 0x19, // 25
 								  0x01)
 
-		val (AmfType.OBJECT, res) = Amf.decode(buf)
-		assert(obj.equals(res))
-		assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj)), buf))
+		assert((AmfType.OBJECT, obj) === Amf.decode(buf))
+		assert(buf === Amf.encode((AmfType.OBJECT, obj)))
 	}
 
 	test("anonymous object with inner anonymous object")
@@ -56,9 +55,8 @@ class TestAmfObj extends FunSuite
 								  0x06, 0x09, 0x59, 0x75, 0x72, 0x61, // Yura
 								  0x01)
 
-		val (AmfType.OBJECT, res) = Amf.decode(buf)
-		assert(obj.equals(res))
-		assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj)), buf))
+		assert((AmfType.OBJECT, obj) === Amf.decode(buf))
+		assert(buf === Amf.encode((AmfType.OBJECT, obj)))
 	}
 
 	test("AS3 class (not registered)")
@@ -94,9 +92,8 @@ class TestAmfObj extends FunSuite
 									 0x6, 0xb, 0x48, 0x65, 0x6c, 0x6c, 0x6f, // Hello
 									 0x1)
 
-		val (AmfType.OBJECT, res3) = Amf.decode(buf)
-		assert(obj.equals(res3))
-		assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj)), bufEnc))
+		assert((AmfType.OBJECT, obj) === Amf.decode(buf))
+		assert(bufEnc === Amf.encode((AmfType.OBJECT, obj)))
 	}
 
 	test("AS3 class (registered)")
@@ -125,7 +122,7 @@ class TestAmfObj extends FunSuite
 		val (AmfType.OBJECT, res) = Amf.decode(buf)
 		assert(obj.equals(res))
 		assert(res.asInstanceOf[AmfClass].className.equals("some.pack.Message"))
-		assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj)), buf))
+		assert(buf === Amf.encode((AmfType.OBJECT, obj)))
 	}
 
 	test("anonymous object with inner AS class")
@@ -162,9 +159,8 @@ class TestAmfObj extends FunSuite
 								  0x65, // sendMessage
 								  0x1)
 
-		val (AmfType.OBJECT, res) = Amf.decode(buf)
-		assert(obj.equals(res))
-		assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj)), buf))
+		assert((AmfType.OBJECT, obj) === Amf.decode(buf))
+		assert(buf === Amf.encode((AmfType.OBJECT, obj)))
 	}
 
 	test("AS class with inner anonymous object")
@@ -197,9 +193,8 @@ class TestAmfObj extends FunSuite
 								  0x6, 0x9, 0x42, 0x69, 0x6c, 0x6c, // Bill
 								  0x4, -0x7f, 0x6a) // 234
 
-		val (AmfType.OBJECT, res) = Amf.decode(buf)
-		assert(obj.equals(res))
-		assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj)), buf))
+		assert((AmfType.OBJECT, obj) === Amf.decode(buf))
+		assert(buf === Amf.encode((AmfType.OBJECT, obj)))
 	}
 
 	test("AS class with inner AS class")
@@ -241,9 +236,8 @@ class TestAmfObj extends FunSuite
 								  0x4, 0x2, // 2
 								  0x3) // true
 
-		val (AmfType.OBJECT, res) = Amf.decode(buf)
-		assert(obj.equals(res))
-		assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj)), buf))
+		assert((AmfType.OBJECT, obj) === Amf.decode(buf))
+		assert(buf === Amf.encode((AmfType.OBJECT, obj)))
 	}
 
 	test("2 inner objects")
@@ -280,8 +274,7 @@ class TestAmfObj extends FunSuite
 								  0x1,
 								  0x1)
 
-		val (AmfType.OBJECT, res) = Amf.decode(buf)
-		assert(obj.equals(res))
-		assert(BufUtils.eq(Amf.encode((AmfType.OBJECT, obj)), buf))
+		assert((AmfType.OBJECT, obj) === Amf.decode(buf))
+		assert(buf === Amf.encode((AmfType.OBJECT, obj)))
 	}
 }

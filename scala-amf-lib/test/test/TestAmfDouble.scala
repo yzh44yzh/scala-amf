@@ -21,25 +21,25 @@ class TestAmfDouble extends FunSuite
 
 	test("decode double")
 	{
-		assert(Amf.decode(buf_0_01) === (AmfType.DOUBLE, 0.01))
-		assert(Amf.decode(buf_0_1) === (AmfType.DOUBLE, 0.1))
-		assert(Amf.decode(buf_0_5) === (AmfType.DOUBLE, 0.5))
-		assert(Amf.decode(buf_1_33) === (AmfType.DOUBLE, 1.33))
-		assert(Amf.decode(buf_250_25) === (AmfType.DOUBLE, 250.25))
-		assert(Amf.decode(buf_m250_25) === (AmfType.DOUBLE, -250.25))
-		assert(Amf.decode(buf_9) === (AmfType.DOUBLE, 99999999.99))
-		assert(Amf.decode(buf_m9) === (AmfType.DOUBLE, -99999999.99))
+		assert((AmfType.DOUBLE, 0.01) === Amf.decode(buf_0_01))
+		assert((AmfType.DOUBLE, 0.1) === Amf.decode(buf_0_1))
+		assert((AmfType.DOUBLE, 0.5) === Amf.decode(buf_0_5))
+		assert((AmfType.DOUBLE, 1.33) === Amf.decode(buf_1_33))
+		assert((AmfType.DOUBLE, 250.25) === Amf.decode(buf_250_25))
+		assert((AmfType.DOUBLE, -250.25) === Amf.decode(buf_m250_25))
+		assert((AmfType.DOUBLE, 99999999.99) === Amf.decode(buf_9))
+		assert((AmfType.DOUBLE, -99999999.99) === Amf.decode(buf_m9))
 	}
 
 	test("encode double")
 	{
-		assert(BufUtils.eq(Amf.encode((AmfType.DOUBLE, 0.01)), buf_0_01))
-		assert(BufUtils.eq(Amf.encode((AmfType.DOUBLE, 0.1)), buf_0_1))
-		assert(BufUtils.eq(Amf.encode((AmfType.DOUBLE, 0.5)), buf_0_5))
-		assert(BufUtils.eq(Amf.encode((AmfType.DOUBLE, 1.33)), buf_1_33))
-		assert(BufUtils.eq(Amf.encode((AmfType.DOUBLE, 250.25)), buf_250_25))
-		assert(BufUtils.eq(Amf.encode((AmfType.DOUBLE, -250.25)), buf_m250_25))
-		assert(BufUtils.eq(Amf.encode((AmfType.DOUBLE, 99999999.99)), buf_9))
-		assert(BufUtils.eq(Amf.encode((AmfType.DOUBLE, -99999999.99)), buf_m9))
+		assert(buf_0_01 === Amf.encode((AmfType.DOUBLE, 0.01)))
+		assert(buf_0_1 === Amf.encode((AmfType.DOUBLE, 0.1)))
+		assert(buf_0_5 === Amf.encode((AmfType.DOUBLE, 0.5)))
+		assert(buf_1_33 === Amf.encode((AmfType.DOUBLE, 1.33)))
+		assert(buf_250_25 === Amf.encode((AmfType.DOUBLE, 250.25)))
+		assert(buf_m250_25 === Amf.encode((AmfType.DOUBLE, -250.25)))
+		assert(buf_9 === Amf.encode((AmfType.DOUBLE, 99999999.99)))
+		assert(buf_m9 === Amf.encode((AmfType.DOUBLE, -99999999.99)))
 	}
 }
