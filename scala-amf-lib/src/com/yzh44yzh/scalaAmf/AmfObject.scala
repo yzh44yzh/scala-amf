@@ -10,7 +10,7 @@ private object AmfObject
 {
 	def read(buf : IoBuffer, ref : Ref) : AmfClass =
 	{
-		var code = AmfInt.read(buf)
+		val code = AmfInt.read(buf)
 
 		/*
 				0x1       0001 -- trait
@@ -32,8 +32,7 @@ private object AmfObject
 			return ref.objects.get(id).asInstanceOf[AmfClass]
 		}
 
-		var className = ""
-		if(code != 1) className = AmfString.read(buf, ref)
+		val className = if(code == 1) "" else AmfString.read(buf, ref)
 
 		val result = if(code != 1 && (code & 8) == 0) // check 4th bit
 		{
@@ -82,8 +81,7 @@ private object AmfObject
 
 		for(i <- 0 until numFields)
 		{
-			val (anyType, value) = Amf.decode(buf, ref)
-			result.put(arr(i), value)
+			result.put(arr(i), Amf.decode(buf, ref))
 		}
 
 		result
@@ -107,7 +105,7 @@ private object AmfObject
 		val it2 = obj.keySet().iterator()
 		while(it2.hasNext)
 		{
-			Amf.encodeAny(buf, obj.get(it2.next), ref);
+			Amf.encode(buf, obj.get(it2.next), ref);
 		}
 
 		buf
@@ -121,11 +119,10 @@ private object AmfObject
 		var moreProperties = true
 		while(moreProperties)
 		{
-			var propName = AmfString.read(buf, ref)
+			val propName = AmfString.read(buf, ref)
 			if(!propName.equals(""))
 			{
-				val (anyType, value) = Amf.decode(buf, ref)
-				result.put(propName, value)
+				result.put(propName, Amf.decode(buf, ref))
 			}
 			else moreProperties = false
 		}
@@ -149,7 +146,7 @@ private object AmfObject
 		{
 			val key = it.next
 			AmfString.write(buf, key, ref)
-			Amf.encodeAny(buf, obj.get(key), ref);
+			Amf.encode(buf, obj.get(key), ref);
 		}
 
 		AmfString.write(buf, "", ref) // end prop/value pairs

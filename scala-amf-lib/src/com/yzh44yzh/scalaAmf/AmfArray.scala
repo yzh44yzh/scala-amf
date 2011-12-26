@@ -23,14 +23,13 @@ private object AmfArray
 		val key = AmfString.read(buf, ref)
 		if(!key.equals("")) throw new Exception("associative arrays are not supported")
 
-		var result = new ArrayList[Any]
+		val result = new ArrayList[Any]
 		ref.objects.store(result)
 
 		var i = 0;
 		while(i < len)
 		{
-			val (anyType, res) = Amf.decode(buf, ref)
-			result.add(res)
+			result.add(Amf.decode(buf, ref))
 			i += 1
 		}
 
@@ -53,7 +52,7 @@ private object AmfArray
 			AmfString.write(buf, "", ref)
 
 			val it = list.iterator()
-			while(it.hasNext) Amf.encodeAny(buf, it.next(), ref)
+			while(it.hasNext) Amf.encode(buf, it.next(), ref)
 		}
 
 		buf
