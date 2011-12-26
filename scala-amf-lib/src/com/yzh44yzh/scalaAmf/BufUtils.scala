@@ -72,10 +72,10 @@ object BufUtils
 
 	def toString(buf : IoBuffer, showLetters : Boolean) : String =
 	{
-		var res : StringBuffer = new StringBuffer
+		val res = new StringBuffer
 		while(buf.hasRemaining)
 		{
-			var b : Int = buf.get
+			val b = buf.get
 			var ch : String = ""
 			if(showLetters && ((b >= 48 && b <= 57) || (b >= 65 && b <= 90) || (b >= 97 && b <= 122)))
 			{

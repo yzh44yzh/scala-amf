@@ -81,7 +81,7 @@ class TestComplexData extends FunSuite
 		sender.put("id", "1");
 
 		val d1: Date = new Date(1289767440000L)
-		var msg1 = new AmfClass
+		val msg1 = new AmfClass
 		msg1.put("date", d1)
 		msg1.put("receiverID", "")
 		msg1.put("content", "Hello")
@@ -92,7 +92,7 @@ class TestComplexData extends FunSuite
 		history1.put("message", msg1)
 
 		val d2: Date = new Date(328928521000L)
-		var msg2 = new AmfClass
+		val msg2 = new AmfClass
 		msg2.put("date", d2)
 		msg2.put("receiverID", "")
 		msg2.put("content", "Hi")

@@ -26,11 +26,9 @@ private object AmfArray
 		val result = new ArrayList[Any]
 		ref.objects.store(result)
 
-		var i = 0;
-		while(i < len)
+		for(i <- 0 until len)
 		{
 			result.add(Amf.decode(buf, ref))
-			i += 1
 		}
 
 		result
