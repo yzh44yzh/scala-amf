@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="scala">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/scala-compiler.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/scala-library.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/scalatest-1.6.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

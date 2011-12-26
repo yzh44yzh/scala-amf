@@ -5,9 +5,9 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="scala" level="application" />
-    <orderEntry type="library" name="scalatest" level="application" />
-    <orderEntry type="library" name="mina" level="application" />
+    <orderEntry type="library" name="log4j" level="project" />
+    <orderEntry type="library" name="scala" level="project" />
+    <orderEntry type="library" name="mina" level="project" />
   </component>
 </module>
 
