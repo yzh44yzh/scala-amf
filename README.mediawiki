@@ -1,0 +1,15 @@
+==AMF serialization/deserialization library==
+
+'''AMF (Action Message Format)''' is native data serialization format for flash player. It is an effective way to exchange data between flash client and server.
+
+More details about AMF can be found here http://en.wikipedia.org/wiki/Action_Message_Format
+
+----
+ 
+'''AMF (Action Message Format)''' -- это нативная сериализация/десериализация данных для флэш плеера, используется им как для обмена данными с сервером, так и для хранения данных (в SharedObjects). В отличие от текстовых форматов сериализации (JSON, XML) обеспечивает компактное сжатие, следовательно меньший траффик и следовательно большую скорость передачи данных.
+
+'''scala-amf-lib''' -- компактная библиотека, которая занимается только сериализацией/десериализацией и ничем больше. Она может быть использована независимо от протокола передачи данных (HTTP, TCP сокет) и служить основой для библиотек более высокого уровня.
+
+'''scala-amf-mina-filters''' -- библиотека, предоставляющая фильтры для фрейморка [http://mina.apache.org/ Apache MINA]
+
+С помощью Apache MINA, scala-amf-mina-filters и scala-amf-lib можно сделать быстрый и эффективный TCP сервер для флэш клиентов.
