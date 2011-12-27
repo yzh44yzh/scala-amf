@@ -1,12 +1,30 @@
 <?xml version="1.0"?>
 <Application
 		xmlns="library://ns.adobe.com/flex/spark"
-		xmlns:fx="http://ns.adobe.com/mxml/2009">
+		xmlns:fx="http://ns.adobe.com/mxml/2009"
+		xmlns:mx="library://ns.adobe.com/flex/mx">
 
     <fx:Script><![CDATA[
-        import mx.controls.Alert;
-        ]]></fx:Script>
+		import com.yzh44yzh.scalaAmf.Service;
 
-	<Button click="Alert.show('Hello, world')" label="Hello"/>
+		private var service : Service = new Service();
+
+        private function connect() : void
+		{
+			trace("connect");
+			service.connect("localhost", 2244);
+		}
+
+		]]></fx:Script>
+
+	<fx:Declarations>
+		<mx:TraceTarget id="logTarget"
+						includeDate="false" includeTime="true"
+						includeCategory="true" includeLevel="true">
+			<mx:level>0</mx:level>
+		</mx:TraceTarget>
+	</fx:Declarations>
+
+	<Button label="Connect" click="connect()"/>
 
 </Application>

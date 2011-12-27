@@ -16,7 +16,13 @@ class Connection extends IoHandlerAdapter
 	{
 		log.info("messageReceived {}", message)
 
-		session.write("got " + message.toString)
+		val query = message.asInstanceOf[AmfClass]
+
+		val res = new AmfClass
+		res.put("q", query.get("q"))
+		res.put("a", query.get("a"))
+		res.put("d", "got: " + query.get("d"))
+		session.write(res)
 	}
 
 	override def sessionClosed(session : IoSession)
