@@ -18,6 +18,8 @@
     <orderEntry type="library" name="scala" level="project" />
     <orderEntry type="library" name="log4j" level="project" />
     <orderEntry type="library" name="mina" level="project" />
+    <orderEntry type="module" module-name="scala-amf-lib" />
+    <orderEntry type="module" module-name="scala-amf-mina-filters" />
   </component>
 </module>
 
