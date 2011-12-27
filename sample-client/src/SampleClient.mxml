@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<Application
+		xmlns="library://ns.adobe.com/flex/spark"
+		xmlns:fx="http://ns.adobe.com/mxml/2009">
+
+    <fx:Script><![CDATA[
+        import mx.controls.Alert;
+        ]]></fx:Script>
+
+	<Button click="Alert.show('Hello, world')" label="Hello"/>
+
+</Application>
