@@ -59,13 +59,34 @@ object BufUtils
 
 	def merge(b1 : IoBuffer, b2 : IoBuffer) : IoBuffer =
 	{
-		val result = IoBuffer.allocate(b1.limit + b2.limit)
-		b1.position(0)
-		while(b1.hasRemaining) result.put(b1.get)
-		b1.position(0)
-		b2.position(0)
-		while(b2.hasRemaining) result.put(b2.get)
-		b2.position(0)
+		val limit1 = if(b1 == null) 0 else b1.limit
+		val limit2 = if(b2 == null) 0 else b2.limit
+		val result = IoBuffer.allocate(limit1 + limit2)
+
+		if(b1 != null)
+		{
+			b1.position(0)
+			while(b1.hasRemaining) result.put(b1.get)
+			b1.position(0)
+		}
+
+		if(b2 != null)
+		{
+			b2.position(0)
+			while(b2.hasRemaining) result.put(b2.get)
+			b2.position(0)
+		}
+
+		result.flip
+		result
+	}
+
+	def getRest(buf : IoBuffer) : IoBuffer =
+	{
+		if(buf == null) return null
+
+		val result = IoBuffer.allocate(buf.limit - buf.position)
+		while(buf.hasRemaining) result.put(buf.get)
 		result.flip
 		result
 	}
