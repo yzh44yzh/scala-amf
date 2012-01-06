@@ -34,6 +34,7 @@ class TestRefs extends FunSuite
 								  0x1)
 
 		assert(obj === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(obj))
 	}
 
@@ -58,6 +59,7 @@ class TestRefs extends FunSuite
 								  0x1)
 
 		assert(obj === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(obj))
 	}
 
@@ -88,6 +90,7 @@ class TestRefs extends FunSuite
 								  0x1)
 
 		assert(obj === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(obj))
 	}
 
@@ -118,6 +121,7 @@ class TestRefs extends FunSuite
 								  0xa, 0x2) // ref to obj1
 
 		assert(obj === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(obj))
 	}
 
@@ -136,6 +140,7 @@ class TestRefs extends FunSuite
 								  0x9, 0x4) // ref to arr2
 
 		assert(obj === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(obj))
 	}
 
@@ -177,6 +182,7 @@ class TestRefs extends FunSuite
 								  0x1)
 
 		assert(obj === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(obj))
 	}
 
@@ -223,6 +229,7 @@ class TestRefs extends FunSuite
 								  0x1)
 
 		assert(obj === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(obj))
 	}
 
@@ -259,6 +266,7 @@ class TestRefs extends FunSuite
 							  )
 
 		assert(obj === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(obj))
 	}
 
@@ -317,6 +325,7 @@ class TestRefs extends FunSuite
 		// refs: 0x2 dref, 0x4 arr, 0x6 o2, 0x8 o1
 
 		assert(obj === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(obj))
 	}
 }

@@ -17,6 +17,7 @@ class TestAmfDate extends FunSuite
 		val buf : IoBuffer = BufUtils.mkb(0x08, 0x01, 0x42, 0x72, -0x3c, -0x3e, 0x14, -0x18, 0x0, 0x0)
 
 		assert(dt === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(dt))
 	}
 
@@ -26,6 +27,7 @@ class TestAmfDate extends FunSuite
 		val buf : IoBuffer = BufUtils.mkb(0x08, 0x01, 0x42, 0x67, 0x0a, -0x79, 0x31, -0x80, 0x0, 0x0)
 
 		assert(dt === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(dt))
 	}
 
@@ -35,6 +37,7 @@ class TestAmfDate extends FunSuite
 		val buf : IoBuffer = BufUtils.mkb(0x08, 0x01, 0x42, 0x53, 0x25, 0x6a, -0x46, -0x36, 0x0, 0x0)
 
 		assert(dt === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(dt))
 	}
 
@@ -59,6 +62,7 @@ class TestAmfDate extends FunSuite
 			0x08, 0x01, 0x42, 0x72, -0x3c, -0x3e, 0x14, -0x18, 0x00, 0x00)
 
 		assert(arr === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(arr))
 	}
 
@@ -76,6 +80,7 @@ class TestAmfDate extends FunSuite
 		val buf : IoBuffer = BufUtils.mkb(0x9, 0x5, 0x1, 0x1, 0x1)
 
 		assert(arr === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(arr))
 	}
 }

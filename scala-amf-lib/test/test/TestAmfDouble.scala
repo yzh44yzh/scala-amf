@@ -22,13 +22,28 @@ class TestAmfDouble extends FunSuite
 	test("decode double")
 	{
 		assert(0.01 === Amf.decode(buf_0_01))
+		buf_0_01.position(0)
+
 		assert(0.1 === Amf.decode(buf_0_1))
+		buf_0_1.position(0)
+
 		assert(0.5 === Amf.decode(buf_0_5))
+		buf_0_5.position(0)
+
 		assert(1.33 === Amf.decode(buf_1_33))
+		buf_1_33.position(0)
+
 		assert(250.25 === Amf.decode(buf_250_25))
+		buf_250_25.position(0)
+
 		assert(-250.25 === Amf.decode(buf_m250_25))
+		buf_m250_25.position(0)
+
 		assert(99999999.99 === Amf.decode(buf_9))
+		buf_9.position(0)
+
 		assert(-99999999.99 === Amf.decode(buf_m9))
+		buf_m9.position(0)
 	}
 
 	test("encode double")

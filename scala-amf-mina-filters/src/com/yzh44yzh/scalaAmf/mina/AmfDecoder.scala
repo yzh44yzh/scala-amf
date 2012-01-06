@@ -26,13 +26,48 @@ class AmfDecoder extends ProtocolDecoder
 		}
 
 		val cache : IoBuffer = session.getAttribute("ioCache").asInstanceOf[IoBuffer]
+		val input = BufUtils.merge(cache, in)
+		in.position(in.limit)
 
-		val res = getData(in, cache)
-		val data : AmfClass = res._1
-		val newCache : IoBuffer = res._2
+		var inputProcessed = false
+		while(!inputProcessed)
+		{
+			val res = getData(input)
+			val data : AmfClass = res._1
+			val left : IoBuffer = res._2
 
-		session.setAttribute("ioCache", newCache)
-		if(data != null) out.write(data)
+			if(log.isDebugEnabled)
+			{
+				log.debug(" data {}", data)
+				log.debug(" left {}", left)
+			}
+
+			if(data != null) out.write(data)
+			else inputProcessed = true
+
+			if(left == null || !left.hasRemaining) inputProcessed = true
+
+			if(inputProcessed) session.setAttribute("ioCache", left)
+		}
+	}
+
+	def getData(input : IoBuffer) : (AmfClass, IoBuffer) =
+	{
+		try
+		{
+			val data : AmfClass = Amf.decode(input).asInstanceOf[AmfClass]
+			val left = BufUtils.getRest(input)
+			return (data, left)
+		}
+		catch
+		{
+			case e1 : BufferUnderflowException => true
+			case e2 : IllegalArgumentException => true
+			case e3 : Exception => log.error("unknown exception while reading data from buffer", e3)
+		}
+
+		input.position(0)
+		(null, input)
 	}
 
 	def finishDecode(ioSession : IoSession, protocolDecoderOutput : ProtocolDecoderOutput)
@@ -45,56 +80,5 @@ class AmfDecoder extends ProtocolDecoder
 		val cache = session.getAttribute("ioCache")
 		if(cache != null) cache.asInstanceOf[IoBuffer].clear()
 		session.removeAttribute("ioCache")
-	}
-
-	def getData(in : IoBuffer, cache : IoBuffer) : (AmfClass, IoBuffer) =
-	{
-		val limit : Int = in.limit
-		var oldCache : IoBuffer = cache
-		var newCache : IoBuffer = null
-		var data : AmfClass = null
-
-		if(in.get(limit - 1) == 0) // last byte in buffer is 0
-		{
-			var pkg : IoBuffer = null
-			if(oldCache != null)
-			{
-				pkg = BufUtils.merge(oldCache, in) // TODO implement merge
-				oldCache = null
-			}
-			else pkg = in
-			pkg.position(0)
-
-			try
-			{
-				data = Amf.decode(pkg).asInstanceOf[AmfClass]
-			}
-			catch
-			{
-				case e : BufferUnderflowException =>
-				{
-					newCache = keepInCache(in, oldCache)
-					data = null
-				}
-			}
-		}
-		else
-		{
-			newCache = keepInCache(in, oldCache)
-		}
-
-		in.position(limit)
-		(data, newCache)
-	}
-
-	private def keepInCache(in : IoBuffer, cache : IoBuffer) : IoBuffer =
-	{
-		if(cache == null)
-		{
-			val newCache = IoBuffer.allocate(in.limit, true).setAutoExpand(true)
-			BufUtils.copy(in, newCache) // TODO implement copy
-			newCache
-		}
-		else BufUtils.merge(cache, in)
 	}
 }

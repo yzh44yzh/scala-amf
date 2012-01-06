@@ -16,6 +16,7 @@ class TestAmfArray extends FunSuite
 		val buf = BufUtils.mkb(0x09, 0x07, 0x01, 0x03, 0x03, 0x02)
 
 		assert(arr === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(arr))
 	}
 
@@ -29,6 +30,7 @@ class TestAmfArray extends FunSuite
 								  0x04, -0x1, -0x1, -0x1, -0x4)
 
 		assert(arr === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(arr))
 	}
 
@@ -41,6 +43,7 @@ class TestAmfArray extends FunSuite
 								  0x05, 0x40, 0x59, 0x09, -0x67, -0x67, -0x67, -0x67, -0x66)
 
 		assert(arr === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(arr))
 	}
 
@@ -54,6 +57,7 @@ class TestAmfArray extends FunSuite
 								  0x06, 0x0b, 0x48, 0x65, 0x6c, 0x6c, 0x6f)
 
 		assert(arr === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(arr))
 	}
 
@@ -67,6 +71,7 @@ class TestAmfArray extends FunSuite
 								  0x3)
 
 		assert(arr === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(arr))
 	}
 
@@ -86,6 +91,7 @@ class TestAmfArray extends FunSuite
 								  0x6, 0xb, 0x48, 0x65, 0x6c, 0x6c, 0x6f)
 
 		assert(arr === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(arr))
 	}
 
@@ -116,6 +122,7 @@ class TestAmfArray extends FunSuite
 								  0x1)
 
 		assert(arr === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(arr))
 	}
 
@@ -152,6 +159,7 @@ class TestAmfArray extends FunSuite
 								  0x1)
 
 		assert(arr === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(arr))
 	}
 
@@ -205,6 +213,7 @@ class TestAmfArray extends FunSuite
 								  0x4, -0x7f, 0x0) // 128
 
 		assert(arr === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(arr))
 	}
 
@@ -264,6 +273,7 @@ class TestAmfArray extends FunSuite
 								  0x3) // true
 
 		assert(arr === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(arr))
 	}
 
@@ -332,6 +342,7 @@ class TestAmfArray extends FunSuite
 								  0x3) // admin:true
 
 		assert(arr === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(arr))
 	}
 }

@@ -28,6 +28,7 @@ class TestAmfObj extends FunSuite
 								  0x01)
 
 		assert(obj === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(obj))
 	}
 
@@ -56,6 +57,7 @@ class TestAmfObj extends FunSuite
 								  0x01)
 
 		assert(obj === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(obj))
 	}
 
@@ -93,6 +95,7 @@ class TestAmfObj extends FunSuite
 									 0x1)
 
 		assert(obj === Amf.decode(buf))
+		buf.position(0)
 		assert(bufEnc === Amf.encode(obj))
 	}
 
@@ -122,6 +125,7 @@ class TestAmfObj extends FunSuite
 		val res = Amf.decode(buf)
 		assert(obj.equals(res))
 		assert(res.asInstanceOf[AmfClass].className.equals("some.pack.Message"))
+		buf.position(0)
 		assert(buf === Amf.encode(obj))
 	}
 
@@ -160,6 +164,7 @@ class TestAmfObj extends FunSuite
 								  0x1)
 
 		assert(obj === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(obj))
 	}
 
@@ -194,6 +199,7 @@ class TestAmfObj extends FunSuite
 								  0x4, -0x7f, 0x6a) // 234
 
 		assert(obj === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(obj))
 	}
 
@@ -237,6 +243,7 @@ class TestAmfObj extends FunSuite
 								  0x3) // true
 
 		assert(obj === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(obj))
 	}
 
@@ -275,6 +282,7 @@ class TestAmfObj extends FunSuite
 								  0x1)
 
 		assert(obj === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(obj))
 	}
 }

@@ -13,7 +13,6 @@ object Amf
 	{
 		val ref = new Ref
 		val res = decode(buf, ref)
-		buf.position(0) // restore position to compensate side effect
 		res
 	}
 

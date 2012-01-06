@@ -62,6 +62,7 @@ class TestBufUtils extends FunSuite
 		b2.flip
 
 		val b3 = BufUtils.merge(b1, b2)
+		assert(0 === b3.position)
 		assert(6 === b3.limit)
 		assert(1 === b3.get(0))
 		assert(2 === b3.get(1))
@@ -86,12 +87,14 @@ class TestBufUtils extends FunSuite
 		b2.flip
 
 		val res1 = BufUtils.merge(null, b2)
+		assert(0 === res1.position)
 		assert(3 === res1.limit)
 		assert(4 === res1.get(0))
 		assert(5 === res1.get(1))
 		assert(6 === res1.get(2))
 
 		val res2 = BufUtils.merge(b1, null)
+		assert(0 === res2.position)
 		assert(3 === res2.limit)
 		assert(1 === res2.get(0))
 		assert(2 === res2.get(1))
@@ -115,11 +118,15 @@ class TestBufUtils extends FunSuite
 		assert(2 === b.position)
 
 		val res = BufUtils.getRest(b)
+		assert(0 === res.position)
 		assert(3 === res.limit)
 		assert(3 === res.get(0))
 		assert(4 === res.get(1))
 		assert(5 === res.get(2))
 
 		assert(BufUtils.getRest(null) == null)
+
+		b.get; b.get; b.get
+		assert(BufUtils.getRest(b) == null)
 	}
 }

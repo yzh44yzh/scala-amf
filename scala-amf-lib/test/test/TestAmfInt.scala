@@ -29,20 +29,49 @@ class TestAmfInt extends FunSuite
 	test("decode integer")
 	{
 		assert(0 === Amf.decode(buf_0))
+		buf_0.position(0)
+
 		assert(1 === Amf.decode(buf_1))
+		buf_1.position(0)
+
 		assert(55 === Amf.decode(buf_55))
+		buf_55.position(0)
+
 		assert(127 === Amf.decode(buf_127))
+		buf_127.position(0)
+
 		assert(128 === Amf.decode(buf_128))
+		buf_128.position(0)
+
 		assert(155 === Amf.decode(buf_155))
+		buf_155.position(0)
+
 		assert(555 === Amf.decode(buf_555))
+		buf_555.position(0)
+
 		assert(1555 === Amf.decode(buf_1555))
+		buf_1555.position(0)
+
 		assert(16383 === Amf.decode(buf_16383))
+		buf_16383.position(0)
+
 		assert(16384 === Amf.decode(buf_16384))
+		buf_16384.position(0)
+
 		assert(2097151 === Amf.decode(buf_2097151))
+		buf_2097151.position(0)
+
 		assert(2097152 === Amf.decode(buf_2097152))
+		buf_2097152.position(0)
+
 		assert(-1 === Amf.decode(buf_m1))
+		buf_m1.position(0)
+
 		assert(-55 === Amf.decode(buf_m55))
+		buf_m55.position(0)
+
 		assert(-555 === Amf.decode(buf_m555))
+		buf_m555.position(0)
 	}
 
 	test("encode integer")

@@ -26,6 +26,7 @@ class TestAmfString extends FunSuite
 		val buf = BufUtils.mkb(0x06, 0x11, 0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x20, 0x3a, 0x29)
 
 		assert(str === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(str))
 	}
 	
@@ -35,6 +36,7 @@ class TestAmfString extends FunSuite
 		val buf = BufUtils.mkb(0x06, 0x1)
 
 		assert(str === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(str))
 	}
 
@@ -53,6 +55,7 @@ class TestAmfString extends FunSuite
 		val buf = readBuf("test/strbuf3")
 
 		assert(str === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(str))
 	}
 
@@ -63,6 +66,7 @@ class TestAmfString extends FunSuite
 		val buf = readBuf("test/strbuf4")
 
 		assert(str === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(str))
 	}
 }

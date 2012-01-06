@@ -112,6 +112,7 @@ class TestComplexData extends FunSuite
 		obj.put("refs", new ArrayList(Arrays.asList(d1, d2, sp, sender, msg1, msg2, history1, history2, history)))
 
 		assert(obj === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(obj))
 	}
 }

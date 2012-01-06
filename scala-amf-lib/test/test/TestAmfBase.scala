@@ -20,6 +20,7 @@ class TestAmfBase extends FunSuite
 		val buf = BufUtils.mkb(0x1)
 
 		assert(null == Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(null))
 	}
 
@@ -28,6 +29,7 @@ class TestAmfBase extends FunSuite
 		val buf = BufUtils.mkb(0x2)
 
 		assert(false === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(false))
 	}
 
@@ -36,6 +38,7 @@ class TestAmfBase extends FunSuite
 		val buf = BufUtils.mkb(0x3)
 
 		assert(true === Amf.decode(buf))
+		buf.position(0)
 		assert(buf === Amf.encode(true))
 	}
 }
