@@ -1,5 +1,7 @@
 package com.yzh44yzh.scalaAmf
 
+import java.util.Random
+
 /**
  * @author Yura Zhloba <yzh44yzh@gmail.com>
  */
@@ -7,8 +9,11 @@ package com.yzh44yzh.scalaAmf
 
 object Game
 {
+	val colorLimit = scala.math.pow(2, 24).toInt
+	val rand = new Random
+
 	def getColor() : Int =
 	{
-		return 0xff0000
+		rand.nextInt(colorLimit)
 	}
 }
