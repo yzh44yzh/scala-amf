@@ -21,6 +21,8 @@ public class Service
 	public function Service(game : Game)
 	{
 		this.game = game;
+
+		game.addEventListener(GameEvent.NEW_CIRCLE, onNewCircle);
 	}
 
 	public function connect(host : String, port : int) : void
@@ -44,6 +46,13 @@ public class Service
 	{
 		log.info("onColor [{0}]", color);
 		game.color = color;
+	}
+
+	private function onNewCircle(event : GameEvent) : void
+	{
+		log.info("onNewCircle {0}", event.circle);
+		
+		socket.send("newCircle", event.circle);
 	}
 
 	private function onDisconnect(event : SocketEvent) : void

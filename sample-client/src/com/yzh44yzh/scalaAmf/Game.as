@@ -7,10 +7,11 @@ package com.yzh44yzh.scalaAmf
 import flash.display.Shape;
 import flash.display.Sprite;
 import flash.display.Stage;
+import flash.events.EventDispatcher;
 import flash.events.MouseEvent;
 import flash.geom.Point;
 
-public class Game
+public class Game extends EventDispatcher
 {
 	public var color : int = 0xff0000;
 
@@ -49,12 +50,17 @@ public class Game
 
 	private function onMouseUp(e : MouseEvent) : void
 	{
+		var radius : int = getRadius(e.localX, e.localY);
+
 		with(canvas.graphics)
 		{
 			beginFill(color, 0.7);
-			drawCircle(downPoint.x, downPoint.y,  getRadius(e.localX, e.localY));
+			drawCircle(downPoint.x, downPoint.y,  radius);
 			endFill();
 		}
+
+		dispatchEvent(GameEvent.newCircleEvent(
+				Circle.create(downPoint.x, downPoint.y, radius)));
 
 		downPoint = null;
 	}
