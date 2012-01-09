@@ -41,8 +41,7 @@ public class BaseSocket
 	public function disconnect() : void {}
 
 	// abstract
-	public function send(action : String, data : Object = null, callback : Function = null) : uint
-	{ return 0; }
+	public function send(action : String, data : Object = null, callback : Function = null) : void {}
 
 	protected function onConnect(ev : Event) : void
 	{

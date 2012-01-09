@@ -18,9 +18,7 @@ public class AmfSocket extends BaseSocket
 
 	protected var binSocket : Socket;
 
-	protected var queries : Array = [];
-
-	protected var busy : Boolean = false;
+	protected var callbacks : Object = {};
 
 	public override function connect(host : String, port : int) : void
 	{
@@ -55,43 +53,33 @@ public class AmfSocket extends BaseSocket
 		_connected = false;
 	}
 
-	public override function send(action : String, data : Object = null, callback : Function = null) : uint
+	public override function send(action : String, data : Object = null, callback : Function = null) : void
 	{
-		try
+		if(!_connected)
 		{
-			var id : Number = ++nextQueryID;
-			log.debug("send [" + id + "] [" + action + "]");
-			queries.push([id, action, data, callback]);
-
-			sendNextQuery();
+			log.error("can't send, socket is not connected");
+			return;
 		}
-		catch(e : Error)
-		{
-			log.error("send " + e.message + " " + e.getStackTrace());
-		}
-
-		return id;
-	}
-
-	protected function sendNextQuery() : void
-	{
-		if(busy) return;
-		if(!_connected) return;
-		if(queries.length == 0) return;
-
-		busy = true;
 
 		try
 		{
-			var query : Array = queries[0];
-			log.debug("sendNextQuery [" + query[0] + "] [" + query[1] + "]");
-			binSocket.writeObject({q:query[0], a:query[1], d:query[2]});
-			binSocket.writeByte(0);
+			if(callback != null)
+			{
+				var id : Number = ++nextQueryID;
+				log.debug("send [" + id + "] [" + action + "]");
+				callbacks[id] = callback;
+				binSocket.writeObject({q:id, a:action, d:data});
+			}
+			else
+			{
+				log.debug("send [" + action + "]");
+				binSocket.writeObject({a:action, d:data});
+			}
 			binSocket.flush();
 		}
 		catch(e : Error)
 		{
-			log.error("sendNextQuery " + e.message + " " + e.getStackTrace());
+			log.error("send " + e.message + " " + e.getStackTrace());
 		}
 	}
 
@@ -101,54 +89,60 @@ public class AmfSocket extends BaseSocket
 	{
 		if(!_connected) return;
 
-		try
-		{
-			var tmp : ByteArray = new ByteArray;
-			while(cache.bytesAvailable) tmp.writeByte(cache.readByte());
-			while(binSocket.bytesAvailable) tmp.writeByte(binSocket.readByte());
-			tmp.position = 0;
-			tmp.readBytes(cache);
-			tmp.position = 0;
-			cache.position = 0;
+		var tmp : ByteArray = new ByteArray;
 
-			while(tmp.bytesAvailable > 0)
+		// copy cached data to tmp
+		cache.readBytes(tmp);
+		tmp.position = cache.position;
+
+		// add binSocket data to tmp
+		while(binSocket.bytesAvailable) tmp.writeByte(binSocket.readByte());
+
+		tmp.position = 0;
+		while(tmp.bytesAvailable > 0) // read objects from tmp one by one
+		{
+			var data : Object;
+
+			try
 			{
-				try
-				{
-					var data : Object = tmp.readObject();
-				}
-				catch(e : EOFError)
-				{
-					// wait for more data
-					return;
-				}
-
+				// keep tmp data in cache before readObject
 				cache = new ByteArray();
+				var prevPosition : int = tmp.position;
+				tmp.readBytes(cache);
+				tmp.position = prevPosition;
 
-				log.debug("onData [" + data.q + "] [" + data.a + "]");
+				data = tmp.readObject();
 
-				if(data.q) // answer to query
-				{
-					var query : Array = queries.shift();
-					if(query[0] != data.q) throw new Error("invalid queryID");
-					if(query[1] != data.a) throw new Error("invalid action");
-
-					var callback : Function = query[3];
-					if(callback != null) callback(data.d);
-					else notifyData(data.q, data.a, data.d);
-
-					busy = false;
-					sendNextQuery();
-				}
-				else // active push from server
-				{
-					notifyData(-1, data.a, data.d);
-				}
+				// readObject was success, clear cache now
+				cache = new ByteArray();
 			}
-		}
-		catch(e : Error)
-		{
-			log.error(this + ".onData " + e.message + " " + e.getStackTrace());
+			catch(e : RangeError)
+			{
+				// readObject wasn't success, wait for more data
+				return;
+			}
+			catch(e : EOFError)
+			{
+				// readObject wasn't success, wait for more data
+				return;
+			}
+			catch(e : Error)
+			{
+				log.error("onData " + e.message + " " + e.getStackTrace());
+			}
+
+			log.debug("onData [" + data.q + "] [" + data.a + "]");
+
+			if(data.q) // find callback for this answer
+			{
+				var callback : Function = callbacks[data.q];
+				if(callback != null) callback(data.d);
+				else notifyData(data.q, data.a, data.d);
+			}
+			else // active push from server
+			{
+				notifyData(-1, data.a, data.d);
+			}
 		}
 	}
 
