@@ -4,9 +4,14 @@
 
 package
 {
+import com.yzh44yzh.scalaAmf.Game;
 import com.yzh44yzh.scalaAmf.Service;
 
+import flash.display.Shape;
+
 import flash.display.Sprite;
+import flash.display.StageAlign;
+import flash.display.StageScaleMode;
 
 import mx.logging.ILogger;
 import mx.logging.Log;
@@ -17,15 +22,25 @@ public class SampleClient extends Sprite
 {
 	private var log : ILogger = Log.getLogger("SampleClient");
 
-	private var service : Service = new Service();
+	private var game : Game;
+	private var service : Service;
 
 	public function SampleClient()
 	{
+		stage.scaleMode = StageScaleMode.NO_SCALE;
+		stage.align = StageAlign.TOP_LEFT;
+
 		initLogging();
+
+		var canvas : Sprite = new Sprite();
+		addChild(canvas);
+		game = new Game(stage, canvas);
+
+		service = new Service(game);
 		connect();
 	}
 
-	private function initLogging():void
+	private function initLogging() : void
 	{
 		var logTarget:TraceTarget = new TraceTarget();
 		//logTarget.filters=["mx.rpc.*","mx.messaging.*"];
@@ -37,7 +52,7 @@ public class SampleClient extends Sprite
 
 		Log.addTarget(logTarget);
 	}
-
+	
 	private function connect() : void
 	{
 		trace("connect");

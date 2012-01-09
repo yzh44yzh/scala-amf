@@ -15,7 +15,14 @@ public class Service
 	private var log : ILogger = Log.getLogger("Service");
 
 	private var socket : AmfSocket = new AmfSocket();
-	
+
+	private var game : Game;
+
+	public function Service(game : Game)
+	{
+		this.game = game;
+	}
+
 	public function connect(host : String, port : int) : void
 	{
 		log.info("connect to {0} {1}", host, port);
@@ -36,6 +43,7 @@ public class Service
 	private function onColor(color : int) : void
 	{
 		log.info("onColor [{0}]", color);
+		game.color = color;
 	}
 
 	private function onDisconnect(event : SocketEvent) : void
