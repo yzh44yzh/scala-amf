@@ -131,7 +131,7 @@ public class AmfSocket extends BaseSocket
 				log.error("onData " + e.message + " " + e.getStackTrace());
 			}
 
-			log.debug("onData [" + data.q + "] [" + data.a + "]");
+			log.debug("onData [" + data.q + "]");
 
 			if(data.q) // find callback for this answer
 			{

@@ -30,12 +30,12 @@ public class Service
 	{
 		log.info("onConnect");
 
-		socket.send("sayHello", "Hello", onSayHelloAnswer);
+		socket.send("getColor", null, onColor);
 	}
 
-	private function onSayHelloAnswer(data : Object) : void
+	private function onColor(color : int) : void
 	{
-		log.info("onSayHelloAnswer [{0}]", data);
+		log.info("onColor [{0}]", color);
 	}
 
 	private function onDisconnect(event : SocketEvent) : void

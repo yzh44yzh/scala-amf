@@ -17,12 +17,23 @@ class Connection extends IoHandlerAdapter
 		log.info("messageReceived {}", message)
 
 		val query = message.asInstanceOf[AmfClass]
+		val queryId = query.get("q")
+		val action = query.get("a")
+		val data = query.get("d")
 
-		val res = new AmfClass
-		res.put("q", query.get("q"))
-		res.put("a", query.get("a"))
-		res.put("d", "got: " + query.get("d"))
-		session.write(res)
+		val result : Any = action match
+		{
+			case "getColor" => Game.getColor()
+			case _ => null
+		}
+
+		if(queryId != null)
+		{
+			val answer = new AmfClass
+			answer.put("q", queryId)
+			answer.put("d", result)
+			session.write(answer)
+		}
 	}
 
 	override def sessionClosed(session : IoSession)
