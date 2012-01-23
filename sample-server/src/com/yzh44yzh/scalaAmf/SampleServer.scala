@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.InetSocketAddress
 import org.apache.log4j.PropertyConfigurator
+import com.yzh44yzh.scalaRpc.RPC
 ;
 
 object SampleServer extends App
@@ -29,7 +30,7 @@ object SampleServer extends App
 		val cb = acceptor.getFilterChain()
 		cb.addLast("codec", new ProtocolCodecFilter(new AmfCodecFactory()))
 
-		acceptor.setHandler(new Connection())
+		acceptor.setHandler(new RPC(new GameAPI()))
 		acceptor.bind(new InetSocketAddress(port))
 	}
 	catch

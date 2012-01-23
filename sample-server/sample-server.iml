@@ -20,6 +20,7 @@
     <orderEntry type="library" name="mina" level="project" />
     <orderEntry type="module" module-name="scala-amf-lib" />
     <orderEntry type="module" module-name="scala-amf-mina-filters" />
+    <orderEntry type="module" module-name="scala-rpc" />
   </component>
 </module>
 

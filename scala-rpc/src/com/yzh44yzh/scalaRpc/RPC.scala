@@ -22,10 +22,18 @@ class RPC(apiClass : AnyRef) extends IoHandlerAdapter
 		{
 			val call = new RPCCall(message.asInstanceOf[AmfClass])
 
-			val method: Method = apiClass.getClass.getDeclaredMethod(call.action, classOf[RPCCall], classOf[IoSession])
-			method.invoke(apiClass, call, session)
+			// Client client = session.getAttribute("client");
 
-			if(call.callbackID > 0) session.write(call.answer())
+			val method : Method = apiClass.getClass.getDeclaredMethod(call.action, classOf[RPCCall], classOf[IoSession])
+			val result : Any = method.invoke(apiClass, call, session)
+
+			if(call.callbackID > 0)
+			{
+				val answer = new AmfClass
+				answer.put("q", call.callbackID)
+				answer.put("d", result)
+				session.write(answer)
+			}
 		}
 		catch
 		{
@@ -37,11 +45,11 @@ class RPC(apiClass : AnyRef) extends IoHandlerAdapter
 
 	override def sessionClosed(session : IoSession)
 	{
-
+		super.sessionClosed(session)
 	}
 
 	override def exceptionCaught(session : IoSession, cause : Throwable)
 	{
-		log.error("exceptionCaught", cause);
+		log.error("exceptionCaught", cause)
 	}
 }

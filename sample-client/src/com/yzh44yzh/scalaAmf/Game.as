@@ -52,6 +52,8 @@ public class Game extends EventDispatcher
 	{
 		var radius : int = getRadius(e.localX, e.localY);
 
+		marker.graphics.clear();
+
 		with(canvas.graphics)
 		{
 			beginFill(color, 0.7);
