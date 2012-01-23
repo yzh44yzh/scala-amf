@@ -16,32 +16,30 @@ class GameAPI extends ConnectDisconnect
 
 	def onConnect(client : Client)
 	{
-		log.info("connect " + client)
 		clients += (client.id -> client)
-
-		log.info("total clients " + clients.size)
+		log.info("connect " + client + " total: " + clients.size)
 	}
 
 	def onDisconnect(client : Client)
 	{
-		log.info("disconnect " + client)
 		clients -= client.id
-
-		log.info("total clients " + clients.size)
+		log.info("disconnect " + client + " total: " + clients.size)
 	}
 
 	def getColor(call : RPCCall, client : Client) : Int =
 	{
-		log.info(client + " getColor")
-		Game.getColor()
+		client.color = Game.getColor()
+		client.color
 	}
 
 	def newCircle(call : RPCCall, client : Client)
 	{
-		val y = call.params.get("y").asInstanceOf[Int]
-		val x = call.params.get("x").asInstanceOf[Int]
-		val radius = call.params.get("radius").asInstanceOf[Int]
+		val data = new AmfClass
+		data.put("x", call.params.get("x"))
+		data.put("y", call.params.get("y"))
+		data.put("radius", call.params.get("radius"))
+		data.put("color", client.color)
 
-		log.info(client + " newCircle " + x + " " + y + " " + radius)
+		for((id, otherClient) <- clients if id != client.id) otherClient.invoke("onNewCircle", data)
 	}
 }

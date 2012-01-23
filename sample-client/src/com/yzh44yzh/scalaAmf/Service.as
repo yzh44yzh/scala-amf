@@ -30,8 +30,8 @@ public class Service
 		log.info("connect to {0} {1}", host, port);
 
 		socket.dispatcher.addEventListener(SocketEvent.CONNECTED, onConnect);
-		socket.dispatcher.addEventListener(SocketEvent.DATA, onDisconnect);
-		socket.dispatcher.addEventListener(SocketEvent.DISCONNECTED, onData);
+		socket.dispatcher.addEventListener(SocketEvent.DISCONNECTED, onDisconnect);
+		socket.dispatcher.addEventListener(SocketEvent.DATA, onData);
 		socket.connect(host, port);
 	}
 
@@ -62,7 +62,15 @@ public class Service
 
 	private function onData(event : SocketEvent) : void
 	{
-		log.info("onData {0}", event.data);
+		log.info("onData {0}", event.action);
+
+		if(event.action == "onNewCircle")
+		{
+			with(event.data)
+			{
+				game.onNewCircle(x, y, radius, color);
+			}
+		}
 	}
 }
 }

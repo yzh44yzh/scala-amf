@@ -30,6 +30,16 @@ public class Game extends EventDispatcher
 		canvas.addChild(marker);
 	}
 
+	public function onNewCircle(x : int, y : int, radius : int, color : int) : void
+	{
+		with(canvas.graphics)
+		{
+			beginFill(color, 0.7);
+			drawCircle(x, y,  radius);
+			endFill();
+		}
+	}
+
 	private function onMouseDown(e : MouseEvent) : void
 	{
 		downPoint = new Point(e.localX, e.localY);

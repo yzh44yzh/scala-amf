@@ -69,7 +69,7 @@ class RPC(apiClass : ConnectDisconnect) extends IoHandlerAdapter
 		else
 		{
 			nextClientId += 1
-			val newClient = new Client(nextClientId)
+			val newClient = new Client(nextClientId, session)
 			session.setAttribute("client", newClient)
 
 			apiClass.onConnect(newClient)
