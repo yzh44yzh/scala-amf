@@ -10,7 +10,7 @@ import java.lang.reflect.Method
  * @author Yura Zhloba <yzh44yzh@gmail.com>
  */
 
-class RPC(apiClass : AnyRef) extends IoHandlerAdapter
+class RPC(apiClass : ConnectDisconnect) extends IoHandlerAdapter
 {
 	private val log = LoggerFactory.getLogger(toString)
 
@@ -47,6 +47,12 @@ class RPC(apiClass : AnyRef) extends IoHandlerAdapter
 	override def sessionClosed(session : IoSession)
 	{
 		super.sessionClosed(session)
+
+		if(session.containsAttribute("client"))
+		{
+			val client = session.getAttribute("client").asInstanceOf[Client]
+			apiClass.onDisconnect(client)
+		}
 	}
 
 	override def exceptionCaught(session : IoSession, cause : Throwable)
@@ -65,6 +71,9 @@ class RPC(apiClass : AnyRef) extends IoHandlerAdapter
 			nextClientId += 1
 			val newClient = new Client(nextClientId)
 			session.setAttribute("client", newClient)
+
+			apiClass.onConnect(newClient)
+
 			newClient
 		}
 	}
