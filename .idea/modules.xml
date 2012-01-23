@@ -8,6 +8,7 @@
       <module fileurl="file://$PROJECT_DIR$/scala-amf.iml" filepath="$PROJECT_DIR$/scala-amf.iml" />
       <module fileurl="file://$PROJECT_DIR$/scala-amf-lib/scala-amf-lib.iml" filepath="$PROJECT_DIR$/scala-amf-lib/scala-amf-lib.iml" />
       <module fileurl="file://$PROJECT_DIR$/scala-amf-mina-filters/scala-amf-mina-filters.iml" filepath="$PROJECT_DIR$/scala-amf-mina-filters/scala-amf-mina-filters.iml" />
+      <module fileurl="file://$PROJECT_DIR$/scala-rpc/scala-rpc.iml" filepath="$PROJECT_DIR$/scala-rpc/scala-rpc.iml" />
     </modules>
   </component>
 </project>
