@@ -27,7 +27,7 @@ object SampleServer extends App
 	try
 	{
 		val acceptor = new NioSocketAcceptor()
-		val cb = acceptor.getFilterChain()
+		val cb = acceptor.getFilterChain
 		cb.addLast("codec", new ProtocolCodecFilter(new AmfCodecFactory()))
 
 		acceptor.setHandler(new RPC(new GameAPI()))

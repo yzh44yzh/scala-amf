@@ -14,6 +14,8 @@ class RPC(apiClass : AnyRef) extends IoHandlerAdapter
 {
 	private val log = LoggerFactory.getLogger(toString)
 
+	private var nextClientId = 0;
+
 	override def messageReceived(session : IoSession, message : Any)
 	{
 		log.debug("messageReceived {}", message)
@@ -21,11 +23,10 @@ class RPC(apiClass : AnyRef) extends IoHandlerAdapter
 		try
 		{
 			val call = new RPCCall(message.asInstanceOf[AmfClass])
-
-			// Client client = session.getAttribute("client");
-
-			val method : Method = apiClass.getClass.getDeclaredMethod(call.action, classOf[RPCCall], classOf[IoSession])
-			val result : Any = method.invoke(apiClass, call, session)
+			val client = getClient(session)
+			val method : Method = apiClass.getClass.getDeclaredMethod(
+				call.action, classOf[RPCCall], classOf[Client])
+			val result : Any = method.invoke(apiClass, call, client)
 
 			if(call.callbackID > 0)
 			{
@@ -51,5 +52,20 @@ class RPC(apiClass : AnyRef) extends IoHandlerAdapter
 	override def exceptionCaught(session : IoSession, cause : Throwable)
 	{
 		log.error("exceptionCaught", cause)
+	}
+
+	def getClient(session : IoSession) : Client =
+	{
+		if(session.containsAttribute("client"))
+		{
+			session.getAttribute("client").asInstanceOf[Client]
+		}
+		else
+		{
+			nextClientId += 1
+			val newClient = new Client(nextClientId)
+			session.setAttribute("client", newClient)
+			newClient
+		}
 	}
 }
