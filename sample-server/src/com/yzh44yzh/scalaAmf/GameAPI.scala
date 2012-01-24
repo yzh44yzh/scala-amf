@@ -17,7 +17,7 @@ class GameAPI extends ConnectDisconnect
 	val colorLimit = scala.math.pow(2, 24).toInt
 	val rand = new Random
 	val history = new ArrayList[AmfClass]()
-	val historyLimit = 5
+	val historyLimit = 500
 
 	def onConnect(client : Client)
 	{
