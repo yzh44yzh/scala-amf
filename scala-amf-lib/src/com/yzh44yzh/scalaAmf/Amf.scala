@@ -58,6 +58,7 @@ object Amf
 			case false => buf.put(0x2 toByte)
 			case true => buf.put(0x3 toByte)
 			case int : Int => buf.put(0x4 toByte); AmfInt.write(buf, int)
+			case long : Long => buf.put(0x5 toByte); buf.putDouble(long)
 			case double : Double => buf.put(0x5 toByte); buf.putDouble(double)
 			case str : String => buf.put(0x6 toByte); AmfString.write(buf, str, ref)
 			case date : Date => buf.put(0x8 toByte); AmfDate.write(buf, date, ref)

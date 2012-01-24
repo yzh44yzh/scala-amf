@@ -56,5 +56,10 @@ class TestAmfDouble extends FunSuite
 		assert(buf_m250_25 === Amf.encode(-250.25))
 		assert(buf_9 === Amf.encode(99999999.99))
 		assert(buf_m9 === Amf.encode(-99999999.99))
+
+		val long : Long = 5000000000L
+		val double : Double = 5000000000.0
+
+		assert(Amf.encode(long) === Amf.encode(double))
 	}
 }
