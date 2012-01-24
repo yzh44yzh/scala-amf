@@ -42,6 +42,7 @@ public class Service
 		game.showMsg("ready");
 
 		socket.send("getColor", null, onColor);
+		socket.send("getHistory", null, onHistory);
 	}
 
 	private function onColor(color : int) : void
@@ -49,6 +50,17 @@ public class Service
 		log.info("onColor [{0}]", color);
 		game.showMsg("Your color is #" + color.toString(16));
 		game.color = color;
+	}
+
+	private function onHistory(circles : Array) : void
+	{
+		log.info("onHistory {0}", circles.length);
+
+		for(var i : int = 0; i < circles.length; i++)
+		{
+			var circle : Object = circles[i];
+			game.onNewCircle(circle.x, circle.y, circle.radius, circle.color);
+		}
 	}
 
 	private function onNewCircle(event : GameEvent) : void
