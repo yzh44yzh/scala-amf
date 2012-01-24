@@ -3,6 +3,7 @@ package com.yzh44yzh.scalaAmf
 import org.slf4j.LoggerFactory
 import com.yzh44yzh.scalaRpc.{ConnectDisconnect, Client, RPCCall}
 import scala.collection.mutable.Map
+import java.util.{Date, Random}
 
 /**
  * @author Yura Zhloba <yzh44yzh@gmail.com>
@@ -13,6 +14,8 @@ class GameAPI extends ConnectDisconnect
 	val log = LoggerFactory.getLogger(getClass)
 
 	val clients = Map.empty[Int, Client]
+	val colorLimit = scala.math.pow(2, 24).toInt
+	val rand = new Random
 
 	def onConnect(client : Client)
 	{
@@ -28,7 +31,9 @@ class GameAPI extends ConnectDisconnect
 
 	def getColor(call : RPCCall, client : Client) : Int =
 	{
-		client.color = Game.getColor()
+		rand.setSeed(new Date().getTime)
+
+		client.color = rand.nextInt(colorLimit)
 		client.color
 	}
 
