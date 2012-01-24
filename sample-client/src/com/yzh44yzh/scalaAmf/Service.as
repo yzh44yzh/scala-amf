@@ -28,6 +28,7 @@ public class Service
 	public function connect(host : String, port : int) : void
 	{
 		log.info("connect to {0} {1}", host, port);
+		game.showMsg("connecting to " + host + ":" + port);
 
 		socket.dispatcher.addEventListener(SocketEvent.CONNECTED, onConnect);
 		socket.dispatcher.addEventListener(SocketEvent.DISCONNECTED, onDisconnect);
@@ -38,6 +39,7 @@ public class Service
 	private function onConnect(event : SocketEvent) : void
 	{
 		log.info("onConnect");
+		game.showMsg("ready");
 
 		socket.send("getColor", null, onColor);
 	}
@@ -45,6 +47,7 @@ public class Service
 	private function onColor(color : int) : void
 	{
 		log.info("onColor [{0}]", color);
+		game.showMsg("Your color is #" + color.toString(16));
 		game.color = color;
 	}
 

@@ -10,6 +10,9 @@ import flash.display.Stage;
 import flash.events.EventDispatcher;
 import flash.events.MouseEvent;
 import flash.geom.Point;
+import flash.text.TextField;
+import flash.text.TextFieldAutoSize;
+import flash.text.TextFormat;
 
 public class Game extends EventDispatcher
 {
@@ -17,6 +20,7 @@ public class Game extends EventDispatcher
 
 	private var canvas : Sprite;
 	private var marker : Shape;
+	private var info : TextField;
 	private var downPoint : Point;
 
 	public function Game(stage : Stage, canvas : Sprite)
@@ -28,6 +32,16 @@ public class Game extends EventDispatcher
 		this.canvas = canvas;
 		marker = new Shape();
 		canvas.addChild(marker);
+
+		info = new TextField();
+		info.defaultTextFormat = new TextFormat("Tahoma", 16);
+		info.autoSize = TextFieldAutoSize.LEFT;
+		canvas.addChild(info);
+	}
+
+	public function showMsg(msg : String) : void
+	{
+		info.text = msg;
 	}
 
 	public function onNewCircle(x : int, y : int, radius : int, color : int) : void
