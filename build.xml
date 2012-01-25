@@ -22,12 +22,17 @@
             <param name="module" value="scala-amf-mina-filters"/>
         </antcall>
 
+        <antcall target="build_module">
+            <param name="module" value="scala-rpc"/>
+        </antcall>
+
     </target>
 
     <target name="clear">
         <delete dir="release"/>
         <delete dir="scala-amf-lib/classes"/>
         <delete dir="scala-amf-mina-filters/classes"/>
+        <delete dir="scala-rpc/classes"/>
     </target>
 
     <target name="build_module">
@@ -46,6 +51,15 @@
             <pathelement location="release/scala-amf-lib-${version}.jar"/>
         </path>
 
+        <path id="classpath.scala-rpc">
+            <pathelement location="lib/scala-library.jar"/>
+            <pathelement location="lib/mina-core-2.0.0-RC1.jar"/>
+            <pathelement location="lib/log4j-1.2.14.jar"/>
+            <pathelement location="lib/slf4j-api-1.5.11.jar"/>
+            <pathelement location="lib/slf4j-log4j12-1.5.11.jar"/>
+            <pathelement location="release/scala-amf-lib-${version}.jar"/>
+        </path>
+
         <mkdir dir="${module}/classes"/>
 
         <scalac srcdir="${module}/src"
@@ -54,32 +68,6 @@
 
         <jar destfile="release/${module}-${version}.jar"
              basedir="${module}/classes"/>
-
-    </target>
-
-    <target name="install_maven_artifacts">
-
-        <property name="mvn" value="C:/Program Files/apache-maven-2.2.1/bin/mvn.bat"/>
-
-        <exec executable="${mvn}" dir="release">
-            <arg value="install:install-file"/>
-            <arg value="-Dfile=scala-amf-lib-${version}.jar"/>
-            <arg value="-DgroupId=com.yzh44yzh.scalaAmf"/>
-            <arg value="-DartifactId=scala-amf-lib"/>
-            <arg value="-Dversion=${version}"/>
-            <arg value="-Dpackaging=jar"/>
-            <arg value="-DgeneratePom=true"/>
-        </exec>
-
-        <exec executable="${mvn}" dir="release">
-            <arg value="install:install-file"/>
-            <arg value="-Dfile=scala-amf-mina-filters-${version}.jar"/>
-            <arg value="-DgroupId=com.yzh44yzh.scalaAmf"/>
-            <arg value="-DartifactId=scala-amf-mina-filters"/>
-            <arg value="-Dversion=${version}"/>
-            <arg value="-Dpackaging=jar"/>
-            <arg value="-DgeneratePom=true"/>
-        </exec>
 
     </target>
 
