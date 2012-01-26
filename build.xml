@@ -3,6 +3,24 @@
 
     <property name="version" value="1.3.1"/>
 
+	<taskdef resource="scala/tools/ant/antlib.xml">
+		<classpath>
+			<pathelement location="lib/scala-compiler.jar"/>
+			<pathelement location="lib/scala-library.jar"/>
+		</classpath>
+	</taskdef>
+
+	<path id="classpath">
+		<pathelement location="lib/scala-library.jar"/>
+		<pathelement location="lib/mina-core-2.0.0-RC1.jar"/>
+		<pathelement location="lib/log4j-1.2.14.jar"/>
+		<pathelement location="lib/slf4j-api-1.5.11.jar"/>
+		<pathelement location="lib/slf4j-log4j12-1.5.11.jar"/>
+		<pathelement location="release/scala-amf-lib-${version}.jar"/>
+		<pathelement location="release/scala-amf-mina-filters-${version}.jar"/>
+		<pathelement location="release/scala-rpc-${version}.jar"/>
+	</path>
+
 	<target name="clear">
 		<delete dir="release"/>
 		<delete dir="scala-amf-lib/classes"/>
@@ -11,58 +29,45 @@
 	</target>
 
     <target name="build" depends="clear">
-
         <mkdir dir="release"/>
-
-        <taskdef resource="scala/tools/ant/antlib.xml">
-            <classpath>
-                <pathelement location="lib/scala-compiler.jar"/>
-                <pathelement location="lib/scala-library.jar"/>
-            </classpath>
-        </taskdef>
 
         <antcall target="build_module">
             <param name="module" value="scala-amf-lib"/>
-            <param name="lib" value="lib1"/>
+			<param name="output" value="scala-amf-lib-${version}.jar"/>
         </antcall>
 
         <antcall target="build_module">
             <param name="module" value="scala-amf-mina-filters"/>
-			<param name="lib" value="lib2"/>
+			<param name="output" value="scala-amf-mina-filters-${version}.jar"/>
         </antcall>
 
         <antcall target="build_module">
             <param name="module" value="scala-rpc"/>
-			<param name="lib" value="lib2"/>
+			<param name="output" value="scala-rpc-${version}.jar"/>
         </antcall>
-
     </target>
 
+	<target name="build sample server">
+		<delete dir="release/sample"/>
+		<delete dir="sample-server/classes"/>
+
+		<mkdir dir="release/sample"/>
+		<mkdir dir="sample-server/classes"/>
+
+		<antcall target="build_module">
+			<param name="module" value="sample-server"/>
+			<param name="output" value="sample/sample-server.jar"/>
+		</antcall>
+	</target>
+
     <target name="build_module">
-
-        <path id="classpath.lib1">
-            <pathelement location="lib/scala-library.jar"/>
-            <pathelement location="lib/mina-core-2.0.0-RC1.jar"/>
-        </path>
-
-        <path id="classpath.lib2">
-            <pathelement location="lib/scala-library.jar"/>
-            <pathelement location="lib/mina-core-2.0.0-RC1.jar"/>
-            <pathelement location="lib/log4j-1.2.14.jar"/>
-            <pathelement location="lib/slf4j-api-1.5.11.jar"/>
-            <pathelement location="lib/slf4j-log4j12-1.5.11.jar"/>
-            <pathelement location="release/scala-amf-lib-${version}.jar"/>
-        </path>
-
         <mkdir dir="${module}/classes"/>
 
         <scalac srcdir="${module}/src"
                 destdir="${module}/classes"
-                classpathref="classpath.${lib}"/>
+                classpathref="classpath"/>
 
-        <jar destfile="release/${module}-${version}.jar"
-             basedir="${module}/classes"/>
-
+        <jar destfile="release/${output}" basedir="${module}/classes"/>
     </target>
 
 </project>
