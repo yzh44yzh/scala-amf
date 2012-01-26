@@ -3,6 +3,13 @@
 
     <property name="version" value="1.3.1"/>
 
+	<target name="clear">
+		<delete dir="release"/>
+		<delete dir="scala-amf-lib/classes"/>
+		<delete dir="scala-amf-mina-filters/classes"/>
+		<delete dir="scala-rpc/classes"/>
+	</target>
+
     <target name="build" depends="clear">
 
         <mkdir dir="release"/>
@@ -16,42 +23,29 @@
 
         <antcall target="build_module">
             <param name="module" value="scala-amf-lib"/>
+            <param name="lib" value="lib1"/>
         </antcall>
 
         <antcall target="build_module">
             <param name="module" value="scala-amf-mina-filters"/>
+			<param name="lib" value="lib2"/>
         </antcall>
 
         <antcall target="build_module">
             <param name="module" value="scala-rpc"/>
+			<param name="lib" value="lib2"/>
         </antcall>
 
     </target>
 
-    <target name="clear">
-        <delete dir="release"/>
-        <delete dir="scala-amf-lib/classes"/>
-        <delete dir="scala-amf-mina-filters/classes"/>
-        <delete dir="scala-rpc/classes"/>
-    </target>
-
     <target name="build_module">
 
-        <path id="classpath.scala-amf-lib">
+        <path id="classpath.lib1">
             <pathelement location="lib/scala-library.jar"/>
             <pathelement location="lib/mina-core-2.0.0-RC1.jar"/>
         </path>
 
-        <path id="classpath.scala-amf-mina-filters">
-            <pathelement location="lib/scala-library.jar"/>
-            <pathelement location="lib/mina-core-2.0.0-RC1.jar"/>
-            <pathelement location="lib/log4j-1.2.14.jar"/>
-            <pathelement location="lib/slf4j-api-1.5.11.jar"/>
-            <pathelement location="lib/slf4j-log4j12-1.5.11.jar"/>
-            <pathelement location="release/scala-amf-lib-${version}.jar"/>
-        </path>
-
-        <path id="classpath.scala-rpc">
+        <path id="classpath.lib2">
             <pathelement location="lib/scala-library.jar"/>
             <pathelement location="lib/mina-core-2.0.0-RC1.jar"/>
             <pathelement location="lib/log4j-1.2.14.jar"/>
@@ -64,7 +58,7 @@
 
         <scalac srcdir="${module}/src"
                 destdir="${module}/classes"
-                classpathref="classpath.${module}"/>
+                classpathref="classpath.${lib}"/>
 
         <jar destfile="release/${module}-${version}.jar"
              basedir="${module}/classes"/>
