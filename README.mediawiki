@@ -53,11 +53,11 @@ More details about AMF can be found here http://en.wikipedia.org/wiki/Action_Mes
 
 Я добавил в папку release/sample уже собранные sample-server и sample-client. Сервер запускается с помощью '''./run.sh'''. Это если в линуксе :) Для винды нужно будет сделать аналогичный '''run.bat'''. 
 
-Клиента нужно открыть в браузере. Либо через http://localhost/sample-client.swf, если у вас есть локальный веб сервер; либо просто из файловой системы через file:///path/to/sample-client.swf. Но тогда нужно будет настроить политику безопасности флэш плеера, чтобы он разрешил такому клиенту коннект к серверу. 
+Клиента нужно открыть в браузере. Либо через ''http://localhost/sample-client.swf'', если у вас есть локальный веб сервер; либо просто из файловой системы через ''file:///path/to/sample-client.swf''. Но тогда нужно будет настроить политику безопасности флэш плеера, чтобы он разрешил такому клиенту коннект к серверу. 
 
-Политику настраиваем так: создаем файл ~/.macromedia/Flash_Player/#Security/FlashPlayerTrust/main.cfg и в нем прописываем путь к sample-client.swf. У меня это выглядит так:
+Политику настраиваем так: создаем файл ''~/.macromedia/Flash_Player/#Security/FlashPlayerTrust/main.cfg'' и в нем прописываем путь к ''sample-client.swf''. У меня это выглядит так:
 <pre>
-yura ~/.macromedia/Flash_Player/#Security/FlashPlayerTrust $ cat main.cfg
+yura ~/.macromedia/Flash_Player/#Security/FlashPlayerTrust $ cat main.cfg<br/>
 /home/yura/p/scala-amf/release/sample/sample-client.swf
 </pre>
 
