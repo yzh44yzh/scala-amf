@@ -58,6 +58,8 @@ More details about AMF can be found here http://en.wikipedia.org/wiki/Action_Mes
 Политику настраиваем так: создаем файл ''~/.macromedia/Flash_Player/#Security/FlashPlayerTrust/main.cfg'' и в нем прописываем путь к ''sample-client.swf''. У меня это выглядит так:
 <code>
 yura ~/.macromedia/Flash_Player/#Security/FlashPlayerTrust $ cat main.cfg
+</code>
+<code>
 /home/yura/p/scala-amf/release/sample/sample-client.swf
 </code>
 
