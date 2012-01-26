@@ -6,6 +6,7 @@ package com.yzh44yzh.scalaAmf
 
 import org.apache.mina.core.buffer.IoBuffer
 import java.util.{ArrayList, Date}
+import Convert._
 
 object Amf
 {
@@ -54,16 +55,16 @@ object Amf
 	{
 		value match
 		{
-			case null => buf.put(0x1 toByte)
-			case false => buf.put(0x2 toByte)
-			case true => buf.put(0x3 toByte)
-			case int : Int => buf.put(0x4 toByte); AmfInt.write(buf, int)
-			case long : Long => buf.put(0x5 toByte); buf.putDouble(long)
-			case double : Double => buf.put(0x5 toByte); buf.putDouble(double)
-			case str : String => buf.put(0x6 toByte); AmfString.write(buf, str, ref)
-			case date : Date => buf.put(0x8 toByte); AmfDate.write(buf, date, ref)
-			case arr : ArrayList[Any] => buf.put(0x9 toByte); AmfArray.write(buf, arr, ref)
-			case obj : AmfClass => buf.put(0xa toByte); AmfObject.write(buf, obj, ref)
+			case null => buf.put(0x1)
+			case false => buf.put(0x2)
+			case true => buf.put(0x3)
+			case int : Int => buf.put(0x4); AmfInt.write(buf, int)
+			case long : Long => buf.put(0x5); buf.putDouble(long)
+			case double : Double => buf.put(0x5); buf.putDouble(double)
+			case str : String => buf.put(0x6); AmfString.write(buf, str, ref)
+			case date : Date => buf.put(0x8); AmfDate.write(buf, date, ref)
+			case arr : ArrayList[Any] => buf.put(0x9); AmfArray.write(buf, arr, ref)
+			case obj : AmfClass => buf.put(0xa); AmfObject.write(buf, obj, ref)
 			case _ => throw new Exception("invalid value " + value)
 		}
 

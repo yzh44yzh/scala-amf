@@ -5,6 +5,7 @@
 package test
 
 import com.yzh44yzh.scalaAmf._
+import com.yzh44yzh.scalaAmf.Convert._
 import org.scalatest.FunSuite
 import org.apache.mina.core.buffer.IoBuffer
 
@@ -33,9 +34,9 @@ class TestBufUtils extends FunSuite
 	test("copy")
 	{
 		val src = IoBuffer.allocate(64)
-		src.put(1 toByte)
-		src.put(2 toByte)
-		src.put(3 toByte)
+		src.put(1)
+		src.put(2)
+		src.put(3)
 		src.flip
 
 		val dst = IoBuffer.allocate(64)
@@ -50,15 +51,15 @@ class TestBufUtils extends FunSuite
 	test("merge")
 	{
 		val b1 = IoBuffer.allocate(64)
-		b1.put(1 toByte)
-		b1.put(2 toByte)
-		b1.put(3 toByte)
+		b1.put(1)
+		b1.put(2)
+		b1.put(3)
 		b1.flip
 
 		val b2 = IoBuffer.allocate(64)
-		b2.put(4 toByte)
-		b2.put(5 toByte)
-		b2.put(6 toByte)
+		b2.put(4)
+		b2.put(5)
+		b2.put(6)
 		b2.flip
 
 		val b3 = BufUtils.merge(b1, b2)
@@ -75,15 +76,15 @@ class TestBufUtils extends FunSuite
 	test("merge with null buffer")
 	{
 		val b1 = IoBuffer.allocate(64)
-		b1.put(1 toByte)
-		b1.put(2 toByte)
-		b1.put(3 toByte)
+		b1.put(1)
+		b1.put(2)
+		b1.put(3)
 		b1.flip
 
 		val b2 = IoBuffer.allocate(64)
-		b2.put(4 toByte)
-		b2.put(5 toByte)
-		b2.put(6 toByte)
+		b2.put(4)
+		b2.put(5)
+		b2.put(6)
 		b2.flip
 
 		val res1 = BufUtils.merge(null, b2)
@@ -107,11 +108,11 @@ class TestBufUtils extends FunSuite
 	test("getRest")
 	{
 		val b = IoBuffer.allocate(64)
-		b.put(1 toByte)
-		b.put(2 toByte)
-		b.put(3 toByte)
-		b.put(4 toByte)
-		b.put(5 toByte)
+		b.put(1)
+		b.put(2)
+		b.put(3)
+		b.put(4)
+		b.put(5)
 		b.flip
 
 		b.get; b.get

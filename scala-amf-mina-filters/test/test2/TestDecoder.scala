@@ -7,8 +7,8 @@ package test2
 import org.scalatest.FunSuite
 import com.yzh44yzh.scalaAmf.mina.AmfDecoder
 import org.apache.mina.core.buffer.IoBuffer
-import java.util.LinkedHashMap
 import com.yzh44yzh.scalaAmf.{AmfClass, BufUtils}
+import com.yzh44yzh.scalaAmf.Convert._
 
 class TestDecoder extends FunSuite
 {
@@ -36,7 +36,7 @@ class TestDecoder extends FunSuite
 		assert(data.get("q").equals(9))
 		assert(data.get("a").equals("autoLogin"))
 
-		val d = data.get("d").asInstanceOf[LinkedHashMap[String, Any]]
+		val d = data.get("d").asInstanceOf[AmfClass]
 		assert(d.get("uid").equals("d5b0ef4c8c51f303ecbaed81a6e078c5"))
 		assert(d.get("hasCam").equals(true))
 	}
@@ -65,7 +65,7 @@ class TestDecoder extends FunSuite
 		assert(data.get("a").equals("connect"))
 		assert(data.get("q").equals(1))
 
-		val d = data.get("d").asInstanceOf[LinkedHashMap[String, Any]]
+		val d = data.get("d").asInstanceOf[AmfClass]
 		assert(d.get("appType").equals("chat"))
 		assert(d.get("sid").equals(0))
 		assert(d.get("fromDomain").equals("http://chat71/"))
@@ -144,10 +144,10 @@ class TestDecoder extends FunSuite
 		assert(data.get("q").equals(22))
 		assert(data.get("a").equals("sendMessage"))
 
-		val d = data.get("d").asInstanceOf[LinkedHashMap[String, Any]]
+		val d = data.get("d").asInstanceOf[AmfClass]
 		assert(d.get("roomID").equals("room1"))
 
-		val message = d.get("message").asInstanceOf[LinkedHashMap[String, Any]]
+		val message = d.get("message").asInstanceOf[AmfClass]
 		assert(message.get("content").equals(" hello world "))
 		assert(message.get("whisper").equals(false))
 		assert(message.get("imageID").equals(""))
@@ -177,7 +177,7 @@ class TestDecoder extends FunSuite
 								  0x0A, 0x0B, 0x01, 0x03, 0x61, 0x06, 0x17, 0x73,
 								  0x65, 0x6E, 0x64, 0x4D, 0x65, 0x73, 0x73, 0x61,
 								  0x67, 0x65, 0x03, 0x64, 0x0A, 0x01, 0x0F, 0x6D,
-								  0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x0A, 0x81 toByte,
+								  0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x0A, 0x81,
 								  0x03, 0x01, 0x0F, 0x77, 0x68, 0x69, 0x73, 0x70,
 								  0x65, 0x72, 0x1D, 0x69, 0x6D, 0x61, 0x67, 0x65,
 								  0x45, 0x78, 0x74, 0x65, 0x6E, 0x74, 0x69, 0x6F,
@@ -189,8 +189,7 @@ class TestDecoder extends FunSuite
 								  0x6E, 0x74, 0x65, 0x6E, 0x74, 0x11, 0x73, 0x65,
 								  0x6E, 0x64, 0x65, 0x72, 0x49, 0x44, 0x02, 0x06,
 								  0x01, 0x06, 0x01, 0x06, 0x01, 0x01, 0x08, 0x01,
-								  0x42, 0x73, 0x1C, 0xC3 toByte, 0xE8 toByte, 0x4E,
-								  0xD0 toByte, 0)
+								  0x42, 0x73, 0x1C, 0xC3, 0xE8, 0x4E, 0xD0, 0)
 
 		assert(in1.limit == 128)
 
@@ -230,10 +229,10 @@ class TestDecoder extends FunSuite
 		assert(data.get("q").equals(22))
 		assert(data.get("a").equals("sendMessage"))
 
-		val d = data.get("d").asInstanceOf[LinkedHashMap[String, Any]]
+		val d = data.get("d").asInstanceOf[AmfClass]
 		assert(d.get("roomID").equals("room1"))
 
-		val message = d.get("message").asInstanceOf[LinkedHashMap[String, Any]]
+		val message = d.get("message").asInstanceOf[AmfClass]
 		assert(message.get("content").equals(" asdf "))
 		assert(message.get("whisper").equals(false))
 		assert(message.get("imageID").equals(""))

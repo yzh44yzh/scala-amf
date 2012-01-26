@@ -5,6 +5,7 @@ package com.yzh44yzh.scalaAmf
  */
 
 import org.apache.mina.core.buffer.IoBuffer
+import Convert._
 
 private object AmfInt
 {
@@ -44,32 +45,32 @@ private object AmfInt
 	{
 		if(value < 0)
 		{
-			buf.put((0x80 | ((value >> 22) & 0xff)) toByte)
-			buf.put((0x80 | ((value >> 15) & 0x7f)) toByte)
-			buf.put((0x80 | ((value >> 8) & 0x7f)) toByte)
-			buf.put((value & 0xff) toByte)
+			buf.put(0x80 | ((value >> 22) & 0xff))
+			buf.put(0x80 | ((value >> 15) & 0x7f))
+			buf.put(0x80 | ((value >> 8) & 0x7f))
+			buf.put(value & 0xff)
 		}
 		else if(value <= 0x7f)
 		{
-			buf.put(value toByte)
+			buf.put(value)
 		}
 		else if(value <= 0x3fff)
 		{
-			buf.put((0x80 | ((value >> 7) & 0x7f)) toByte)
-			buf.put((value & 0x7f) toByte)
+			buf.put((0x80 | (value >> 7) & 0x7f))
+			buf.put(value & 0x7f)
 		}
 		else if(value <= 0x1fffff)
 		{
-			buf.put((0x80 | ((value >> 14) & 0x7f)) toByte)
-			buf.put((0x80 | ((value >> 7) & 0x7f)) toByte)
-			buf.put((value & 0x7f) toByte)
+			buf.put((0x80 | (value >> 14) & 0x7f))
+			buf.put((0x80 | (value >> 7) & 0x7f))
+			buf.put(value & 0x7f)
 		}
 		else
 		{
-			buf.put((0x80 | ((value >> 22) & 0xff)) toByte)
-			buf.put((0x80 | ((value >> 15) & 0x7f)) toByte)
-			buf.put((0x80 | ((value >> 8) & 0x7f)) toByte)
-			buf.put((value & 0xff) toByte)
+			buf.put(0x80 | ((value >> 22) & 0xff))
+			buf.put(0x80 | ((value >> 15) & 0x7f))
+			buf.put(0x80 | ((value >> 8) & 0x7f))
+			buf.put(value & 0xff)
 		}
 	}
 }

@@ -5,6 +5,7 @@ package com.yzh44yzh.scalaAmf
  */
 
 import org.apache.mina.core.buffer.IoBuffer
+import Convert._
 
 private object AmfObject
 {
@@ -92,7 +93,7 @@ private object AmfObject
 		ref.firstObj = false
 
 		val code = (obj.size() << 4) + 3 // add 0011
-		buf.put(code toByte)
+		buf.put(code)
 
 		AmfString.write(buf, obj.className, ref)
 
@@ -135,7 +136,7 @@ private object AmfObject
 
 		if(ref.firstObj) // add dynamic object market to first object only
 		{
-			buf.put(0xb toByte)
+			buf.put(0xb)
 			ref.firstObj = false
 		}
 
