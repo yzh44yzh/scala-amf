@@ -22,15 +22,15 @@
 	</path>
 
 	<target name="clear">
-		<delete dir="release"/>
+		<delete>
+			<fileset dir="release" includes="*.jar"/>
+		</delete>
 		<delete dir="scala-amf-lib/classes"/>
 		<delete dir="scala-amf-mina-filters/classes"/>
 		<delete dir="scala-rpc/classes"/>
 	</target>
 
     <target name="build" depends="clear">
-        <mkdir dir="release"/>
-
         <antcall target="build_module">
             <param name="module" value="scala-amf-lib"/>
 			<param name="output" value="scala-amf-lib-${version}.jar"/>
@@ -48,10 +48,8 @@
     </target>
 
 	<target name="build sample server">
-		<delete dir="release/sample"/>
+		<delete file="release/sample/sample-server.jar"/>
 		<delete dir="sample-server/classes"/>
-
-		<mkdir dir="release/sample"/>
 		<mkdir dir="sample-server/classes"/>
 
 		<antcall target="build_module">
