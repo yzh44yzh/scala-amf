@@ -14,6 +14,8 @@ class FlashPolicyRequestFilter(val allowedPort : Int) extends IoFilterAdapter
 {
 	private val log : Logger = LoggerFactory.getLogger(classOf[FlashPolicyRequestFilter])
 
+	private val LENGTH : Int = "<policy-file-request/>".length + 1
+
 	private val response = new StringBuffer().append("<?xml version=\"1.0\"?>")
 			.append("<cross-domain-policy>")
 			.append("<site-control permitted-cross-domain-policies=\"all\"/>")
@@ -36,6 +38,8 @@ class FlashPolicyRequestFilter(val allowedPort : Int) extends IoFilterAdapter
 	private def checkBuffer(in : IoBuffer) : Boolean =
 	{
 		// check is in buffer contains "<policy-file-request/>\0"
+
+		if(in.limit < LENGTH) return false
 
 		if(in.get(0) != 0x3c) return false
 		if(in.get(1) != 0x70) return false
