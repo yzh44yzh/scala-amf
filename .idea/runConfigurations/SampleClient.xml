@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="SampleClient" type="FlexRunConfigurationType" factoryName="Flex" browser_family="FIREFOX" debugger_sdk="Module SDK" html_or_swf_file_path="$PROJECT_DIR$/out/production/sample-client/_SampleClient.swf" launcher_type="Browser" main_class_name="SampleClient" module_name="sample-client" player_path="/usr/bin/flashplayerdebugger" run_mode="MainClass" run_trusted="true" url_to_launch="http://">
+    <RunnerSettings RunnerId="FlexRunner" />
+    <ConfigurationWrapper RunnerId="FlexRunner" />
+    <method />
+  </configuration>
+</component>
