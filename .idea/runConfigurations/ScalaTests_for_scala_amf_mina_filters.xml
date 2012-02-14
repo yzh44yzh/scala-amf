@@ -1,0 +1,18 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="ScalaTests for scala-amf-mina-filters" type="ScalaTestRunConfiguration" factoryName="ScalaTest">
+    <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+    <extension name="scalaCoverage" />
+    <module name="scala-amf-mina-filters" />
+    <setting name="path" value="" />
+    <setting name="package" value="test2" />
+    <setting name="vmparams" value="" />
+    <setting name="params" value="" />
+    <setting name="workingDirectory" value="file://$PROJECT_DIR$/scala-amf-mina-filters" />
+    <setting name="searchForTest" value="In single module" />
+    <setting name="testName" value="" />
+    <setting name="testKind" value="All in package" />
+    <RunnerSettings RunnerId="Run" />
+    <ConfigurationWrapper RunnerId="Run" />
+    <method />
+  </configuration>
+</component>
