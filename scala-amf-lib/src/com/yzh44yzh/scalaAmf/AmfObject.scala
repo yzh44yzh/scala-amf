@@ -92,18 +92,18 @@ private object AmfObject
 	{
 		ref.firstObj = false
 
-		val code = (obj.size() << 4) + 3 // add 0011
+		val code = (obj.size << 4) + 3 // add 0011
 		buf.put(code)
 
 		AmfString.write(buf, obj.className, ref)
 
-		val it = obj.keySet().iterator()
+		val it = obj.iterator
 		while(it.hasNext)
 		{
 			AmfString.write(buf, it.next, ref)
 		}
 
-		val it2 = obj.keySet().iterator()
+		val it2 = obj.iterator
 		while(it2.hasNext)
 		{
 			Amf.encode(buf, obj.get(it2.next), ref);
@@ -142,7 +142,7 @@ private object AmfObject
 
 		AmfString.write(buf, "", ref) // empty class name
 
-		val it = obj.keySet().iterator()
+		val it = obj.iterator
 		while(it.hasNext)
 		{
 			val key = it.next
