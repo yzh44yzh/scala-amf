@@ -8,12 +8,7 @@ import com.yzh44yzh.scalaAmf.AmfClass
 
 class RPCCall(input : AmfClass)
 {
-	val action : String = input.get("a").asInstanceOf[String]
-	val callbackID : Int = input.get("q").asInstanceOf[Int]
-	val params : AmfClass = input.get("d").asInstanceOf[AmfClass]
-
-	// TODO
-	// getInt
-	// getString
-	// and so on
+	val action : String = input.getStr("a")
+	val callbackID : Int = input.getInt("q")
+	val params : AmfClass = input.getAmfClass("d")
 }

@@ -30,10 +30,10 @@ class Answer()
 		_data = value
 	}
 
-	def init(data : java.util.Map[String, Any])
+	def init(data : AmfClass)
 	{
-		_action = data.get("a").asInstanceOf[String]
-		if(data.get("q") != null) _queryID = data.get("q").asInstanceOf[Int]
+		_action = data.getStr("a")
+		if(data.get("q") != null) _queryID = data.getInt("q")
 	}
 
 	def rawData() : AmfClass =
