@@ -63,7 +63,12 @@ class AmfDecoder extends ProtocolDecoder
 		{
 			case e1 : BufferUnderflowException => true
 			case e2 : IllegalArgumentException => true
-			case e3 : Exception => log.error("unknown exception while reading data from buffer", e3)
+			case e3 : Exception =>
+			{
+				log.error("unknown exception while reading data from buffer", e3)
+				log.error(BufUtils.toString(input, true))
+				input.clear()
+			}
 		}
 
 		input.position(0)
